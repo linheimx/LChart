@@ -2,6 +2,8 @@ package com.linheimx.app.library.manager;
 
 import android.graphics.RectF;
 
+import com.linheimx.app.library.utils.U_XY;
+
 /**
  * Created by Administrator on 2016/11/13.
  */
@@ -87,5 +89,10 @@ public class ViewPortManager {
 
     public float getChartHeight() {
         return mChartHeight;
+    }
+
+    public U_XY getContentCenter() {
+        U_XY xy = U_XY.getInstance().setX(mContentRect.centerX()).setY(mContentRect.centerY());
+        return xy;
     }
 }

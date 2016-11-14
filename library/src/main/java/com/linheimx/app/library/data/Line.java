@@ -17,6 +17,9 @@ public class Line {
     protected float mXMin = Float.MAX_VALUE;
 
 
+    public Line() {
+    }
+
     public Line(List<Entry> entries) {
         setEntries(entries);
     }
@@ -32,10 +35,10 @@ public class Line {
             }
 
             if (entry.getY() < mYMin) {
-                mYMin = entry.getX();
+                mYMin = entry.getY();
             }
             if (entry.getY() > mYMax) {
-                mYMax = entry.getX();
+                mYMax = entry.getY();
             }
         }
     }

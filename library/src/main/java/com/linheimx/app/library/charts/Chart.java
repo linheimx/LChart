@@ -18,18 +18,25 @@ public abstract class Chart extends ViewGroup implements IFunction {
 
     public Chart(Context context) {
         super(context);
+        init(context);
     }
 
     public Chart(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context);
     }
 
     public Chart(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context);
+    }
 
+
+    protected void init(Context context) {
         Utils.init(context);
         setWillNotDraw(false); // 我要canvas绘制，so will draw
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

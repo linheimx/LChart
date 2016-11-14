@@ -46,4 +46,21 @@ public class Lines {
             }
         }
     }
+
+
+    public float getmYMax() {
+        return mYMax;
+    }
+
+    public float getmYMin() {
+        return mYMin;
+    }
+
+    public float getmXMax() {
+        return mXMax;
+    }
+
+    public float getmXMin() {
+        return mXMin;
+    }
 }

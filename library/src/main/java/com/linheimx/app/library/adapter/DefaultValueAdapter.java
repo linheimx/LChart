@@ -30,5 +30,4 @@ public class DefaultValueAdapter implements IValueAdapter {
         return _formatter.format(value);
     }
 
-
 }
