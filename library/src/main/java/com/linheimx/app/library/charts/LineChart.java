@@ -10,7 +10,7 @@ import com.linheimx.app.library.manager.ViewPortManager;
 import com.linheimx.app.library.parts.XAxis;
 import com.linheimx.app.library.parts.YAxis;
 import com.linheimx.app.library.render.NoDataRender;
-import com.linheimx.app.library.render.XAixsRender;
+import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Utils;
@@ -31,7 +31,7 @@ public class LineChart extends Chart {
 
     //////////////////////////////////  render  /////////////////////////////
     NoDataRender _NoDataRender;
-    XAixsRender _XAixsRender;
+    XAxisRender _XAxisRender;
     YAxisRender _YAxisRender;
 
 
@@ -59,7 +59,7 @@ public class LineChart extends Chart {
 
         // render
         _NoDataRender = new NoDataRender(_ViewPortManager, _TransformManager);
-        _XAixsRender = new XAixsRender(_ViewPortManager, _TransformManager, _XAxis);
+        _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager, _XAxis);
         _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager, _YAxis);
     }
 
@@ -72,7 +72,7 @@ public class LineChart extends Chart {
             _NoDataRender.draw(canvas);
         }
 
-        _XAixsRender.draw(canvas);
+        _XAxisRender.draw(canvas);
         _YAxisRender.draw(canvas);
 
     }

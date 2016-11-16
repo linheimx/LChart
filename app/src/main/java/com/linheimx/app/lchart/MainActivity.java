@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         list.add(new Entry(2, 4));
         list.add(new Entry(3, 2));
         list.add(new Entry(4, 3));
-        list.add(new Entry(5, 10));
+        list.add(new Entry(5, 8));
         line.setEntries(list);
 
         List<Line> list2 = new ArrayList<>();

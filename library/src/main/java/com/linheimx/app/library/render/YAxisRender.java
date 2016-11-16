@@ -26,7 +26,7 @@ public class YAxisRender extends AxisRender {
         float startX = _ViewPortManager.contentLeft();
         float startY = _ViewPortManager.contentBottom();
         float stopX = _ViewPortManager.contentLeft();
-        float stopY = _ViewPortManager.contentTop()-10;
+        float stopY = _ViewPortManager.contentTop()-20;// 画长一点
 
         canvas.drawLine(startX, startY, stopX, stopY, _PaintAxis);
     }

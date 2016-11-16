@@ -13,9 +13,9 @@ import com.linheimx.app.library.utils.Utils;
  * Created by LJIAN on 2016/11/14.
  */
 
-public class XAixsRender extends AxisRender {
+public class XAxisRender extends AxisRender {
 
-    public XAixsRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Axis _Axis) {
+    public XAxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Axis _Axis) {
         super(_ViewPortManager, _TransformManager, _Axis);
     }
 
@@ -25,7 +25,7 @@ public class XAixsRender extends AxisRender {
 
         float startX = _ViewPortManager.contentLeft();
         float startY = _ViewPortManager.contentBottom();
-        float stopX = _ViewPortManager.contentRight()+10;
+        float stopX = _ViewPortManager.contentRight()+20;//画长一点
         float stopY = _ViewPortManager.contentBottom();
 
         canvas.drawLine(startX, startY, stopX, stopY, _PaintAxis);
