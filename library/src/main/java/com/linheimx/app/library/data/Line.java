@@ -59,6 +59,66 @@ public class Line {
         calMinMax(entries);
     }
 
+
+    /**
+     * 根据提供的 x数值，找出list中离它最近的数，返回其下标。
+     * --------------
+     * 考虑到性能的原因，采用二分查找法。
+     *
+     * @param entries
+     * @param xValue
+     * @param rounding
+     * @return
+     */
+    public static int getEntryIndex(List<Entry> entries, float xValue, Rounding rounding) {
+
+        if (entries == null || entries.isEmpty())
+            return -1;
+
+        int low = 0;
+        int high = entries.size() - 1;
+        int closet = low;
+
+        while (low < high) {
+            int m = (low + high) / 2;
+
+            float f1 = entries.get(m).getX();
+            float f2 = entries.get(m + 1).getX();
+
+            if (xValue >= f1 && xValue <= f2) {
+
+                float d1 = Math.abs(xValue - f1);
+                float d2 = Math.abs(xValue - f2);
+
+                if (d1 <= d2) {
+                    closet = m;
+                } else {
+                    closet = m + 1;
+                }
+
+                low = m;
+                high = m + 1;
+                break;
+
+            } else if (xValue < f1) {
+                high = m;
+            } else if (xValue > f2) {
+                low = m;
+            }
+        }
+
+        int result = low;
+        if (rounding == Rounding.UP) {
+            result = high;
+        } else if (rounding == Rounding.DOWN) {
+            result = low;
+        } else if (rounding == Rounding.CLOSEST) {
+            result = closet;
+        }
+        return result;
+    }
+
+
     public float getmXMax() {
         return mXMax;
     }
@@ -74,4 +134,11 @@ public class Line {
     public float getmYMin() {
         return mYMin;
     }
+
+    public enum Rounding {
+        UP,
+        DOWN,
+        CLOSEST,
+    }
+
 }

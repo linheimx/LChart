@@ -9,6 +9,7 @@ import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
 import com.linheimx.app.library.parts.XAxis;
 import com.linheimx.app.library.parts.YAxis;
+import com.linheimx.app.library.render.LineRender;
 import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
@@ -33,6 +34,7 @@ public class LineChart extends Chart {
     NoDataRender _NoDataRender;
     XAxisRender _XAxisRender;
     YAxisRender _YAxisRender;
+    LineRender _LineRender;
 
 
     public LineChart(Context context) {
@@ -61,19 +63,27 @@ public class LineChart extends Chart {
         _NoDataRender = new NoDataRender(_ViewPortManager, _TransformManager);
         _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager, _XAxis);
         _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager, _YAxis);
+        _LineRender = new LineRender(_ViewPortManager, _TransformManager, _lines);
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        LogUtil.e("===");
+        // 1. draw no data
         if (_lines == null || _lines.getLines().size() == 0) {
             _NoDataRender.draw(canvas);
         }
 
+        // 2. draw line
+        _LineRender.draw(canvas);
+
+        // 3. draw axis,labels,grid line
         _XAxisRender.draw(canvas);
         _YAxisRender.draw(canvas);
+
+
 
     }
 
@@ -103,6 +113,7 @@ public class LineChart extends Chart {
             return;
         }
 
+
         // 1. axis
         _XAxis.prepareData(_lines.getmXMin(), _lines.getmXMax());
         _YAxis.prepareData(_lines.getmYMin(), _lines.getmYMax());
@@ -111,6 +122,9 @@ public class LineChart extends Chart {
 
         _XAxis.stepValues();
         _YAxis.stepValues();
+
+        // 2. notifyDataChanged
+        _LineRender.notifyDataChanged(_lines);
     }
 
 }

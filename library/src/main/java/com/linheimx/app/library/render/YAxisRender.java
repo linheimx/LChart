@@ -26,19 +26,21 @@ public class YAxisRender extends AxisRender {
         float startX = _ViewPortManager.contentLeft();
         float startY = _ViewPortManager.contentBottom();
         float stopX = _ViewPortManager.contentLeft();
-        float stopY = _ViewPortManager.contentTop()-20;// 画长一点
+        float stopY = _ViewPortManager.contentTop();
 
         canvas.drawLine(startX, startY, stopX, stopY, _PaintAxis);
     }
 
     @Override
-    public void renderLabels(Canvas canvas) {
-        super.renderLabels(canvas);
+    public void renderLabels_Gridline(Canvas canvas) {
+        super.renderLabels_Gridline(canvas);
 
         IValueAdapter adapter = _Axis.get_ValueAdapter();
         float[] values = _Axis.getStepValues();
-        float x = _ViewPortManager.contentLeft();
         float y = 0;
+
+        float left = _ViewPortManager.contentLeft();
+        float right = _ViewPortManager.contentRight();
 
         int txtHeight = Utils.textHeightAsc(_PaintLabel);
 
@@ -49,12 +51,15 @@ public class YAxisRender extends AxisRender {
             U_XY xy = _TransformManager.getPxByValue(0, value);
             y = xy.getY();
 
+            // grid line
+            canvas.drawLine(left, y, right, y, _PaintGridline);
+
             // little
             float little = Utils.dp2px(5);
-            canvas.drawLine(x, y, x-little, y, _PaintLittle);
+            canvas.drawLine(left, y, left - little, y, _PaintLittle);
 
             // label
-            float labelX = x - Utils.textWidth(_PaintLabel, label) * 1.5f;
+            float labelX = left - Utils.textWidth(_PaintLabel, label) * 1.5f;
             float labelY = y + txtHeight / 2;
             canvas.drawText(label, labelX, labelY, _PaintLabel);
         }

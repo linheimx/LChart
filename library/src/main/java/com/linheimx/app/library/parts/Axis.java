@@ -1,11 +1,9 @@
 package com.linheimx.app.library.parts;
 
 import android.graphics.Color;
-import android.util.Log;
 
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -13,7 +11,6 @@ import com.linheimx.app.library.utils.Utils;
  */
 
 public abstract class Axis extends BasePart {
-
 
     float _min, _max, _range;
 

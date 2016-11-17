@@ -53,7 +53,7 @@ public class TransformManager {
     }
 
 
-    float[] pxs = new float[2];
+    float[] xyBuffer = new float[2];
 
     /**
      * 根据像素位置变换成数值
@@ -64,13 +64,13 @@ public class TransformManager {
      */
     public U_XY getValueByPx(float x, float y) {
 
-        pxs[0] = x;
-        pxs[1] = y;
+        xyBuffer[0] = x;
+        xyBuffer[1] = y;
 
-        px2Value(pxs);
+        px2Value(xyBuffer);
 
         U_XY value = U_XY.getInstance();
-        value.setX(pxs[0]).setY(pxs[1]);
+        value.setX(xyBuffer[0]).setY(xyBuffer[1]);
         return value;
     }
 
@@ -84,13 +84,13 @@ public class TransformManager {
      */
     public U_XY getPxByValue(float x, float y) {
 
-        pxs[0] = x;
-        pxs[1] = y;
+        xyBuffer[0] = x;
+        xyBuffer[1] = y;
 
-        value2Px(pxs);
+        value2Px(xyBuffer);
 
         U_XY value = U_XY.getInstance();
-        value.setX(pxs[0]).setY(pxs[1]);
+        value.setX(xyBuffer[0]).setY(xyBuffer[1]);
         return value;
     }
 

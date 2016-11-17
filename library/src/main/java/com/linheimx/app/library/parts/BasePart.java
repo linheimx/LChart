@@ -16,7 +16,7 @@ public abstract class BasePart {
     boolean isEnable = true;
     int textSize = 10;
     int textColor = Color.BLACK;
-    int paintWidth = 3;
+    int paintWidth = 2;
 
     IValueAdapter _ValueAdapter;
     ViewPortManager _ViewPortManager;

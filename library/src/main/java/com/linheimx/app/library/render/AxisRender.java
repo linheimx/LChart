@@ -1,6 +1,7 @@
 package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.linheimx.app.library.manager.TransformManager;
@@ -16,6 +17,7 @@ public abstract class AxisRender extends BaseRender {
 
     Axis _Axis;
     Paint _PaintAxis;
+    Paint _PaintGridline;
     Paint _PaintLittle;
     Paint _PaintLabel;
 
@@ -24,14 +26,15 @@ public abstract class AxisRender extends BaseRender {
         this._Axis = _Axis;
         _PaintAxis = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintLabel = new Paint(Paint.ANTI_ALIAS_FLAG);
-        _PaintLittle=new Paint(Paint.ANTI_ALIAS_FLAG);
+        _PaintLittle = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _PaintGridline = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     @Override
     public void draw(Canvas canvas) {
 
         renderAxisLine(canvas);
-        renderLabels(canvas);
+        renderLabels_Gridline(canvas);
     }
 
     public void renderAxisLine(Canvas canvas) {
@@ -39,11 +42,14 @@ public abstract class AxisRender extends BaseRender {
         _PaintAxis.setStrokeWidth(Utils.dp2px(_Axis.getPaintWidth()));
     }
 
-    public void renderLabels(Canvas canvas) {
+    public void renderLabels_Gridline(Canvas canvas) {
         _PaintLabel.setColor(_Axis.getTextColor());
         _PaintLabel.setTextSize(Utils.dp2px(_Axis.getTextSize()));
 
         _PaintLittle.setColor(_Axis.getTextColor());
+        _PaintLittle.setStrokeWidth(Utils.dp2px(1));
+
+        _PaintGridline.setColor(Color.GRAY);
         _PaintLittle.setStrokeWidth(Utils.dp2px(1));
     }
 }
