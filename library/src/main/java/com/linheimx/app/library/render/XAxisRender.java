@@ -6,7 +6,7 @@ import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
 import com.linheimx.app.library.parts.Axis;
-import com.linheimx.app.library.utils.U_XY;
+import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -37,7 +37,7 @@ public class XAxisRender extends AxisRender {
         super.renderLabels_Gridline(canvas);
 
         IValueAdapter adapter = _Axis.get_ValueAdapter();
-        float[] values = _Axis.getStepValues();
+        float[] values = _Axis.getLabelValues();
 
         float x = 0;
 
@@ -51,7 +51,7 @@ public class XAxisRender extends AxisRender {
             String label = adapter.value2String(value);
 
 
-            U_XY xy = _TransformManager.getPxByValue(value, 0);
+            Single_XY xy = _TransformManager.getPxByValue(value, 0);
             x = xy.getX();
 
             // grid line

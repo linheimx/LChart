@@ -34,7 +34,7 @@ public abstract class Chart extends ViewGroup implements IFunction {
 
     protected void init(Context context) {
         Utils.init(context);
-        setWillNotDraw(false); // 我要canvas绘制，so will draw
+        setWillNotDraw(false); // 我要canvas绘制，so will render
     }
 
 

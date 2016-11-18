@@ -14,7 +14,7 @@ public abstract class Axis extends BasePart {
 
     float _min, _max, _range;
 
-    float[] stepValues = new float[]{};
+    float[] labelValues = new float[]{};
     int labelCount = 5;
     boolean isPerfectLabel = true;
 
@@ -31,13 +31,12 @@ public abstract class Axis extends BasePart {
         _range = max - min;
     }
 
-
     /**
      * 计算与存储：可见区域内的每一步的数值
      * -----------------------------
      * 注意：可见区域！
      */
-    public void stepValues() {
+    public void calLabelValues() {
         float min = getVisiableMin();
         float max = getVisiableMax();
 
@@ -69,8 +68,8 @@ public abstract class Axis extends BasePart {
             }
             labelCount = n;
 
-            if (stepValues.length < labelCount) {
-                stepValues = new float[labelCount];
+            if (labelValues.length < labelCount) {
+                labelValues = new float[labelCount];
             }
 
             f = first;
@@ -79,36 +78,34 @@ public abstract class Axis extends BasePart {
                 if (f == 0.0) // Fix for negative zero case (Where value == -0.0, and 0.0 == -0.0)
                     f = 0.0;
 
-                stepValues[i] = (float) f;
+                labelValues[i] = (float) f;
             }
 
             //--------------------------> 修复第一个和最后一个不显示问题 <----------------------
             // 第一个
             if (first < min) {
-                stepValues[0] = min;
+                labelValues[0] = min;
             }
             // 第二个
-            if (n > 1 && stepValues[n - 1] > max) {
-                stepValues[n - 1] = max;
+            if (n > 1 && labelValues[n - 1] > max) {
+                labelValues[n - 1] = max;
             }
 
-
         } else {
-            if (stepValues.length < labelCount) {
-                stepValues = new float[labelCount];
+            if (labelValues.length < labelCount) {
+                labelValues = new float[labelCount];
             }
 
             float v = min;
             float interval = _range / (labelCount - 1);
 
-            stepValues[0] = min;
+            labelValues[0] = min;
             for (int i = 1; i < labelCount - 1; i++) {
                 v = v + interval;
-                stepValues[i] = v;
+                labelValues[i] = v;
             }
-            stepValues[labelCount - 1] = max;
+            labelValues[labelCount - 1] = max;
         }
-
     }
 
 
@@ -137,8 +134,8 @@ public abstract class Axis extends BasePart {
         isPerfectLabel = perfectLabel;
     }
 
-    public float[] getStepValues() {
-        return stepValues;
+    public float[] getLabelValues() {
+        return labelValues;
     }
 
     public int getLabelCount() {

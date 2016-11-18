@@ -26,7 +26,7 @@ public class NoDataRender extends BaseRender {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void render(Canvas canvas) {
 
         _Paint.setColor(txtColor);
         _Paint.setTextSize(Utils.dp2px(txtSize));

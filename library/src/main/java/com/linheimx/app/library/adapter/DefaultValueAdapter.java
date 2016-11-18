@@ -26,7 +26,7 @@ public class DefaultValueAdapter implements IValueAdapter {
     }
 
     @Override
-    public String value2String(double value) {
+    public String value2String(float value) {
         return _formatter.format(value);
     }
 

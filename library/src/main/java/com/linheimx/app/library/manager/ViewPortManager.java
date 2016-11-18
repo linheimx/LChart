@@ -2,7 +2,8 @@ package com.linheimx.app.library.manager;
 
 import android.graphics.RectF;
 
-import com.linheimx.app.library.utils.U_XY;
+import com.linheimx.app.library.utils.Single_XY;
+import com.linheimx.app.library.utils.Utils;
 
 /**
  * Created by Administrator on 2016/11/13.
@@ -34,6 +35,11 @@ public class ViewPortManager {
 
     public void restrainViewPort(float offsetLeft, float offsetTop, float offsetRight,
                                  float offsetBottom) {
+        offsetLeft= Utils.dp2px(offsetLeft);
+        offsetTop= Utils.dp2px(offsetTop);
+        offsetRight= Utils.dp2px(offsetRight);
+        offsetBottom= Utils.dp2px(offsetBottom);
+
         mContentRect.set(offsetLeft, offsetTop, mChartWidth - offsetRight, mChartHeight
                 - offsetBottom);
     }
@@ -91,8 +97,8 @@ public class ViewPortManager {
         return mChartHeight;
     }
 
-    public U_XY getContentCenter() {
-        U_XY xy = U_XY.getInstance().setX(mContentRect.centerX()).setY(mContentRect.centerY());
+    public Single_XY getContentCenter() {
+        Single_XY xy = Single_XY.getInstance().setX(mContentRect.centerX()).setY(mContentRect.centerY());
         return xy;
     }
 }

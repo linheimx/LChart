@@ -1,27 +1,27 @@
 package com.linheimx.app.library.utils;
 
 /**
+ * 考虑到性能的原因，采用单例模式
+ * --------------------
+ * 尽量少的分配内存
+ * <p>
+ * <p>
  * Created by LJIAN on 2016/11/14.
  */
 
-public class U_XY {
+public class Single_XY {
     private float x;
     private float y;
 
-    private static U_XY value;
+    private static Single_XY value;
 
-    private U_XY() {
+    private Single_XY() {
 
     }
 
-    /**
-     * 尽量少的分配内存
-     *
-     * @return
-     */
-    public synchronized static U_XY getInstance() {
+    public synchronized static Single_XY getInstance() {
         if (value == null) {
-            value = new U_XY();
+            value = new Single_XY();
         }
         return value;
     }
@@ -30,7 +30,7 @@ public class U_XY {
         return x;
     }
 
-    public U_XY setX(float x) {
+    public Single_XY setX(float x) {
         this.x = x;
         return this;
     }
@@ -39,13 +39,13 @@ public class U_XY {
         return y;
     }
 
-    public U_XY setY(float y) {
+    public Single_XY setY(float y) {
         this.y = y;
         return this;
     }
 
     @Override
     public String toString() {
-        return "x: " + x + " y:" + y;
+        return "U_XY  x: " + x + " y:" + y;
     }
 }

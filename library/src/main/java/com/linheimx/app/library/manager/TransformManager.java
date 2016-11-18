@@ -2,16 +2,19 @@ package com.linheimx.app.library.manager;
 
 import android.graphics.Matrix;
 
+import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.parts.XAxis;
 import com.linheimx.app.library.parts.YAxis;
-import com.linheimx.app.library.utils.U_XY;
+import com.linheimx.app.library.utils.Single_XY;
 
 /**
  * Created by Administrator on 2016/11/13.
  */
 
 public class TransformManager {
-
+    /**
+     * matrix 要严格遵从运算顺序
+     */
     Matrix _matrixOff = new Matrix();//偏离
     Matrix _matrixK = new Matrix();//比例系数
 
@@ -39,12 +42,13 @@ public class TransformManager {
      * @param yDelta
      */
     private void k(float xMin, float xDelta, float yMin, float yDelta) {
-        float scaleX = (_viewPortManager.contentWidth()) / xDelta;
-        float scaleY = (_viewPortManager.contentHeight()) / yDelta;
+        float kx = (_viewPortManager.contentWidth()) / xDelta;
+        float ky = (_viewPortManager.contentHeight()) / yDelta;
 
         _matrixK.reset();
         _matrixK.postTranslate(-xMin, -yMin);
-        _matrixK.postScale(scaleX, -scaleY);
+        _matrixK.postScale(kx, ky);
+        _matrixK.postScale(1, -1);
     }
 
     public void prepareRelation(XAxis xAxis, YAxis yAxis) {
@@ -62,18 +66,21 @@ public class TransformManager {
      * @param y
      * @return
      */
-    public U_XY getValueByPx(float x, float y) {
+    public Single_XY getValueByPx(float x, float y) {
 
         xyBuffer[0] = x;
         xyBuffer[1] = y;
 
         px2Value(xyBuffer);
 
-        U_XY value = U_XY.getInstance();
+        Single_XY value = Single_XY.getInstance();
         value.setX(xyBuffer[0]).setY(xyBuffer[1]);
         return value;
     }
 
+    public Single_XY getPxByEntry(Entry entry) {
+        return getPxByValue(entry.getX(), entry.getY());
+    }
 
     /**
      * 根据数值变换成像素
@@ -82,14 +89,14 @@ public class TransformManager {
      * @param y
      * @return
      */
-    public U_XY getPxByValue(float x, float y) {
+    public Single_XY getPxByValue(float x, float y) {
 
         xyBuffer[0] = x;
         xyBuffer[1] = y;
 
         value2Px(xyBuffer);
 
-        U_XY value = U_XY.getInstance();
+        Single_XY value = Single_XY.getInstance();
         value.setX(xyBuffer[0]).setY(xyBuffer[1]);
         return value;
     }
@@ -118,6 +125,7 @@ public class TransformManager {
      * @param values
      */
     public void value2Px(float[] values) {
+        //----------------------------> 注意运算顺序（先乘除，再加减） <------------------------
         _matrixK.mapPoints(values);
         _matrixOff.mapPoints(values);
     }

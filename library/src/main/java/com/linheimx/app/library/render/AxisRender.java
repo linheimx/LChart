@@ -31,10 +31,8 @@ public abstract class AxisRender extends BaseRender {
     }
 
     @Override
-    public void draw(Canvas canvas) {
-
-        renderAxisLine(canvas);
-        renderLabels_Gridline(canvas);
+    public void render(Canvas canvas) {
+        // 考虑到外观的原因，绘制的次序由 lineChart 中的draw来控制。
     }
 
     public void renderAxisLine(Canvas canvas) {
@@ -50,6 +48,6 @@ public abstract class AxisRender extends BaseRender {
         _PaintLittle.setStrokeWidth(Utils.dp2px(1));
 
         _PaintGridline.setColor(Color.GRAY);
-        _PaintLittle.setStrokeWidth(Utils.dp2px(1));
+        _PaintGridline.setStrokeWidth(Utils.dp2px(1));
     }
 }

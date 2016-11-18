@@ -1,5 +1,7 @@
 package com.linheimx.app.library.data;
 
+import android.graphics.Color;
+
 import java.util.List;
 
 /**
@@ -11,11 +13,17 @@ public class Line {
     private List<Entry> entries;
 
 
-    protected float mYMax = -Float.MAX_VALUE;
-    protected float mYMin = Float.MAX_VALUE;
-    protected float mXMax = -Float.MAX_VALUE;
-    protected float mXMin = Float.MAX_VALUE;
+    private float mYMax = -Float.MAX_VALUE;
+    private float mYMin = Float.MAX_VALUE;
+    private float mXMax = -Float.MAX_VALUE;
+    private float mXMin = Float.MAX_VALUE;
 
+    private int lineColor = Color.RED;
+    private int lineWidth = 1;
+    private int circleColor = Color.RED;
+    private int circleR = 5;
+
+    private boolean isDrawCircle = true;
 
     public Line() {
     }
@@ -63,7 +71,7 @@ public class Line {
     /**
      * 根据提供的 x数值，找出list中离它最近的数，返回其下标。
      * --------------
-     * 考虑到性能的原因，采用二分查找法。
+     * 考虑到性能的原因，采用二分查找法。(速度很快，不错！)
      *
      * @param entries
      * @param xValue
@@ -80,6 +88,7 @@ public class Line {
         int closet = low;
 
         while (low < high) {
+
             int m = (low + high) / 2;
 
             float f1 = entries.get(m).getX();
@@ -87,6 +96,7 @@ public class Line {
 
             if (xValue >= f1 && xValue <= f2) {
 
+                //----------------------> 命中 <------------------------
                 float d1 = Math.abs(xValue - f1);
                 float d2 = Math.abs(xValue - f2);
 
@@ -101,9 +111,9 @@ public class Line {
                 break;
 
             } else if (xValue < f1) {
-                high = m;
+                high = m - 1;
             } else if (xValue > f2) {
-                low = m;
+                low = m + 1;
             }
         }
 
@@ -133,6 +143,47 @@ public class Line {
 
     public float getmYMin() {
         return mYMin;
+    }
+
+
+    public int getLineColor() {
+        return lineColor;
+    }
+
+    public void setLineColor(int lineColor) {
+        this.lineColor = lineColor;
+    }
+
+    public int getLineWidth() {
+        return lineWidth;
+    }
+
+    public void setLineWidth(int lineWidth) {
+        this.lineWidth = lineWidth;
+    }
+
+    public boolean isDrawCircle() {
+        return isDrawCircle;
+    }
+
+    public void setDrawCircle(boolean drawCircle) {
+        isDrawCircle = drawCircle;
+    }
+
+    public int getCircleR() {
+        return circleR;
+    }
+
+    public void setCircleR(int circleR) {
+        this.circleR = circleR;
+    }
+
+    public int getCircleColor() {
+        return circleColor;
+    }
+
+    public void setCircleColor(int circleColor) {
+        this.circleColor = circleColor;
     }
 
     public enum Rounding {
