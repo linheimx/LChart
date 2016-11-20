@@ -40,25 +40,26 @@ public class MainActivity extends AppCompatActivity {
         _lineChart.setLines(lines);
 
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                Line line = new Line();
-                List<Entry> list = new ArrayList<>();
-
-                for (int i = 0; i < 200000; i++) {
-                    list.add(new Entry(i, (float) Math.random()));
-                }
-                line.setEntries(list);
-
-                List<Line> list2 = new ArrayList<>();
-                list2.add(line);
-                Lines lines = new Lines(list2);
-
-                _lineChart.setLines(lines);
-            }
-        }, 5000);
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                Line line = new Line();
+//                List<Entry> list = new ArrayList<>();
+//
+//                for (int i = 0; i < 3000; i++) {
+//                    list.add(new Entry(i, (float) Math.random()));
+//                }
+//                line.setEntries(list);
+//                line.setDrawCircle(false);
+//
+//                List<Line> list2 = new ArrayList<>();
+//                list2.add(line);
+//                Lines lines = new Lines(list2);
+//
+//                _lineChart.setLines(lines);
+//            }
+//        }, 5000);
 
     }
 }

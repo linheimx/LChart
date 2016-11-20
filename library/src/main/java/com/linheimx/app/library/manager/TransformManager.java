@@ -17,6 +17,7 @@ public class TransformManager {
      */
     Matrix _matrixOff = new Matrix();//偏离
     Matrix _matrixK = new Matrix();//比例系数
+    Matrix _matrixTouch = new Matrix();
 
     ViewPortManager _viewPortManager;
 
@@ -112,6 +113,9 @@ public class TransformManager {
     public void px2Value(float[] pxs) {
         _bufferPV.reset();
 
+        _matrixTouch.invert(_bufferPV);
+        _bufferPV.mapPoints(pxs);
+
         _matrixOff.invert(_bufferPV);
         _bufferPV.mapPoints(pxs);
 
@@ -128,6 +132,15 @@ public class TransformManager {
         //----------------------------> 注意运算顺序（先乘除，再加减） <------------------------
         _matrixK.mapPoints(values);
         _matrixOff.mapPoints(values);
+        _matrixTouch.mapPoints(values);
+    }
+
+    public void zoom(float scaleX, float scaleY, float cx, float cy) {
+        _matrixTouch.postScale(scaleX, scaleY, cx, cy);
+    }
+
+    public void translate(float dx,float dy){
+        _matrixTouch.postTranslate(dx,dy);
     }
 
 }

@@ -3,6 +3,7 @@ package com.linheimx.app.library.charts;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.TransformManager;
@@ -13,6 +14,7 @@ import com.linheimx.app.library.render.LineRender;
 import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
+import com.linheimx.app.library.touch.TouchListener;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -40,6 +42,9 @@ public class LineChart extends Chart {
     int offRight = 10;
     int offTop = 20;
     int offBottom = 25;
+
+    ////////////////////////////// touch  /////////////////////////////
+    TouchListener _touchListener;
 
 
     public LineChart(Context context) {
@@ -70,6 +75,24 @@ public class LineChart extends Chart {
         _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager, _YAxis);
         _LineRender = new LineRender(_ViewPortManager, _TransformManager, _lines, _XAxis);
 
+        // touch listener
+        _touchListener=new TouchListener(this);
+
+    }
+
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+
+        if (_lines == null) {
+            return false;
+        }
+        if (!isTouchEnabled) {
+            return false;
+        }
+
+        return _touchListener.onTouch(this, event);
     }
 
     @Override
@@ -80,6 +103,10 @@ public class LineChart extends Chart {
         if (_lines == null || _lines.getLines().size() == 0) {
             _NoDataRender.render(canvas);
         }
+
+        // 需要一些计算
+        _XAxis.calLabelValues();
+        _YAxis.calLabelValues();
 
         // render lable,grid line
         _XAxisRender.renderLabels_Gridline(canvas);
@@ -114,11 +141,6 @@ public class LineChart extends Chart {
         _YAxis.prepareData(_lines.getmYMin(), _lines.getmYMax());
 
         prepareMap();
-
-        // 需要一些计算
-        _XAxis.calLabelValues();
-        _YAxis.calLabelValues();
-
 
         // 2. notifyDataChanged
         _LineRender.notifyDataChanged(_lines);
@@ -176,5 +198,13 @@ public class LineChart extends Chart {
     public void setOffBottom(int offBottom) {
         this.offBottom = offBottom;
         dataChanged();
+    }
+
+    public TransformManager get_TransformManager() {
+        return _TransformManager;
+    }
+
+    public ViewPortManager get_ViewPortManager() {
+        return _ViewPortManager;
     }
 }

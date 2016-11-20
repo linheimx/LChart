@@ -42,6 +42,7 @@ public class LineRender extends BaseRender {
         }
 
         canvas.save();
+        canvas.clipRect(_ViewPortManager.getContentRect());
         // render line
         for (Line line : _lines.getLines()) {
             drawLine_Circle(canvas, line);

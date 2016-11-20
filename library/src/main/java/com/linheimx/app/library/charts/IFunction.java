@@ -6,9 +6,14 @@ package com.linheimx.app.library.charts;
 
 public interface IFunction {
 
-    //-----------------> 十字高亮 <-----------------
-    void setHighLight(boolean isHighLight);
-    boolean isHighLight();
+    // high light
+    boolean isHighLightEnabled();
+
+    void setHighLightEnabled(boolean highLightEnabled);
 
 
+    // touch
+    boolean isTouchEnabled();
+
+    void setTouchEnabled(boolean touchEnabled);
 }

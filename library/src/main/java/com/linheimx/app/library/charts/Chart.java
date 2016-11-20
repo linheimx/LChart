@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
+import com.linheimx.app.library.touch.TouchListener;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -13,7 +14,8 @@ import com.linheimx.app.library.utils.Utils;
 public abstract class Chart extends ViewGroup implements IFunction {
 
     ////////////////////////// function //////////////////////////
-    boolean _isHighLight = true;
+    boolean isHighLightEnabled = true;
+    boolean isTouchEnabled = true;
 
 
     public Chart(Context context) {
@@ -36,7 +38,6 @@ public abstract class Chart extends ViewGroup implements IFunction {
         Utils.init(context);
         setWillNotDraw(false); // 我要canvas绘制，so will render
     }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -61,13 +62,20 @@ public abstract class Chart extends ViewGroup implements IFunction {
         }
     }
 
-    @Override
-    public void setHighLight(boolean isHighLight) {
-        this._isHighLight = isHighLight;
+
+    public boolean isHighLightEnabled() {
+        return isHighLightEnabled;
     }
 
-    @Override
-    public boolean isHighLight() {
-        return _isHighLight;
+    public void setHighLightEnabled(boolean highLightEnabled) {
+        isHighLightEnabled = highLightEnabled;
+    }
+
+    public boolean isTouchEnabled() {
+        return isTouchEnabled;
+    }
+
+    public void setTouchEnabled(boolean touchEnabled) {
+        isTouchEnabled = touchEnabled;
     }
 }
