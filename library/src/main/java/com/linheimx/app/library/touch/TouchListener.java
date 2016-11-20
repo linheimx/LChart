@@ -8,8 +8,6 @@ import android.view.View;
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.utils.LogUtil;
-import com.linheimx.app.library.utils.Utils;
 
 /**
  * Created by Administrator on 2016/11/20.
@@ -38,6 +36,7 @@ public class TouchListener implements View.OnTouchListener {
 
 
     float _lastX, _lastY;
+    float _disX = 1, _disY = 1, _disXY = 1, _cX, _cY;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -66,7 +65,17 @@ public class TouchListener implements View.OnTouchListener {
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 if (event.getPointerCount() >= 2) {
-                    _TouchMode = TouchMode.PINCH_ZOOM;
+                    _disX = getXDist(event);
+                    _disY = getYDist(event);
+                    _disXY = getABSDist(event);
+                    float tmpX = event.getX(0) + event.getX(1);
+                    float tmpY = event.getY(0) + event.getY(1);
+                    _cX = (tmpX / 2f);
+                    _cY = (tmpY / 2f);
+
+                    if (_disXY > 10) {
+                        _TouchMode = TouchMode.PINCH_ZOOM;
+                    }
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -74,15 +83,18 @@ public class TouchListener implements View.OnTouchListener {
                 float dy = y - _lastY;
 
                 if (_TouchMode == TouchMode.DRAG) {
-                    drag(dx, dy);
+                    doDrag(dx, dy);
                 } else if (_TouchMode == TouchMode.PINCH_ZOOM) {
-
+                    doPinch(event);
                 } else if (_TouchMode == TouchMode.NONE) {
                     _TouchMode = TouchMode.DRAG;
                 }
 
                 _lastX = x;
                 _lastY = y;
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                _TouchMode = TouchMode.NONE;
                 break;
             case MotionEvent.ACTION_UP:
                 _TouchMode = TouchMode.NONE;
@@ -96,15 +108,42 @@ public class TouchListener implements View.OnTouchListener {
     }
 
 
-    private void drag(float dx, float dy) {
+    private void doDrag(float dx, float dy) {
         _TransformManager.translate(dx, dy);
         _LineChart.postInvalidate();
     }
+
+    private void doPinch(MotionEvent event) {
+        float absDist = getABSDist(event);
+        float scale = absDist / _disXY;
+        zoom(scale, scale, _cX, _cY);
+
+        _disXY = absDist;
+    }
+
 
     private void zoom(float scaleX, float scaleY, float cx, float cy) {
         _TransformManager.zoom(scaleX, scaleY, cx, cy);
         _LineChart.postInvalidate();
     }
+
+
+    private static float getABSDist(MotionEvent event) {
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return (float) Math.sqrt(x * x + y * y);
+    }
+
+    private static float getXDist(MotionEvent e) {
+        float x = Math.abs(e.getX(0) - e.getX(1));
+        return x;
+    }
+
+    private static float getYDist(MotionEvent e) {
+        float y = Math.abs(e.getY(0) - e.getY(1));
+        return y;
+    }
+
 
     class GestureListener extends GestureDetector.SimpleOnGestureListener {
 

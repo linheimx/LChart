@@ -100,7 +100,7 @@ public class Line {
                 float d1 = Math.abs(xValue - f1);
                 float d2 = Math.abs(xValue - f2);
 
-                if (d1 <= d2) {
+                if (d1 < d2) {
                     closet = m;
                 } else {
                     closet = m + 1;
@@ -119,9 +119,9 @@ public class Line {
 
         int result = low;
         if (rounding == Rounding.UP) {
-            result = high;
+            result = Math.min((high + 1), entries.size() - 1);//多一个
         } else if (rounding == Rounding.DOWN) {
-            result = low;
+            result = Math.max((low - 1), 0);//少一个
         } else if (rounding == Rounding.CLOSEST) {
             result = closet;
         }
