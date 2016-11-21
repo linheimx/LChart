@@ -5,6 +5,7 @@ import android.graphics.Matrix;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.parts.XAxis;
 import com.linheimx.app.library.parts.YAxis;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Single_XY;
 
 /**
@@ -135,12 +136,80 @@ public class TransformManager {
         _matrixTouch.mapPoints(values);
     }
 
-    public void zoom(float scaleX, float scaleY, float cx, float cy) {
-        _matrixTouch.postScale(scaleX, scaleY, cx, cy);
+
+    Matrix _matrixTmp = new Matrix();
+
+    /**
+     * @param scaleX
+     * @param scaleY
+     * @param cx
+     * @param cy
+     * @return true:刷新 false:不刷新
+     */
+    public boolean zoom(float scaleX, float scaleY, float cx, float cy) {
+
+        _matrixTmp.reset();
+        _matrixTmp.set(_matrixTouch);
+        _matrixTmp.postScale(scaleX, scaleY, cx, cy);
+        _matrixTmp.getValues(_mvBuffer);
+
+        float sx = _mvBuffer[Matrix.MSCALE_X];
+        float sy = _mvBuffer[Matrix.MSCALE_Y];
+
+        float frame_width = _viewPortManager.contentWidth();
+        float frame_height = _viewPortManager.contentHeight();
+
+        float pic_width = frame_width * sx;
+        float pic_height = frame_height * sy;
+
+        if (pic_width < frame_width && pic_height < frame_height) {
+            return false;
+        } else {
+            _matrixTouch.postScale(scaleX, scaleY, cx, cy);
+            return true;
+        }
     }
 
-    public void translate(float dx,float dy){
-        _matrixTouch.postTranslate(dx,dy);
+    public void translate(float dx, float dy) {
+        _matrixTouch.postTranslate(dx, dy);
+    }
+
+
+    float[] _mvBuffer = new float[9];
+
+    /**
+     * 检查平移与缩放的范围
+     */
+    private void checkRange(Matrix touch) {
+
+        touch.getValues(_mvBuffer);
+
+        float tx = _mvBuffer[Matrix.MTRANS_X];
+        float sx = _mvBuffer[Matrix.MSCALE_X];
+        float ty = _mvBuffer[Matrix.MTRANS_Y];
+        float sy = _mvBuffer[Matrix.MSCALE_Y];
+
+        float frame_width = _viewPortManager.contentWidth();
+        float frame_height = _viewPortManager.contentHeight();
+
+        float pic_width = frame_width * sx;
+        float pic_height = frame_height * sy;
+
+        if (pic_width < frame_width) {
+            sx = 1;
+        }
+        if (pic_height < frame_height) {
+            sy = 1;
+        }
+
+        LogUtil.e("---->" + tx + "    " + ty);
+
+        _mvBuffer[Matrix.MTRANS_X] = tx;
+        _mvBuffer[Matrix.MSCALE_X] = sx;
+        _mvBuffer[Matrix.MTRANS_Y] = ty;
+        _mvBuffer[Matrix.MSCALE_Y] = sy;
+
+        _matrixTouch.setValues(_mvBuffer);
     }
 
 }

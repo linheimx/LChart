@@ -88,40 +88,61 @@ public class Line {
         int closet = low;
 
         while (low < high) {
-
             int m = (low + high) / 2;
 
-            float f1 = entries.get(m).getX();
-            float f2 = entries.get(m + 1).getX();
+            float fm = entries.get(m).getX();// middle
+            float fr = entries.get(m + 1).getX();// right
 
-            if (xValue >= f1 && xValue <= f2) {
+            if (xValue >= fm && xValue <= fr) {
 
-                //----------------------> 命中 <------------------------
-                float d1 = Math.abs(xValue - f1);
-                float d2 = Math.abs(xValue - f2);
+                // 中_右
+                float d1 = Math.abs(xValue - fm);
+                float d2 = Math.abs(xValue - fr);
 
-                if (d1 < d2) {
+                if (d1 <= d2) {
                     closet = m;
                 } else {
                     closet = m + 1;
                 }
 
-                low = m;
-                high = m + 1;
+                low = high = closet;
                 break;
 
-            } else if (xValue < f1) {
+            } else if (xValue < fm) {
+
+                if (m > 1) {
+                    float fl = entries.get(m - 1).getX();// left
+
+                    if (xValue >= fl && xValue <= fm) {
+                        // 中_左
+                        float d0 = Math.abs(xValue - fl);
+                        float d1 = Math.abs(xValue - fm);
+
+                        if (d0 <= d1) {
+                            closet = m - 1;
+                        } else {
+                            closet = m;
+                        }
+
+                        low = high = closet;
+                        break;
+                    }
+                }
                 high = m - 1;
-            } else if (xValue > f2) {
-                low = m + 1;
+            } else if (xValue > fr) {
+                low = m + 2;
             }
         }
 
+        high++;
+        low--;
+
+
         int result = low;
         if (rounding == Rounding.UP) {
-            result = Math.min((high + 1), entries.size() - 1);//多一个
+            result = Math.min(high, entries.size() - 1);//多一个
         } else if (rounding == Rounding.DOWN) {
-            result = Math.max((low - 1), 0);//少一个
+            result = Math.max(low, 0);//少一个
         } else if (rounding == Rounding.CLOSEST) {
             result = closet;
         }

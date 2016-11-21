@@ -99,16 +99,23 @@ public class LineChart extends Chart {
         _XAxisRender.calValues();
         _YAxisRender.calValues();
 
+        canvas.save();
+        canvas.clipRect(_ViewPortManager.getContentRect());
+
         // render lable,grid line
-        _XAxisRender.renderLabels_Gridline(canvas);
-        _YAxisRender.renderLabels_Gridline(canvas);
+        _XAxisRender.renderGridline(canvas);
+        _YAxisRender.renderGridline(canvas);
 
         // render line
         _LineRender.render(canvas);
+        canvas.restore();
 
         // render axis
         _XAxisRender.renderAxisLine(canvas);
         _YAxisRender.renderAxisLine(canvas);
+
+        _XAxisRender.renderLabels(canvas);
+        _YAxisRender.renderLabels(canvas);
     }
 
     @Override
