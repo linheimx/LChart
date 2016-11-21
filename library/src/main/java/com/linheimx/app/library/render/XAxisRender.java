@@ -33,8 +33,30 @@ public class XAxisRender extends AxisRender {
 
 
     @Override
-    public void renderLabels_Gridline(Canvas canvas) {
-        super.renderLabels_Gridline(canvas);
+    public void renderGridline(Canvas canvas) {
+        super.renderGridline(canvas);
+
+        float[] values = _Axis.getLabelValues();
+
+        float x = 0;
+
+        float top = _ViewPortManager.contentTop();
+        float bottom = _ViewPortManager.contentBottom();
+
+        for (int i = 0; i < _Axis.getLabelCount(); i++) {
+            float value = values[i];
+
+            Single_XY xy = _TransformManager.getPxByValue(value, 0);
+            x = xy.getX();
+
+            // grid line
+            canvas.drawLine(x, bottom, x, top, _PaintGridline);
+        }
+    }
+
+    @Override
+    public void renderLabels(Canvas canvas) {
+        super.renderLabels(canvas);
 
         IValueAdapter adapter = _Axis.get_ValueAdapter();
         float[] values = _Axis.getLabelValues();
@@ -50,12 +72,13 @@ public class XAxisRender extends AxisRender {
             float value = values[i];
             String label = adapter.value2String(value);
 
-
             Single_XY xy = _TransformManager.getPxByValue(value, 0);
             x = xy.getX();
 
-            // grid line
-            canvas.drawLine(x, bottom, x, top, _PaintGridline);
+            // check
+            if (x < _ViewPortManager.contentLeft() || x > _ViewPortManager.contentRight()) {
+                continue;
+            }
 
             // little
             float little = Utils.dp2px(5);

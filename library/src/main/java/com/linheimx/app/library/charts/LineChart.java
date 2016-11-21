@@ -15,7 +15,6 @@ import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.TouchListener;
-import com.linheimx.app.library.utils.Utils;
 
 /**
  * Created by Administrator on 2016/11/13.
@@ -76,7 +75,7 @@ public class LineChart extends Chart {
         _LineRender = new LineRender(_ViewPortManager, _TransformManager, _lines, _XAxis);
 
         // touch listener
-        _touchListener=new TouchListener(this);
+        _touchListener = new TouchListener(this);
 
     }
 
@@ -108,16 +107,23 @@ public class LineChart extends Chart {
         _XAxis.calLabelValues();
         _YAxis.calLabelValues();
 
+        canvas.save();
+        canvas.clipRect(_ViewPortManager.getContentRect());
+
         // render lable,grid line
-        _XAxisRender.renderLabels_Gridline(canvas);
-        _YAxisRender.renderLabels_Gridline(canvas);
+        _XAxisRender.renderGridline(canvas);
+        _YAxisRender.renderGridline(canvas);
 
         // render line
         _LineRender.render(canvas);
+        canvas.restore();
 
         // render axis
         _XAxisRender.renderAxisLine(canvas);
         _YAxisRender.renderAxisLine(canvas);
+
+        _XAxisRender.renderLabels(canvas);
+        _YAxisRender.renderLabels(canvas);
     }
 
     @Override

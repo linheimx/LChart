@@ -52,7 +52,7 @@ public class Utils {
      * @param number
      * @return
      */
-    public static float roundToNextSignificant(double number) {
+    public static float roundNumber2One(double number) {
         if (Double.isInfinite(number) ||
                 Double.isNaN(number) ||
                 number == 0.0)

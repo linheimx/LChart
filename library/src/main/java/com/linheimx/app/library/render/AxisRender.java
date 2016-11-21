@@ -40,7 +40,7 @@ public abstract class AxisRender extends BaseRender {
         _PaintAxis.setStrokeWidth(Utils.dp2px(_Axis.getPaintWidth()));
     }
 
-    public void renderLabels_Gridline(Canvas canvas) {
+    public void renderGridline(Canvas canvas) {
         _PaintLabel.setColor(_Axis.getTextColor());
         _PaintLabel.setTextSize(Utils.dp2px(_Axis.getTextSize()));
 
@@ -49,5 +49,9 @@ public abstract class AxisRender extends BaseRender {
 
         _PaintGridline.setColor(Color.GRAY);
         _PaintGridline.setStrokeWidth(Utils.dp2px(1));
+    }
+
+    public void renderLabels(Canvas canvas) {
+
     }
 }

@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -16,6 +17,7 @@ public abstract class Axis extends BasePart {
 
     float[] labelValues = new float[]{};
     int labelCount = 5;
+    int labelCountAdvice = 5;
     boolean isPerfectLabel = true;
 
     int axisColor = Color.BLACK;
@@ -44,11 +46,13 @@ public abstract class Axis extends BasePart {
             return;
         }
 
+        _range = Math.abs(max - min);
+
         if (isPerfectLabel) {
 
-            double rawInterval = _range / (labelCount - 1);
+            double rawInterval = _range / (labelCountAdvice - 1);
             // 1.以最大数值为量程
-            double interval = Utils.roundToNextSignificant(rawInterval);//314->300
+            double interval = Utils.roundNumber2One(rawInterval);//314->300
             // 2. 量程>5，则以10为单位
             double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));//100
             int intervalSigDigit = (int) (interval / intervalMagnitude);
@@ -82,14 +86,14 @@ public abstract class Axis extends BasePart {
             }
 
             //--------------------------> 修复第一个和最后一个不显示问题 <----------------------
-            // 第一个
-            if (first < min) {
-                labelValues[0] = min;
-            }
-            // 第二个
-            if (n > 1 && labelValues[n - 1] > max) {
-                labelValues[n - 1] = max;
-            }
+//            // 第一个
+//            if (first < min) {
+//                labelValues[0] = min;
+//            }
+//            // 第二个
+//            if (n > 1 && labelValues[n - 1] > max) {
+//                labelValues[n - 1] = max;
+//            }
 
         } else {
             if (labelValues.length < labelCount) {
@@ -140,6 +144,18 @@ public abstract class Axis extends BasePart {
 
     public int getLabelCount() {
         return labelCount;
+    }
+
+    public void setLabelCount(int labelCount) {
+        this.labelCount = labelCount;
+    }
+
+    public int getLabelCountAdvice() {
+        return labelCountAdvice;
+    }
+
+    public void setLabelCountAdvice(int labelCountAdvice) {
+        this.labelCountAdvice = labelCountAdvice;
     }
 
     public int getAxisColor() {

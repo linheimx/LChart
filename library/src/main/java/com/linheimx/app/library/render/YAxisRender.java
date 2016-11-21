@@ -32,8 +32,31 @@ public class YAxisRender extends AxisRender {
     }
 
     @Override
-    public void renderLabels_Gridline(Canvas canvas) {
-        super.renderLabels_Gridline(canvas);
+    public void renderGridline(Canvas canvas) {
+        super.renderGridline(canvas);
+
+        float[] values = _Axis.getLabelValues();
+        float y = 0;
+
+        float left = _ViewPortManager.contentLeft();
+        float right = _ViewPortManager.contentRight();
+
+        for (int i = 0; i < _Axis.getLabelCount(); i++) {
+            float value = values[i];
+
+            Single_XY xy = _TransformManager.getPxByValue(0, value);
+            y = xy.getY();
+
+            // grid line
+            canvas.drawLine(left, y, right, y, _PaintGridline);
+        }
+    }
+
+
+    @Override
+    public void renderLabels(Canvas canvas) {
+        super.renderLabels(canvas);
+
 
         IValueAdapter adapter = _Axis.get_ValueAdapter();
         float[] values = _Axis.getLabelValues();
@@ -51,8 +74,9 @@ public class YAxisRender extends AxisRender {
             Single_XY xy = _TransformManager.getPxByValue(0, value);
             y = xy.getY();
 
-            // grid line
-            canvas.drawLine(left, y, right, y, _PaintGridline);
+            if (y < _ViewPortManager.contentTop() || y > _ViewPortManager.contentBottom()) {
+                continue;
+            }
 
             // little
             float little = Utils.dp2px(5);

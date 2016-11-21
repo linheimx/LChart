@@ -123,8 +123,10 @@ public class TouchListener implements View.OnTouchListener {
 
 
     private void zoom(float scaleX, float scaleY, float cx, float cy) {
-        _TransformManager.zoom(scaleX, scaleY, cx, cy);
-        _LineChart.postInvalidate();
+        boolean needRefresh = _TransformManager.zoom(scaleX, scaleY, cx, cy);
+        if (needRefresh) {
+            _LineChart.postInvalidate();
+        }
     }
 
 
