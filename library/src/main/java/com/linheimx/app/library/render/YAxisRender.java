@@ -34,13 +34,13 @@ public class YAxisRender extends AxisRender {
     public void renderGridline(Canvas canvas) {
         super.renderGridline(canvas);
 
-        float[] values = _Axis.getLabelValues();
+        float[] values = labelValues;
         float y = 0;
 
         float left = _ViewPortManager.contentLeft();
         float right = _ViewPortManager.contentRight();
 
-        for (int i = 0; i < _Axis.getLabelCount(); i++) {
+        for (int i = 0; i < labelCount; i++) {
             float value = values[i];
 
             Single_XY xy = _TransformManager.getPxByValue(0, value);

@@ -35,14 +35,14 @@ public class XAxisRender extends AxisRender {
     public void renderGridline(Canvas canvas) {
         super.renderGridline(canvas);
 
-        float[] values = _Axis.getLabelValues();
+        float[] values = labelValues;
 
         float x = 0;
 
         float top = _ViewPortManager.contentTop();
         float bottom = _ViewPortManager.contentBottom();
 
-        for (int i = 0; i < _Axis.getLabelCount(); i++) {
+        for (int i = 0; i < labelCount; i++) {
             float value = values[i];
 
             Single_XY xy = _TransformManager.getPxByValue(value, 0);

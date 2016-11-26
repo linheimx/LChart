@@ -3,8 +3,6 @@ package com.linheimx.app.library.manager;
 import android.graphics.Matrix;
 
 import com.linheimx.app.library.data.Entry;
-import com.linheimx.app.library.parts.XAxis;
-import com.linheimx.app.library.parts.YAxis;
 import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Single_XY;
 

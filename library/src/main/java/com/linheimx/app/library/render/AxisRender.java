@@ -55,7 +55,7 @@ public abstract class AxisRender extends BaseRender {
         _PaintAxis.setStrokeWidth(Utils.dp2px(axisWidth));
     }
 
-    public void renderLabels_Gridline(Canvas canvas) {
+    public void renderLabels(Canvas canvas) {
         _PaintLabel.setColor(labelColor);
         _PaintLabel.setTextSize(Utils.dp2px(labelSize));
 
@@ -65,6 +65,12 @@ public abstract class AxisRender extends BaseRender {
         _PaintGridline.setColor(Color.GRAY);
         _PaintGridline.setStrokeWidth(Utils.dp2px(1));
     }
+
+    public void renderGridline(Canvas canvas){
+
+    }
+
+
 
     /**
      * 计算与存储：可见区域内的每一步的数值
@@ -85,7 +91,7 @@ public abstract class AxisRender extends BaseRender {
 
             double rawInterval = range / (labelCountAdvice - 1);
             // 1.以最大数值为量程
-            double interval = Utils.roundToNextSignificant(rawInterval);//314->300
+            double interval = Utils.roundNumber2One(rawInterval);//314->300
             // 2. 量程>5，则以10为单位
             double intervalMagnitude = Math.pow(10, (int) Math.log10(interval));//100
             int intervalSigDigit = (int) (interval / intervalMagnitude);
@@ -118,15 +124,15 @@ public abstract class AxisRender extends BaseRender {
                 labelValues[i] = (float) f;
             }
 
-            //--------------------------> 修复第一个和最后一个不显示问题 <----------------------
-            // 第一个
-            if (first < min) {
-                labelValues[0] = min;
-            }
-            // 第二个
-            if (n > 1 && labelValues[n - 1] > max) {
-                labelValues[n - 1] = max;
-            }
+//            //--------------------------> 修复第一个和最后一个不显示问题 <----------------------
+//            // 第一个
+//            if (first < min) {
+//                labelValues[0] = min;
+//            }
+//            // 第二个
+//            if (n > 1 && labelValues[n - 1] > max) {
+//                labelValues[n - 1] = max;
+//            }
 
         } else {
             if (labelValues.length < labelCount) {
