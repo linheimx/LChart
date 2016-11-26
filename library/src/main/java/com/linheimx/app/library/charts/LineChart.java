@@ -8,14 +8,11 @@ import android.view.MotionEvent;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.parts.XAxis;
-import com.linheimx.app.library.parts.YAxis;
 import com.linheimx.app.library.render.LineRender;
 import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.TouchListener;
-import com.linheimx.app.library.utils.Utils;
 
 /**
  * Created by Administrator on 2016/11/13.
@@ -25,9 +22,6 @@ public class LineChart extends Chart {
 
     ViewPortManager _ViewPortManager;
     TransformManager _TransformManager;
-
-    XAxis _XAxis;
-    YAxis _YAxis;
 
     Lines _lines;
 
@@ -66,17 +60,14 @@ public class LineChart extends Chart {
         _ViewPortManager = new ViewPortManager();
         _TransformManager = new TransformManager(_ViewPortManager);
 
-        _XAxis = new XAxis(_ViewPortManager, _TransformManager);
-        _YAxis = new YAxis(_ViewPortManager, _TransformManager);
-
         // render
         _NoDataRender = new NoDataRender(_ViewPortManager, _TransformManager);
-        _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager, _XAxis);
-        _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager, _YAxis);
-        _LineRender = new LineRender(_ViewPortManager, _TransformManager, _lines, _XAxis);
+        _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager);
+        _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager);
+        _LineRender = new LineRender(_ViewPortManager, _TransformManager, _lines, _XAxisRender);
 
         // touch listener
-        _touchListener=new TouchListener(this);
+        _touchListener = new TouchListener(this);
 
     }
 
@@ -104,9 +95,9 @@ public class LineChart extends Chart {
             _NoDataRender.render(canvas);
         }
 
-        // 需要一些计算
-        _XAxis.calLabelValues();
-        _YAxis.calLabelValues();
+        // cal
+        _XAxisRender.calValues();
+        _YAxisRender.calValues();
 
         // render lable,grid line
         _XAxisRender.renderLabels_Gridline(canvas);
@@ -136,10 +127,6 @@ public class LineChart extends Chart {
             return;
         }
 
-        // 1. axis
-        _XAxis.prepareData(_lines.getmXMin(), _lines.getmXMax());
-        _YAxis.prepareData(_lines.getmYMin(), _lines.getmYMax());
-
         prepareMap();
 
         // 2. notifyDataChanged
@@ -147,8 +134,16 @@ public class LineChart extends Chart {
     }
 
     private void prepareMap() {
+
+        float xMin = _lines.getmXMin();
+        float xMax = _lines.getmXMax();
+        float yMin = _lines.getmYMin();
+        float yMax = _lines.getmYMax();
+
         _ViewPortManager.restrainViewPort(offLeft, offTop, offRight, offBottom);
-        _TransformManager.prepareRelation(_XAxis, _YAxis);
+        _TransformManager.prepareRelation(
+                xMin, xMax - xMin,
+                yMin, yMax - yMin);
     }
 
 

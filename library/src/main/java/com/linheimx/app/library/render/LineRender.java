@@ -8,7 +8,6 @@ import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.parts.XAxis;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -20,15 +19,17 @@ import java.util.List;
 
 public class LineRender extends BaseRender {
 
-    XAxis _XAxis;
+    XAxisRender _XAxisRender;
+
     Lines _lines;
     Paint _PaintLine;
     Paint _PaintCircle;
 
-    public LineRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Lines _lines, XAxis _XAxis) {
+
+    public LineRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Lines _lines, XAxisRender _XAxisRender) {
         super(_ViewPortManager, _TransformManager);
         this._lines = _lines;
-        this._XAxis = _XAxis;
+        this._XAxisRender = _XAxisRender;
 
         _PaintLine = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintCircle = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -67,11 +68,12 @@ public class LineRender extends BaseRender {
             return;
         }
 
-        float xMin = _XAxis.getVisiableMin();
-        float xMax = _XAxis.getVisiableMax();
 
-        int minIndex = Line.getEntryIndex(list, xMin, Line.Rounding.DOWN);
-        int maxIndex = Line.getEntryIndex(list, xMax, Line.Rounding.UP);
+        float xMin_Visiable = _XAxisRender.getVisiableMin();
+        float xMax_Visiable = _XAxisRender.getVisiableMax();
+
+        int minIndex = Line.getEntryIndex(list, xMin_Visiable, Line.Rounding.DOWN);
+        int maxIndex = Line.getEntryIndex(list, xMax_Visiable, Line.Rounding.UP);
 
         if (Math.abs(maxIndex - minIndex) == 0) {
             return;

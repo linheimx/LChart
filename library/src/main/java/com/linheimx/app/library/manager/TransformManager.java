@@ -52,8 +52,8 @@ public class TransformManager {
         _matrixK.postScale(1, -1);
     }
 
-    public void prepareRelation(XAxis xAxis, YAxis yAxis) {
-        k(xAxis.get_min(), xAxis.get_range(), yAxis.get_min(), yAxis.get_range());
+    public void prepareRelation(float xMin,float xRange,float yMin,float yRange) {
+        k(xMin, xRange, yMin, yRange);
         off();
     }
 

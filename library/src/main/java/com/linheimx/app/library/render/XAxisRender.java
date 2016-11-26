@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.parts.Axis;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -15,8 +14,8 @@ import com.linheimx.app.library.utils.Utils;
 
 public class XAxisRender extends AxisRender {
 
-    public XAxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Axis _Axis) {
-        super(_ViewPortManager, _TransformManager, _Axis);
+    public XAxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager) {
+        super(_ViewPortManager, _TransformManager);
     }
 
     @Override
@@ -36,8 +35,8 @@ public class XAxisRender extends AxisRender {
     public void renderLabels_Gridline(Canvas canvas) {
         super.renderLabels_Gridline(canvas);
 
-        IValueAdapter adapter = _Axis.get_ValueAdapter();
-        float[] values = _Axis.getLabelValues();
+        IValueAdapter adapter = _ValueAdapter;
+        float[] values = labelValues;
 
         float x = 0;
 
@@ -46,7 +45,7 @@ public class XAxisRender extends AxisRender {
 
         int txtHeight = Utils.textHeight(_PaintLabel);
 
-        for (int i = 0; i < _Axis.getLabelCount(); i++) {
+        for (int i = 0; i < labelCount; i++) {
             float value = values[i];
             String label = adapter.value2String(value);
 
@@ -66,5 +65,19 @@ public class XAxisRender extends AxisRender {
             float labelY = bottom + txtHeight * 1.5f;
             canvas.drawText(label, labelX, labelY, _PaintLabel);
         }
+    }
+
+    @Override
+    public float getVisiableMin() {
+        float px = _ViewPortManager.contentLeft();
+        Single_XY xy = _TransformManager.getValueByPx(px, 0);
+        return xy.getX();
+    }
+
+    @Override
+    public float getVisiableMax() {
+        float px = _ViewPortManager.contentRight();
+        Single_XY xy = _TransformManager.getValueByPx(px, 0);
+        return xy.getX();
     }
 }
