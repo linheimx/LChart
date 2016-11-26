@@ -102,6 +102,9 @@ public class LineChart extends Chart {
         canvas.save();
         canvas.clipRect(_ViewPortManager.getContentRect());
 
+        canvas.save();
+        canvas.clipRect(_ViewPortManager.getContentRect());
+
         // render lable,grid line
         _XAxisRender.renderGridline(canvas);
         _YAxisRender.renderGridline(canvas);
