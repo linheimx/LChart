@@ -1,6 +1,7 @@
 package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
+import android.graphics.PointF;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
@@ -88,6 +89,18 @@ public class XAxisRender extends AxisRender {
             float labelY = bottom + txtHeight * 1.5f;
             canvas.drawText(label, labelX, labelY, _PaintLabel);
         }
+    }
+
+    public float offsetBottom() {
+
+        _PaintLabel.setColor(labelColor);
+        _PaintLabel.setTextSize(Utils.dp2px(labelSize));
+        _PaintLittle.setColor(axisColor);
+        _PaintLittle.setStrokeWidth(Utils.dp2px(axisWidth));
+
+        float labelHeight = Utils.textHeight(_PaintLabel);
+        float little = Utils.dp2px(5);
+        return labelHeight * 1.5f + little;
     }
 
     @Override

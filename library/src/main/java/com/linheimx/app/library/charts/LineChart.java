@@ -2,6 +2,7 @@ package com.linheimx.app.library.charts;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -31,11 +32,6 @@ public class LineChart extends Chart {
     YAxisRender _YAxisRender;
     LineRender _LineRender;
 
-    //////////////////////////////// off //////////////////////////////////
-    int offLeft = 35;//dp
-    int offRight = 10;
-    int offTop = 20;
-    int offBottom = 25;
 
     ////////////////////////////// touch  /////////////////////////////
     TouchListener _touchListener;
@@ -135,11 +131,49 @@ public class LineChart extends Chart {
             return;
         }
 
+        limitPlotArea();
+
         prepareMap();
 
         // 2. notifyDataChanged
         _LineRender.notifyDataChanged(_lines);
     }
+
+
+    private RectF _MainPlotRect = new RectF();// 主要的 图谱区域
+
+    /**
+     * 限制绘图区域的上下左右
+     */
+    private void limitPlotArea() {
+
+        _MainPlotRect.setEmpty();
+
+        // 计算其他的 offset
+
+        // 0. padding
+        int padding=5;
+        _MainPlotRect.left=padding;
+        _MainPlotRect.top=padding;
+        _MainPlotRect.right=padding;
+        _MainPlotRect.bottom=padding;
+
+        // 1. 计算label的 宽高
+        offsetLabel();
+
+    }
+
+    private void offsetLabel() {
+
+        _MainPlotRect.bottom += _XAxisRender.offsetBottom();
+
+        float ymin = _lines.getmYMin();
+        String label = _YAxisRender.get_ValueAdapter().value2String(ymin);
+
+        _MainPlotRect.left += _YAxisRender.offsetLeft(label);
+
+    }
+
 
     private void prepareMap() {
 
@@ -148,7 +182,7 @@ public class LineChart extends Chart {
         float yMin = _lines.getmYMin();
         float yMax = _lines.getmYMax();
 
-        _ViewPortManager.restrainViewPort(offLeft, offTop, offRight, offBottom);
+        _ViewPortManager.setViewPort(_MainPlotRect.left, _MainPlotRect.top, _MainPlotRect.right, _MainPlotRect.bottom);
         _TransformManager.prepareRelation(
                 xMin, xMax - xMin,
                 yMin, yMax - yMin);
@@ -164,43 +198,6 @@ public class LineChart extends Chart {
 
     public Lines getlines() {
         return _lines;
-    }
-
-
-    public int getOffLeft() {
-        return offLeft;
-    }
-
-    public void setOffLeft(int offLeft) {
-        this.offLeft = offLeft;
-        dataChanged();
-    }
-
-    public int getOffRight() {
-        return offRight;
-    }
-
-    public void setOffRight(int offRight) {
-        this.offRight = offRight;
-        dataChanged();
-    }
-
-    public int getOffTop() {
-        return offTop;
-    }
-
-    public void setOffTop(int offTop) {
-        this.offTop = offTop;
-        dataChanged();
-    }
-
-    public int getOffBottom() {
-        return offBottom;
-    }
-
-    public void setOffBottom(int offBottom) {
-        this.offBottom = offBottom;
-        dataChanged();
     }
 
     public TransformManager get_TransformManager() {

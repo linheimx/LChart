@@ -3,11 +3,13 @@ package com.linheimx.app.library.render;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 
 import com.linheimx.app.library.adapter.DefaultValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
+import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -16,11 +18,9 @@ import com.linheimx.app.library.utils.Utils;
 
 public abstract class AxisRender extends BaseRender {
 
-    float min, max, range;
-
     float[] labelValues = new float[]{};
     int labelCount = 6;
-    int labelCountAdvice = labelCount;
+    int _labelCountAdvice = labelCount;
     boolean isPerfectLabel = true;
 
     IValueAdapter _ValueAdapter = new DefaultValueAdapter(2);
@@ -66,10 +66,9 @@ public abstract class AxisRender extends BaseRender {
         _PaintGridline.setStrokeWidth(Utils.dp2px(1));
     }
 
-    public void renderGridline(Canvas canvas){
+    public void renderGridline(Canvas canvas) {
 
     }
-
 
 
     /**
@@ -78,6 +77,8 @@ public abstract class AxisRender extends BaseRender {
      * 注意：可见区域！
      */
     public void calValues() {
+
+        float min, max, range;
 
         min = getVisiableMin();
         max = getVisiableMax();
@@ -89,7 +90,7 @@ public abstract class AxisRender extends BaseRender {
 
         if (isPerfectLabel) {
 
-            double rawInterval = range / (labelCountAdvice - 1);
+            double rawInterval = range / (_labelCountAdvice - 1);
             // 1.以最大数值为量程
             double interval = Utils.roundNumber2One(rawInterval);//314->300
             // 2. 量程>5，则以10为单位
@@ -155,16 +156,11 @@ public abstract class AxisRender extends BaseRender {
 
     public abstract float getVisiableMax();
 
-
-    public float getMax() {
-        return max;
+    public IValueAdapter get_ValueAdapter() {
+        return _ValueAdapter;
     }
 
-    public float getMin() {
-        return min;
-    }
-
-    public float getRange() {
-        return range;
+    public void set_ValueAdapter(IValueAdapter _ValueAdapter) {
+        this._ValueAdapter = _ValueAdapter;
     }
 }

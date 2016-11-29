@@ -30,8 +30,8 @@ public class Utils {
     }
 
 
-    public static int textWidth(Paint paint, String demoText) {
-        return (int) paint.measureText(demoText);
+    public static float textWidth(Paint paint, String txt) {
+        return paint.measureText(txt);
     }
 
     private static Paint.FontMetrics mFontMetrics = new Paint.FontMetrics();

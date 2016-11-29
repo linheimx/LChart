@@ -30,15 +30,15 @@ public class ViewPortManager {
         mChartHeight = height;
         mChartWidth = width;
 
-        restrainViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
+        setViewPort(offsetLeft, offsetTop, offsetRight, offsetBottom);
     }
 
-    public void restrainViewPort(float offsetLeft, float offsetTop, float offsetRight,
-                                 float offsetBottom) {
-        offsetLeft= Utils.dp2px(offsetLeft);
-        offsetTop= Utils.dp2px(offsetTop);
-        offsetRight= Utils.dp2px(offsetRight);
-        offsetBottom= Utils.dp2px(offsetBottom);
+    public void setViewPort(float offsetLeft, float offsetTop,
+                            float offsetRight, float offsetBottom) {
+//        offsetLeft = Utils.dp2px(offsetLeft);
+//        offsetTop = Utils.dp2px(offsetTop);
+//        offsetRight = Utils.dp2px(offsetRight);
+//        offsetBottom = Utils.dp2px(offsetBottom);
 
         mContentRect.set(offsetLeft, offsetTop, mChartWidth - offsetRight, mChartHeight
                 - offsetBottom);

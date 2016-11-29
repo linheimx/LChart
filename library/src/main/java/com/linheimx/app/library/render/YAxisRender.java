@@ -88,6 +88,19 @@ public class YAxisRender extends AxisRender {
         }
     }
 
+    public float offsetLeft(String label) {
+
+        _PaintLabel.setColor(labelColor);
+        _PaintLabel.setTextSize(Utils.dp2px(labelSize));
+        _PaintLittle.setColor(axisColor);
+        _PaintLittle.setStrokeWidth(Utils.dp2px(axisWidth));
+
+        float labelWidth = Utils.textWidth(_PaintLabel, label);
+        float little = Utils.dp2px(5);
+        return labelWidth * 1.5f + little;
+    }
+
+
     @Override
     public float getVisiableMin() {
         float py = _ViewPortManager.contentBottom();
