@@ -3,13 +3,11 @@ package com.linheimx.app.library.render;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PointF;
 
 import com.linheimx.app.library.adapter.DefaultValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -23,17 +21,26 @@ public abstract class AxisRender extends BaseRender {
     int _labelCountAdvice = labelCount;
     boolean isPerfectLabel = true;
 
+    String unit = "mm/s";
+    float unitHeight;
+    float labelWidth;
+    float labelHeight;
+
+    float ulSpace = 5;// unit与label之间的间隙
+
     IValueAdapter _ValueAdapter = new DefaultValueAdapter(2);
 
     Paint _PaintAxis;
     Paint _PaintGridline;
     Paint _PaintLittle;
     Paint _PaintLabel;
+    Paint _PaintUnit;
 
     int axisColor = Color.BLACK;
-    int axisWidth = 2;
+    float axisWidth = 2;
     int labelColor = Color.BLUE;
-    int labelSize = 7;
+    float labelSize = 7;
+    float indicator = 5;//多出来的小不点
 
 
     public AxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager) {
@@ -43,6 +50,11 @@ public abstract class AxisRender extends BaseRender {
         _PaintLabel = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintLittle = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintGridline = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _PaintUnit = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        axisWidth = Utils.dp2px(axisWidth);
+        labelSize = Utils.dp2px(labelSize);
+        indicator = Utils.dp2px(indicator);
     }
 
     @Override
@@ -52,24 +64,26 @@ public abstract class AxisRender extends BaseRender {
 
     public void renderAxisLine(Canvas canvas) {
         _PaintAxis.setColor(axisColor);
-        _PaintAxis.setStrokeWidth(Utils.dp2px(axisWidth));
+        _PaintAxis.setStrokeWidth(axisWidth);
     }
 
     public void renderLabels(Canvas canvas) {
         _PaintLabel.setColor(labelColor);
-        _PaintLabel.setTextSize(Utils.dp2px(labelSize));
+        _PaintLabel.setTextSize(labelSize);
 
         _PaintLittle.setColor(axisColor);
-        _PaintLittle.setStrokeWidth(Utils.dp2px(axisWidth));
+        _PaintLittle.setStrokeWidth(axisWidth);
+    }
 
+    public void renderGridline(Canvas canvas) {
         _PaintGridline.setColor(Color.GRAY);
         _PaintGridline.setStrokeWidth(Utils.dp2px(1));
     }
 
-    public void renderGridline(Canvas canvas) {
-
+    public void renderUnit(Canvas canvas) {
+        _PaintUnit.setColor(Color.RED);
+        _PaintUnit.setTextSize(labelSize * 2f);
     }
-
 
     /**
      * 计算与存储：可见区域内的每一步的数值
@@ -152,6 +166,18 @@ public abstract class AxisRender extends BaseRender {
         }
     }
 
+    public void calLabelDimen(String longestLabel) {
+        _PaintLabel.setColor(labelColor);
+        _PaintLabel.setTextSize(labelSize);
+        _PaintUnit.setColor(Color.RED);
+        _PaintUnit.setTextSize(labelSize * 2f);
+
+        labelWidth = Utils.textWidth(_PaintLabel, longestLabel);
+        labelHeight = Utils.textHeight(_PaintLabel);
+
+        unitHeight = Utils.textHeight(_PaintUnit);
+    }
+
     public abstract float getVisiableMin();
 
     public abstract float getVisiableMax();
@@ -163,4 +189,37 @@ public abstract class AxisRender extends BaseRender {
     public void set_ValueAdapter(IValueAdapter _ValueAdapter) {
         this._ValueAdapter = _ValueAdapter;
     }
+
+
+    /**
+     * 轴线左边 label和indicator的距离
+     *
+     * @return
+     */
+    public float offsetLeft() {
+        return getAreaLableWidth() + ulSpace + getAreaUnitHeight();
+    }
+
+    /**
+     * 轴线底部 label和indicator的距离
+     *
+     * @return
+     */
+    public float offsetBottom() {
+        return getAreaLableHeight() + ulSpace + getAreaUnitHeight();
+    }
+
+    public float getAreaLableWidth() {
+        return indicator * 1.3f + labelWidth;
+    }
+
+    public float getAreaLableHeight() {
+        return indicator * 1.3f + labelHeight;
+    }
+
+    public float getAreaUnitHeight() {
+        return unitHeight;
+    }
+
+
 }

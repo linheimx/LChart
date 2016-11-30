@@ -1,7 +1,6 @@
 package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
-import android.graphics.PointF;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
@@ -80,27 +79,26 @@ public class XAxisRender extends AxisRender {
                 continue;
             }
 
-            // little
-            float little = Utils.dp2px(5);
-            canvas.drawLine(x, bottom, x, bottom + little, _PaintLittle);
+            // indicator
+            canvas.drawLine(x, bottom, x, bottom + indicator, _PaintLittle);
 
             // label
             float labelX = x - Utils.textWidth(_PaintLabel, label) / 2;
-            float labelY = bottom + txtHeight * 1.5f;
+            float labelY = bottom + getAreaLableHeight();
             canvas.drawText(label, labelX, labelY, _PaintLabel);
         }
     }
 
-    public float offsetBottom() {
 
-        _PaintLabel.setColor(labelColor);
-        _PaintLabel.setTextSize(Utils.dp2px(labelSize));
-        _PaintLittle.setColor(axisColor);
-        _PaintLittle.setStrokeWidth(Utils.dp2px(axisWidth));
+    @Override
+    public void renderUnit(Canvas canvas) {
+        super.renderUnit(canvas);
 
-        float labelHeight = Utils.textHeight(_PaintLabel);
-        float little = Utils.dp2px(5);
-        return labelHeight * 1.5f + little;
+        float bottom = _ViewPortManager.contentBottom();
+        float labelX = _ViewPortManager.getContentRect().centerX() - Utils.textWidth(_PaintUnit, unit) / 2;
+        float labelY = bottom + getAreaLableHeight() + ulSpace + getAreaUnitHeight();
+
+        canvas.drawText(unit, labelX, labelY, _PaintUnit);
     }
 
     @Override

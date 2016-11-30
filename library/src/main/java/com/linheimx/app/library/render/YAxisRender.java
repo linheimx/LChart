@@ -77,27 +77,14 @@ public class YAxisRender extends AxisRender {
                 continue;
             }
 
-            // little
-            float little = Utils.dp2px(5);
-            canvas.drawLine(left, y, left - little, y, _PaintLittle);
+            // indicator
+            canvas.drawLine(left, y, left - indicator, y, _PaintLittle);
 
             // label
-            float labelX = left - Utils.textWidth(_PaintLabel, label) * 1.5f;
+            float labelX = left - getAreaLableWidth();
             float labelY = y + txtHeight / 2;
             canvas.drawText(label, labelX, labelY, _PaintLabel);
         }
-    }
-
-    public float offsetLeft(String label) {
-
-        _PaintLabel.setColor(labelColor);
-        _PaintLabel.setTextSize(Utils.dp2px(labelSize));
-        _PaintLittle.setColor(axisColor);
-        _PaintLittle.setStrokeWidth(Utils.dp2px(axisWidth));
-
-        float labelWidth = Utils.textWidth(_PaintLabel, label);
-        float little = Utils.dp2px(5);
-        return labelWidth * 1.5f + little;
     }
 
 

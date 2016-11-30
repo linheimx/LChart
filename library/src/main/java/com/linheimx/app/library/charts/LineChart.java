@@ -14,6 +14,7 @@ import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.TouchListener;
+import com.linheimx.app.library.utils.Utils;
 
 /**
  * Created by Administrator on 2016/11/13.
@@ -113,6 +114,10 @@ public class LineChart extends Chart {
         // render labels
         _XAxisRender.renderLabels(canvas);
         _YAxisRender.renderLabels(canvas);
+
+        // render unit
+        _XAxisRender.renderUnit(canvas);
+        _YAxisRender.renderUnit(canvas);
     }
 
     @Override
@@ -131,7 +136,16 @@ public class LineChart extends Chart {
             return;
         }
 
-        limitPlotArea();
+        float yMin = _lines.getmYMin();
+        float yMax = _lines.getmYMax();
+        String yLabel1 = _YAxisRender.get_ValueAdapter().value2String(yMin);
+        String yLabel2 = _YAxisRender.get_ValueAdapter().value2String(yMax);
+        String lonngestLabel = yLabel1.length() >= yLabel2.length() ? yLabel1 : yLabel2;
+
+        _XAxisRender.calLabelDimen(lonngestLabel);
+        _YAxisRender.calLabelDimen(lonngestLabel);
+
+        limitMainPlotArea();
 
         prepareMap();
 
@@ -141,36 +155,40 @@ public class LineChart extends Chart {
 
 
     private RectF _MainPlotRect = new RectF();// 主要的 图谱区域
+    float padding = 5;
 
     /**
-     * 限制绘图区域的上下左右
+     * 限制 主绘图区域的边界
      */
-    private void limitPlotArea() {
+    private void limitMainPlotArea() {
 
         _MainPlotRect.setEmpty();
 
         // 计算其他的 offset
 
         // 0. padding
-        int padding=5;
-        _MainPlotRect.left=padding;
-        _MainPlotRect.top=padding;
-        _MainPlotRect.right=padding;
-        _MainPlotRect.bottom=padding;
+        offsetPadding();
 
         // 1. 计算label的 宽高
         offsetLabel();
 
     }
 
+    private void offsetPadding() {
+        padding = Utils.dp2px(padding);
+        _MainPlotRect.left += padding;
+        _MainPlotRect.top += padding;
+        _MainPlotRect.right += padding;
+        _MainPlotRect.bottom += padding;
+    }
+
     private void offsetLabel() {
 
+        // bottom
         _MainPlotRect.bottom += _XAxisRender.offsetBottom();
 
-        float ymin = _lines.getmYMin();
-        String label = _YAxisRender.get_ValueAdapter().value2String(ymin);
-
-        _MainPlotRect.left += _YAxisRender.offsetLeft(label);
+        // left
+        _MainPlotRect.left += _YAxisRender.offsetLeft();
 
     }
 
