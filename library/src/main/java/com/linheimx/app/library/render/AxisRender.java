@@ -3,6 +3,7 @@ package com.linheimx.app.library.render;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.TextUtils;
 
 import com.linheimx.app.library.adapter.DefaultValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
@@ -21,8 +22,11 @@ public abstract class AxisRender extends BaseRender {
     int _labelCountAdvice = labelCount;
     boolean isPerfectLabel = true;
 
-    String unit = "mm/s";
-    float unitHeight;
+    boolean _enableUnit = true;
+    String _unit = "";
+    float _unitHeight;
+    float _unitWidth;
+
     float labelWidth;
     float labelHeight;
 
@@ -81,6 +85,12 @@ public abstract class AxisRender extends BaseRender {
     }
 
     public void renderUnit(Canvas canvas) {
+
+        // check
+        if (!_enableUnit) {
+            return;
+        }
+
         _PaintUnit.setColor(Color.RED);
         _PaintUnit.setTextSize(labelSize * 2f);
     }
@@ -166,16 +176,28 @@ public abstract class AxisRender extends BaseRender {
         }
     }
 
-    public void calLabelDimen(String longestLabel) {
+    public void calAreaDimens(String longestLabel, String unit) {
+        // label
         _PaintLabel.setColor(labelColor);
         _PaintLabel.setTextSize(labelSize);
-        _PaintUnit.setColor(Color.RED);
-        _PaintUnit.setTextSize(labelSize * 2f);
 
         labelWidth = Utils.textWidth(_PaintLabel, longestLabel);
         labelHeight = Utils.textHeight(_PaintLabel);
 
-        unitHeight = Utils.textHeight(_PaintUnit);
+        // _unit
+        _PaintUnit.setColor(Color.RED);
+        _PaintUnit.setTextSize(labelSize * 2f);
+
+        if (!TextUtils.isEmpty(unit)) {
+            _enableUnit = true;
+
+            _unitHeight = Utils.textHeight(_PaintUnit);
+            _unitWidth = Utils.textWidth(_PaintUnit, unit);
+            _unit = unit;
+        } else {
+            _enableUnit = false;
+        }
+
     }
 
     public abstract float getVisiableMin();
@@ -197,7 +219,13 @@ public abstract class AxisRender extends BaseRender {
      * @return
      */
     public float offsetLeft() {
-        return getAreaLableWidth() + ulSpace + getAreaUnitHeight();
+        float dimen;
+        dimen = getArea_LableWidth();
+
+        if (_enableUnit) {
+            dimen += ulSpace + getArea_UnitHeight();
+        }
+        return dimen;
     }
 
     /**
@@ -206,19 +234,49 @@ public abstract class AxisRender extends BaseRender {
      * @return
      */
     public float offsetBottom() {
-        return getAreaLableHeight() + ulSpace + getAreaUnitHeight();
+        float dimen;
+        dimen = getArea_LableHeight();
+
+        if (_enableUnit) {
+            dimen += ulSpace + getArea_UnitHeight();
+        }
+        return dimen;
     }
 
-    public float getAreaLableWidth() {
+    /**
+     * lebel 区域的宽
+     *
+     * @return
+     */
+    public float getArea_LableWidth() {
         return indicator * 1.3f + labelWidth;
     }
 
-    public float getAreaLableHeight() {
+    /**
+     * label 区域的高
+     *
+     * @return
+     */
+    public float getArea_LableHeight() {
         return indicator * 1.3f + labelHeight;
     }
 
-    public float getAreaUnitHeight() {
-        return unitHeight;
+    /**
+     * _unit 区域的高
+     *
+     * @return
+     */
+    public float getArea_UnitHeight() {
+        return _unitHeight;
+    }
+
+    /**
+     * _unit 区域的宽
+     *
+     * @return
+     */
+    public float getArea_UnitWidth() {
+        return _unitWidth;
     }
 
 

@@ -142,8 +142,8 @@ public class LineChart extends Chart {
         String yLabel2 = _YAxisRender.get_ValueAdapter().value2String(yMax);
         String lonngestLabel = yLabel1.length() >= yLabel2.length() ? yLabel1 : yLabel2;
 
-        _XAxisRender.calLabelDimen(lonngestLabel);
-        _YAxisRender.calLabelDimen(lonngestLabel);
+        _XAxisRender.calAreaDimens(lonngestLabel, "mm/s");
+        _YAxisRender.calAreaDimens(lonngestLabel, "hz");
 
         limitMainPlotArea();
 

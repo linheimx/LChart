@@ -1,6 +1,7 @@
 package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
+import android.text.TextUtils;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
@@ -84,7 +85,7 @@ public class XAxisRender extends AxisRender {
 
             // label
             float labelX = x - Utils.textWidth(_PaintLabel, label) / 2;
-            float labelY = bottom + getAreaLableHeight();
+            float labelY = bottom + getArea_LableHeight();
             canvas.drawText(label, labelX, labelY, _PaintLabel);
         }
     }
@@ -95,10 +96,10 @@ public class XAxisRender extends AxisRender {
         super.renderUnit(canvas);
 
         float bottom = _ViewPortManager.contentBottom();
-        float labelX = _ViewPortManager.getContentRect().centerX() - Utils.textWidth(_PaintUnit, unit) / 2;
-        float labelY = bottom + getAreaLableHeight() + ulSpace + getAreaUnitHeight();
+        float labelX = _ViewPortManager.getContentRect().centerX() - Utils.textWidth(_PaintUnit, _unit) / 2;
+        float labelY = bottom + getArea_LableHeight() + ulSpace + getArea_UnitHeight();
 
-        canvas.drawText(unit, labelX, labelY, _PaintUnit);
+        canvas.drawText(_unit, labelX, labelY, _PaintUnit);
     }
 
     @Override
