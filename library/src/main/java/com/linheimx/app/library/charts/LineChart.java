@@ -14,6 +14,7 @@ import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.TouchListener;
+import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -204,6 +205,24 @@ public class LineChart extends Chart {
         _TransformManager.prepareRelation(
                 xMin, xMax - xMin,
                 yMin, yMax - yMin);
+    }
+
+    public void highLight_PixXY(float px, float py) {
+        Single_XY xy = _TransformManager.getValueByPx(px, py);
+        highLight_ValueXY(xy.getX(), xy.getY());
+    }
+
+    public void highLight_ValueXY(float x, float y) {
+        _LineRender.highLight_ValueXY(x, y);
+        invalidate();
+    }
+
+    public void highLightLeft() {
+
+    }
+
+    public void highLightRight() {
+
     }
 
 

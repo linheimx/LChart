@@ -152,8 +152,6 @@ public class TouchListener implements View.OnTouchListener {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
 
-            super.onDoubleTap(e);
-
             float x = e.getX() - _ViewPortManager.offsetLeft();
             float y = e.getY();
 
@@ -183,7 +181,9 @@ public class TouchListener implements View.OnTouchListener {
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            return super.onSingleTapConfirmed(e);
+
+            _LineChart.highLight_PixXY(e.getX(),e.getY());
+            return true;
         }
     }
 

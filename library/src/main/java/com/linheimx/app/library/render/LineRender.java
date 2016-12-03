@@ -1,6 +1,7 @@
 package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.linheimx.app.library.data.Entry;
@@ -24,6 +25,7 @@ public class LineRender extends BaseRender {
     Lines _lines;
     Paint _PaintLine;
     Paint _PaintCircle;
+    Paint _PaintHighLight;
 
 
     public LineRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Lines _lines, XAxisRender _XAxisRender) {
@@ -33,6 +35,7 @@ public class LineRender extends BaseRender {
 
         _PaintLine = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintCircle = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _PaintHighLight = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     @Override
@@ -48,6 +51,8 @@ public class LineRender extends BaseRender {
         for (Line line : _lines.getLines()) {
             drawLine_Circle(canvas, line);
         }
+        // render highLight
+        drawHighLight(canvas);
         canvas.restore();
     }
 
@@ -115,9 +120,80 @@ public class LineRender extends BaseRender {
         canvas.drawLines(_LineBuffer, _PaintLine);
     }
 
+    private void drawHighLight(Canvas canvas) {
+
+        _PaintHighLight.setStrokeWidth(Utils.dp2px(2));
+        _PaintHighLight.setColor(Color.RED);
+
+        // check
+        if (hightX == Float.MIN_VALUE) {
+            return;
+        }
+
+        if (_lines.getLines().size() == 0) {
+            return;
+        }
+
+        float disX = Float.MAX_VALUE;
+        float disY = Float.MAX_VALUE;
+        Entry hitEntry = null;
+
+        for (Line line : _lines.getLines()) {
+
+            int index = Line.getEntryIndex(line.getEntries(), hightX, Line.Rounding.CLOSEST);
+            Entry entry = line.getEntries().get(index);
+
+            float dx = Math.abs(entry.getX() - hightX);
+
+            float dy = 0;
+            if (hightY != Float.MIN_VALUE) {
+                dy = Math.abs(entry.getY() - hightY);
+            }
+
+
+            // 先考虑 x
+            if (dx <= disX) {
+                disX = dx;
+
+                // 再考虑 y
+                if (hightY != Float.MIN_VALUE) {
+                    if (dy <= disY) {
+                        hitEntry = entry;
+                    }
+                } else {
+                    hitEntry = entry;
+                }
+            }
+        }
+
+
+        Single_XY xy = _TransformManager.getPxByEntry(hitEntry);
+
+        canvas.drawLine(_ViewPortManager.contentLeft(), xy.getY(), _ViewPortManager.contentRight(), xy.getY(), _PaintHighLight);
+        canvas.drawLine(xy.getX(), _ViewPortManager.contentTop(), xy.getX(), _ViewPortManager.contentBottom(), _PaintHighLight);
+
+    }
+
 
     public void notifyDataChanged(Lines lines) {
         _lines = lines;
+    }
+
+
+    float hightX = Float.MIN_VALUE;
+    float hightY = Float.MIN_VALUE;
+
+    public void highLight_ValueXY(float x, float y) {
+        hightX = x;
+        hightY = y;
+    }
+
+    public void highLightLeft() {
+
+    }
+
+    public void highLightRight() {
+
     }
 
 }
