@@ -3,6 +3,7 @@ package com.linheimx.app.library.render;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;

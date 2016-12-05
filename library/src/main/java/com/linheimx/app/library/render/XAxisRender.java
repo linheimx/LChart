@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
+import com.linheimx.app.library.parts.Axis;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -15,8 +16,8 @@ import com.linheimx.app.library.utils.Utils;
 
 public class XAxisRender extends AxisRender {
 
-    public XAxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager) {
-        super(_ViewPortManager, _TransformManager);
+    public XAxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Axis axis) {
+        super(_ViewPortManager, _TransformManager, axis);
     }
 
     @Override
@@ -102,17 +103,4 @@ public class XAxisRender extends AxisRender {
         canvas.drawText(_unit, labelX, labelY, _PaintUnit);
     }
 
-    @Override
-    public float getVisiableMin() {
-        float px = _ViewPortManager.contentLeft();
-        Single_XY xy = _TransformManager.getValueByPx(px, 0);
-        return xy.getX();
-    }
-
-    @Override
-    public float getVisiableMax() {
-        float px = _ViewPortManager.contentRight();
-        Single_XY xy = _TransformManager.getValueByPx(px, 0);
-        return xy.getX();
-    }
 }

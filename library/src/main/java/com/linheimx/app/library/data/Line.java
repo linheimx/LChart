@@ -1,6 +1,7 @@
 package com.linheimx.app.library.data;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import java.util.List;
 
@@ -110,7 +111,7 @@ public class Line {
 
             } else if (xValue < fm) {
 
-                if (m > 1) {
+                if (m >= 1) {
                     float fl = entries.get(m - 1).getX();// left
 
                     if (xValue >= fl && xValue <= fm) {
@@ -130,7 +131,7 @@ public class Line {
                 }
                 high = m - 1;
             } else if (xValue > fr) {
-                low = m + 2;
+                low = m + 1;
             }
         }
 

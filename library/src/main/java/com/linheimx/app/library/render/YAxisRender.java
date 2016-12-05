@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
+import com.linheimx.app.library.parts.Axis;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -14,8 +15,9 @@ import com.linheimx.app.library.utils.Utils;
 
 public class YAxisRender extends AxisRender {
 
-    public YAxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager) {
-        super(_ViewPortManager, _TransformManager);
+
+    public YAxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Axis axis) {
+        super(_ViewPortManager, _TransformManager, axis);
     }
 
     @Override
@@ -99,21 +101,6 @@ public class YAxisRender extends AxisRender {
         canvas.rotate(-90, px, py);
         canvas.drawText(_unit, px, py, _PaintUnit);
         canvas.restore();
-    }
-
-
-    @Override
-    public float getVisiableMin() {
-        float py = _ViewPortManager.contentBottom();
-        Single_XY xy = _TransformManager.getValueByPx(0, py);
-        return xy.getY();
-    }
-
-    @Override
-    public float getVisiableMax() {
-        float py = _ViewPortManager.contentTop();
-        Single_XY xy = _TransformManager.getValueByPx(0, py);
-        return xy.getY();
     }
 
 }

@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
+import com.linheimx.app.library.parts.XAxis;
+import com.linheimx.app.library.parts.YAxis;
 import com.linheimx.app.library.render.LineRender;
 import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
@@ -27,6 +29,10 @@ public class LineChart extends Chart {
     TransformManager _TransformManager;
 
     Lines _lines;
+
+    ///////////////////////////////// parts ////////////////////////////////
+    XAxis _XAxis;
+    YAxis _YAxis;
 
     //////////////////////////////////  render  /////////////////////////////
     NoDataRender _NoDataRender;
@@ -58,10 +64,14 @@ public class LineChart extends Chart {
         _ViewPortManager = new ViewPortManager();
         _TransformManager = new TransformManager(_ViewPortManager);
 
+        // parts
+        _XAxis = new XAxis();
+        _YAxis = new YAxis();
+
         // render
         _NoDataRender = new NoDataRender(_ViewPortManager, _TransformManager);
-        _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager);
-        _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager);
+        _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager,_XAxis);
+        _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager,_YAxis);
         _LineRender = new LineRender(_ViewPortManager, _TransformManager, _lines, _XAxisRender);
 
         // touch listener
@@ -94,8 +104,8 @@ public class LineChart extends Chart {
         }
 
         // cal
-        _XAxisRender.calValues();
-        _YAxisRender.calValues();
+        _XAxis.calValues(getVisiableMinX(), getVisiableMaxX());
+        _YAxis.calValues(getVisiableMinY(), getVisiableMaxY());
 
         canvas.save();
         canvas.clipRect(_ViewPortManager.getContentRect());
@@ -108,7 +118,7 @@ public class LineChart extends Chart {
         _LineRender.render(canvas);
         canvas.restore();
 
-        // render axis
+        // render Axis
         _XAxisRender.renderAxisLine(canvas);
         _YAxisRender.renderAxisLine(canvas);
 
@@ -205,6 +215,31 @@ public class LineChart extends Chart {
         _TransformManager.prepareRelation(
                 xMin, xMax - xMin,
                 yMin, yMax - yMin);
+    }
+
+
+    public float getVisiableMinX() {
+        float px = _ViewPortManager.contentLeft();
+        Single_XY xy = _TransformManager.getValueByPx(px, 0);
+        return xy.getX();
+    }
+
+    public float getVisiableMaxX() {
+        float px = _ViewPortManager.contentRight();
+        Single_XY xy = _TransformManager.getValueByPx(px, 0);
+        return xy.getX();
+    }
+
+    public float getVisiableMinY() {
+        float py = _ViewPortManager.contentBottom();
+        Single_XY xy = _TransformManager.getValueByPx(0, py);
+        return xy.getY();
+    }
+
+    public float getVisiableMaxY() {
+        float py = _ViewPortManager.contentTop();
+        Single_XY xy = _TransformManager.getValueByPx(0, py);
+        return xy.getY();
     }
 
     public void highLight_PixXY(float px, float py) {
