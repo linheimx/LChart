@@ -190,11 +190,12 @@ public class LineChart extends Chart {
     }
 
     private void offsetPadding() {
+        float pad=Utils.dp2px(padding);
         // other
-        _MainPlotRect.left += padding;
-        _MainPlotRect.top += padding;
-        _MainPlotRect.right += padding;
-        _MainPlotRect.bottom += padding;
+        _MainPlotRect.left += pad;
+        _MainPlotRect.top += pad;
+        _MainPlotRect.right += pad;
+        _MainPlotRect.bottom += pad;
     }
 
     private void offsetLabel() {
