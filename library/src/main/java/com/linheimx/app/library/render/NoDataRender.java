@@ -24,12 +24,11 @@ public class NoDataRender extends BaseRender {
 
         _Paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
-
-    @Override
+    
     public void render(Canvas canvas) {
 
         _Paint.setColor(txtColor);
-        _Paint.setTextSize(Utils.dp2px(txtSize));
+        _Paint.setTextSize(txtSize);
 
         float x = _ViewPortManager.getContentCenter().getX();
         float y = _ViewPortManager.getContentCenter().getY();

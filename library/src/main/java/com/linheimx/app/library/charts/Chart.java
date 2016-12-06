@@ -43,7 +43,7 @@ public abstract class Chart extends ViewGroup implements IFunction {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int size = (int) Utils.dp2px(100);
+        int size = 100;
         int width = resolveSize(size, widthMeasureSpec);
         int height = resolveSize(size, heightMeasureSpec);
 

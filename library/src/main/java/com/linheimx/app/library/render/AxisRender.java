@@ -20,98 +20,18 @@ public abstract class AxisRender extends BaseRender {
     Axis _Axis;
 
 
-    public AxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager,Axis axis) {
+    public AxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Axis axis) {
         super(_ViewPortManager, _TransformManager);
 
-        this._Axis =axis;
+        this._Axis = axis;
     }
 
-    @Override
-    public void render(Canvas canvas) {
-        // 考虑到外观的原因，绘制的次序由 lineChart 中的draw来控制。
-    }
+    public abstract void renderAxisLine(Canvas canvas);
 
-    public void renderAxisLine(Canvas canvas) {
+    public abstract void renderLabels(Canvas canvas);
 
-    }
+    public abstract void renderGridline(Canvas canvas);
 
-    public void renderLabels(Canvas canvas) {
-
-    }
-
-    public void renderGridline(Canvas canvas) {
-
-    }
-
-    public void renderUnit(Canvas canvas) {
-
-    }
-
-    /**
-     * 轴线左边 label和indicator的距离
-     *
-     * @return
-     */
-    public float offsetLeft() {
-        float dimen;
-        dimen = getArea_LableWidth();
-
-        if (_enableUnit) {
-            dimen += ulSpace + getArea_UnitHeight();
-        }
-        return dimen;
-    }
-
-    /**
-     * 轴线底部 label和indicator的距离
-     *
-     * @return
-     */
-    public float offsetBottom() {
-        float dimen;
-        dimen = getArea_LableHeight();
-
-        if (_enableUnit) {
-            dimen += ulSpace + getArea_UnitHeight();
-        }
-        return dimen;
-    }
-
-    /**
-     * lebel 区域的宽
-     *
-     * @return
-     */
-    public float getArea_LableWidth() {
-        return indicator * 1.3f + labelWidth;
-    }
-
-    /**
-     * label 区域的高
-     *
-     * @return
-     */
-    public float getArea_LableHeight() {
-        return indicator * 1.3f + labelHeight;
-    }
-
-    /**
-     * _unit 区域的高
-     *
-     * @return
-     */
-    public float getArea_UnitHeight() {
-        return _unitHeight;
-    }
-
-    /**
-     * _unit 区域的宽
-     *
-     * @return
-     */
-    public float getArea_UnitWidth() {
-        return _unitWidth;
-    }
-
+    public abstract void renderUnit(Canvas canvas);
 
 }

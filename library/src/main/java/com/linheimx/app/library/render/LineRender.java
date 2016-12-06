@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 
+import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class LineRender extends BaseRender {
 
-    XAxisRender _XAxisRender;
+    LineChart lineChart;
 
     Lines _lines;
     Paint _PaintLine;
@@ -29,17 +30,16 @@ public class LineRender extends BaseRender {
     Paint _PaintHighLight;
 
 
-    public LineRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Lines _lines, XAxisRender _XAxisRender) {
+    public LineRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Lines _lines, LineChart lineChart) {
         super(_ViewPortManager, _TransformManager);
         this._lines = _lines;
-        this._XAxisRender = _XAxisRender;
+        this.lineChart = lineChart;
 
         _PaintLine = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintCircle = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintHighLight = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
-    @Override
     public void render(Canvas canvas) {
 
         if (_lines == null) {
@@ -61,10 +61,10 @@ public class LineRender extends BaseRender {
 
     private void drawLine_Circle(Canvas canvas, Line line) {
 
-        _PaintLine.setStrokeWidth(Utils.dp2px(line.getLineWidth()));
+        _PaintLine.setStrokeWidth(line.getLineWidth());
         _PaintLine.setColor(line.getLineColor());
 
-        _PaintCircle.setStrokeWidth(Utils.dp2px(line.getLineWidth()));
+        _PaintCircle.setStrokeWidth(line.getLineWidth());
         _PaintCircle.setColor(line.getLineColor());
 
         List<Entry> list = line.getEntries();
@@ -75,8 +75,8 @@ public class LineRender extends BaseRender {
         }
 
 
-        float xMin_Visiable = _XAxisRender.getVisiableMin();
-        float xMax_Visiable = _XAxisRender.getVisiableMax();
+        float xMin_Visiable = lineChart.getVisiableMinX();
+        float xMax_Visiable = lineChart.getVisiableMaxX();
 
         int minIndex = Line.getEntryIndex(list, xMin_Visiable, Line.Rounding.DOWN);
         int maxIndex = Line.getEntryIndex(list, xMax_Visiable, Line.Rounding.UP);
@@ -123,8 +123,8 @@ public class LineRender extends BaseRender {
 
     private void drawHighLight(Canvas canvas) {
 
-        _PaintHighLight.setStrokeWidth(Utils.dp2px(2));
-        _PaintHighLight.setColor(Color.RED);
+        _PaintHighLight.setStrokeWidth(2);
+        _PaintHighLight.setColor(Color.BLUE);
 
         // check
         if (hightX == Float.MIN_VALUE) {

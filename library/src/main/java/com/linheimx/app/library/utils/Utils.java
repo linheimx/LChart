@@ -20,12 +20,12 @@ public class Utils {
     }
 
     public static float dp2px(float dp) {
-        float px = dp * (mMetrics.densityDpi / 160f);
+        float px = dp * (mMetrics.density);
         return px;
     }
 
     public static float px2dp(float px) {
-        float dp = px / (mMetrics.densityDpi / 160f);
+        float dp = px / (mMetrics.density);
         return dp;
     }
 

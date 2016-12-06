@@ -1,6 +1,7 @@
 package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.text.TextUtils;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
@@ -22,54 +23,50 @@ public class XAxisRender extends AxisRender {
 
     @Override
     public void renderAxisLine(Canvas canvas) {
-        super.renderAxisLine(canvas);
 
         float startX = _ViewPortManager.contentLeft();
         float startY = _ViewPortManager.contentBottom();
         float stopX = _ViewPortManager.contentRight();
         float stopY = _ViewPortManager.contentBottom();
 
-        canvas.drawLine(startX, startY, stopX, stopY, _PaintAxis);
+        canvas.drawLine(startX, startY, stopX, stopY, _Axis.get_PaintAxis());
     }
 
 
     @Override
     public void renderGridline(Canvas canvas) {
-        super.renderGridline(canvas);
 
-        float[] values = labelValues;
+        float[] values = _Axis.getLabelValues();
 
         float x = 0;
 
         float top = _ViewPortManager.contentTop();
         float bottom = _ViewPortManager.contentBottom();
 
-        for (int i = 0; i < labelCount; i++) {
+        for (int i = 0; i < _Axis.getLabelCount(); i++) {
             float value = values[i];
 
             Single_XY xy = _TransformManager.getPxByValue(value, 0);
             x = xy.getX();
 
             // grid line
-            canvas.drawLine(x, bottom, x, top, _PaintGridline);
+            canvas.drawLine(x, bottom, x, top, _Axis.get_PaintGridline());
         }
     }
 
     @Override
     public void renderLabels(Canvas canvas) {
-        super.renderLabels(canvas);
 
-        IValueAdapter adapter = _ValueAdapter;
-        float[] values = labelValues;
+        IValueAdapter adapter = _Axis.get_ValueAdapter();
+        float[] values = _Axis.getLabelValues();
+        float indicator = _Axis.getIndicator();
+        Paint paintLabel=_Axis.get_PaintLabel();
 
         float x = 0;
 
-        float top = _ViewPortManager.contentTop();
         float bottom = _ViewPortManager.contentBottom();
 
-        int txtHeight = Utils.textHeight(_PaintLabel);
-
-        for (int i = 0; i < labelCount; i++) {
+        for (int i = 0; i < _Axis.getLabelCount(); i++) {
             float value = values[i];
             String label = adapter.value2String(value);
 
@@ -82,25 +79,27 @@ public class XAxisRender extends AxisRender {
             }
 
             // indicator
-            canvas.drawLine(x, bottom, x, bottom + indicator, _PaintLittle);
+            canvas.drawLine(x, bottom, x, bottom + indicator, _Axis.get_PaintLittle());
 
             // label
-            float labelX = x - Utils.textWidth(_PaintLabel, label) / 2;
-            float labelY = bottom + getArea_LableHeight();
-            canvas.drawText(label, labelX, labelY, _PaintLabel);
+            float labelX = x - Utils.textWidth(paintLabel, label) / 2;
+            float labelY = bottom + _Axis.getArea_LableHeight();
+            canvas.drawText(label, labelX, labelY, paintLabel);
         }
     }
 
 
     @Override
     public void renderUnit(Canvas canvas) {
-        super.renderUnit(canvas);
+
+        String unit = _Axis.get_unit();
+        Paint paintUnit = _Axis.get_PaintUnit();
 
         float bottom = _ViewPortManager.contentBottom();
-        float labelX = _ViewPortManager.getContentRect().centerX() - Utils.textWidth(_PaintUnit, _unit) / 2;
-        float labelY = bottom + getArea_LableHeight() + ulSpace + getArea_UnitHeight();
+        float labelX = _ViewPortManager.getContentRect().centerX() - Utils.textWidth(paintUnit, unit) / 2;
+        float labelY = bottom + _Axis.offsetBottom();
 
-        canvas.drawText(_unit, labelX, labelY, _PaintUnit);
+        canvas.drawText(unit, labelX, labelY, paintUnit);
     }
 
 }

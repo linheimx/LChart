@@ -16,6 +16,7 @@ import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.TouchListener;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -44,6 +45,10 @@ public class LineChart extends Chart {
     ////////////////////////////// touch  /////////////////////////////
     TouchListener _touchListener;
 
+    //////////////////////////// other ///////////////////////////
+    private RectF _MainPlotRect = new RectF();// 主要的 图谱区域
+    float padding = 5;
+
 
     public LineChart(Context context) {
         super(context);
@@ -68,11 +73,14 @@ public class LineChart extends Chart {
         _XAxis = new XAxis();
         _YAxis = new YAxis();
 
+        _XAxis.internalInit();
+        _YAxis.internalInit();
+
         // render
         _NoDataRender = new NoDataRender(_ViewPortManager, _TransformManager);
-        _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager,_XAxis);
-        _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager,_YAxis);
-        _LineRender = new LineRender(_ViewPortManager, _TransformManager, _lines, _XAxisRender);
+        _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager, _XAxis);
+        _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager, _YAxis);
+        _LineRender = new LineRender(_ViewPortManager, _TransformManager, _lines, this);
 
         // touch listener
         _touchListener = new TouchListener(this);
@@ -103,7 +111,7 @@ public class LineChart extends Chart {
             _NoDataRender.render(canvas);
         }
 
-        // cal
+        // 计算轴线上的数值
         _XAxis.calValues(getVisiableMinX(), getVisiableMaxX());
         _YAxis.calValues(getVisiableMinY(), getVisiableMaxY());
 
@@ -149,12 +157,12 @@ public class LineChart extends Chart {
 
         float yMin = _lines.getmYMin();
         float yMax = _lines.getmYMax();
-        String yLabel1 = _YAxisRender.get_ValueAdapter().value2String(yMin);
-        String yLabel2 = _YAxisRender.get_ValueAdapter().value2String(yMax);
+        String yLabel1 = _YAxis.get_ValueAdapter().value2String(yMin);
+        String yLabel2 = _YAxis.get_ValueAdapter().value2String(yMax);
         String lonngestLabel = yLabel1.length() >= yLabel2.length() ? yLabel1 : yLabel2;
 
-        _XAxisRender.calAreaDimens(lonngestLabel, "mm/s");
-        _YAxisRender.calAreaDimens(lonngestLabel, "hz");
+        _XAxis.calAreaDimens(lonngestLabel, "mm/s");
+        _YAxis.calAreaDimens(lonngestLabel, "hz");
 
         limitMainPlotArea();
 
@@ -163,10 +171,6 @@ public class LineChart extends Chart {
         // 2. notifyDataChanged
         _LineRender.notifyDataChanged(_lines);
     }
-
-
-    private RectF _MainPlotRect = new RectF();// 主要的 图谱区域
-    float padding = 5;
 
     /**
      * 限制 主绘图区域的边界
@@ -186,7 +190,7 @@ public class LineChart extends Chart {
     }
 
     private void offsetPadding() {
-        padding = Utils.dp2px(padding);
+        // other
         _MainPlotRect.left += padding;
         _MainPlotRect.top += padding;
         _MainPlotRect.right += padding;
@@ -196,10 +200,10 @@ public class LineChart extends Chart {
     private void offsetLabel() {
 
         // bottom
-        _MainPlotRect.bottom += _XAxisRender.offsetBottom();
+        _MainPlotRect.bottom += _XAxis.offsetBottom();
 
         // left
-        _MainPlotRect.left += _YAxisRender.offsetLeft();
+        _MainPlotRect.left += _XAxis.offsetLeft();
 
     }
 

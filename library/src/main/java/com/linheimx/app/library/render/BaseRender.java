@@ -1,7 +1,5 @@
 package com.linheimx.app.library.render;
 
-import android.graphics.Canvas;
-
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
 
@@ -9,7 +7,7 @@ import com.linheimx.app.library.manager.ViewPortManager;
  * Created by LJIAN on 2016/11/14.
  */
 
-public abstract class BaseRender implements IRender {
+public abstract class BaseRender {
     ViewPortManager _ViewPortManager;
     TransformManager _TransformManager;
 

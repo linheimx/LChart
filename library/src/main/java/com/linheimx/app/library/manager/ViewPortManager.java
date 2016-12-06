@@ -35,10 +35,6 @@ public class ViewPortManager {
 
     public void setViewPort(float offsetLeft, float offsetTop,
                             float offsetRight, float offsetBottom) {
-//        offsetLeft = Utils.dp2px(offsetLeft);
-//        offsetTop = Utils.dp2px(offsetTop);
-//        offsetRight = Utils.dp2px(offsetRight);
-//        offsetBottom = Utils.dp2px(offsetBottom);
 
         mContentRect.set(offsetLeft, offsetTop, mChartWidth - offsetRight, mChartHeight
                 - offsetBottom);
