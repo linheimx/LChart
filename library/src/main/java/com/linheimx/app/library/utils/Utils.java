@@ -14,7 +14,6 @@ public class Utils {
     private static DisplayMetrics mMetrics;
 
     public static void init(Context context) {
-
         Resources res = context.getResources();
         mMetrics = res.getDisplayMetrics();
     }

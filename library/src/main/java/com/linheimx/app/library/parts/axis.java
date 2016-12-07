@@ -14,30 +14,34 @@ import com.linheimx.app.library.utils.Utils;
 
 public abstract class Axis {
 
+    boolean enable = true;// axis is enable?
+
+    //////////////////////////  label 相关  /////////////////////////
     float[] labelValues = new float[]{};
     int labelCount = 6;
     int _labelCountAdvice = labelCount;
     boolean isPerfectLabel = true;
 
-    IValueAdapter _ValueAdapter;
-
-    boolean enable = true;// axis is enable?
-
-    boolean _enableUnit = true;// unit is enable?
+    ///////////////////////////////  unit 相关  ////////////////////////////
+    boolean _enableUnit = true;
     String _unit = "";
-    float _unitHeight;
-    float _unitWidth;
 
-    float labelWidth;
-    float labelHeight;
+    //////////////////////////////  自动计算  //////////////////////////
+    float unitHeight;// need cal ---> calAreaDimens
+    float unitWidth;// need cal ---> calAreaDimens
+    float labelWidth;// need cal ---> calAreaDimens
+    float labelHeight;// need cal ---> calAreaDimens
 
     float ulSpace = 5;// unit与label之间的间隙
 
     int axisColor = Color.BLACK;
     float axisWidth = 2;
     int labelColor = Color.BLUE;
-    float labelSize = 7;
+    float labelTextSize = 7;
+    float unitTxtSize = 14;
+    int unitColor = Color.RED;
     float indicator = 5;//多出来的小不点
+
 
     Paint _PaintAxis;
     Paint _PaintGridline;
@@ -45,7 +49,21 @@ public abstract class Axis {
     Paint _PaintLabel;
     Paint _PaintUnit;
 
+    IValueAdapter _ValueAdapter;
+
     public Axis() {
+        init();
+    }
+
+    /**
+     * 内部使用
+     */
+    public void init() {
+
+        axisWidth = Utils.dp2px(axisWidth);
+        labelTextSize = Utils.dp2px(labelTextSize);
+        indicator = Utils.dp2px(indicator);
+        unitTxtSize = Utils.dp2px(unitTxtSize);
 
         _PaintAxis = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintLabel = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -53,25 +71,13 @@ public abstract class Axis {
         _PaintGridline = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintUnit = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-        _ValueAdapter = new DefaultValueAdapter(2);
-    }
-
-    /**
-     * 内部使用
-     */
-    public void internalInit() {
-
-        axisWidth = Utils.dp2px(axisWidth);
-        labelSize = Utils.dp2px(labelSize);
-        indicator = Utils.dp2px(indicator);
-
         // Axis
         _PaintAxis.setColor(axisColor);
         _PaintAxis.setStrokeWidth(axisWidth);
 
         // label
         _PaintLabel.setColor(labelColor);
-        _PaintLabel.setTextSize(labelSize);
+        _PaintLabel.setTextSize(labelTextSize);
 
         // little
         _PaintLittle.setColor(axisColor);
@@ -82,8 +88,11 @@ public abstract class Axis {
         _PaintGridline.setStrokeWidth(Utils.dp2px(1));
 
         // unit
-        _PaintUnit.setColor(Color.RED);
-        _PaintUnit.setTextSize(labelSize * 2f);
+        _PaintUnit.setColor(unitColor);
+        _PaintUnit.setTextSize(unitTxtSize);
+
+        // value adapter
+        _ValueAdapter = new DefaultValueAdapter(2);
     }
 
     /**
@@ -171,30 +180,29 @@ public abstract class Axis {
      * 2. unit
      *
      * @param longestLabel
-     * @param unit
      */
-    public void calAreaDimens(String longestLabel, String unit) {
+    public void calAreaDimens_Label(String longestLabel) {
         // 1. label
         _PaintLabel.setColor(labelColor);
-        _PaintLabel.setTextSize(labelSize);
+        _PaintLabel.setTextSize(labelTextSize);
 
         labelWidth = Utils.textWidth(_PaintLabel, longestLabel);
         labelHeight = Utils.textHeight(_PaintLabel);
+    }
 
-        // 2. _unit
+    public void calAreaDimens_Unit(String unit) {
+        //_unit
         if (!TextUtils.isEmpty(unit)) {
             _enableUnit = true;
 
             _PaintUnit.setColor(Color.RED);
-            _PaintUnit.setTextSize(labelSize * 2f);
+            _PaintUnit.setTextSize(labelTextSize * 2f);
 
-            _unitHeight = Utils.textHeight(_PaintUnit);
-            _unitWidth = Utils.textWidth(_PaintUnit, unit);
-            _unit = unit;
+            unitHeight = Utils.textHeight(_PaintUnit);
+            unitWidth = Utils.textWidth(_PaintUnit, unit);
         } else {
             _enableUnit = false;
         }
-
     }
 
 
@@ -252,7 +260,7 @@ public abstract class Axis {
      * @return
      */
     public float getArea_UnitHeight() {
-        return _unitHeight;
+        return unitHeight;
     }
 
     /**
@@ -261,7 +269,7 @@ public abstract class Axis {
      * @return
      */
     public float getArea_UnitWidth() {
-        return _unitWidth;
+        return unitWidth;
     }
 
 
@@ -338,22 +346,24 @@ public abstract class Axis {
 
     public void set_unit(String _unit) {
         this._unit = _unit;
+
+        calAreaDimens_Unit(_unit);
     }
 
-    public float get_unitHeight() {
-        return _unitHeight;
+    public float getUnitHeight() {
+        return unitHeight;
     }
 
-    public void set_unitHeight(float _unitHeight) {
-        this._unitHeight = _unitHeight;
+    public void setUnitHeight(float unitHeight) {
+        this.unitHeight = unitHeight;
     }
 
-    public float get_unitWidth() {
-        return _unitWidth;
+    public float getUnitWidth() {
+        return unitWidth;
     }
 
-    public void set_unitWidth(float _unitWidth) {
-        this._unitWidth = _unitWidth;
+    public void setUnitWidth(float unitWidth) {
+        this.unitWidth = unitWidth;
     }
 
     public int getAxisColor() {
@@ -404,12 +414,12 @@ public abstract class Axis {
         this.labelHeight = labelHeight;
     }
 
-    public float getLabelSize() {
-        return labelSize;
+    public float getLabelTextSize() {
+        return labelTextSize;
     }
 
-    public void setLabelSize(float labelSize) {
-        this.labelSize = labelSize;
+    public void setLabelTextSize(float labelTextSize) {
+        this.labelTextSize = labelTextSize;
     }
 
     public float getLabelWidth() {

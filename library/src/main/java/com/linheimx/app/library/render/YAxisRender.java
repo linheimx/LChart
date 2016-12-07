@@ -91,7 +91,7 @@ public class YAxisRender extends AxisRender {
     public void renderUnit(Canvas canvas) {
 
         float left = _ViewPortManager.contentLeft();
-        float px = left - _Axis.getArea_LableWidth() - _Axis.getUlSpace();
+        float px = left - _Axis.getArea_LableWidth() - _Axis.getUlSpace()-_Axis.getUnitHeight()/2;
         float py = _ViewPortManager.getContentRect().centerY() + _Axis.getArea_UnitWidth() / 2;
 
         canvas.save();

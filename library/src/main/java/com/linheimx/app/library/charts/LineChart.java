@@ -47,7 +47,7 @@ public class LineChart extends Chart {
 
     //////////////////////////// other ///////////////////////////
     private RectF _MainPlotRect = new RectF();// 主要的 图谱区域
-    float padding = 5;
+    float padding = 15;
 
 
     public LineChart(Context context) {
@@ -73,9 +73,6 @@ public class LineChart extends Chart {
         _XAxis = new XAxis();
         _YAxis = new YAxis();
 
-        _XAxis.internalInit();
-        _YAxis.internalInit();
-
         // render
         _NoDataRender = new NoDataRender(_ViewPortManager, _TransformManager);
         _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager, _XAxis);
@@ -85,6 +82,10 @@ public class LineChart extends Chart {
         // touch listener
         _touchListener = new TouchListener(this);
 
+
+        ////////////////////// other  ///////////////////////
+        setXAxisUnit("mm/s");
+        setYAxisUnit("hz");
     }
 
 
@@ -155,14 +156,15 @@ public class LineChart extends Chart {
             return;
         }
 
+        // 数据来了
         float yMin = _lines.getmYMin();
         float yMax = _lines.getmYMax();
         String yLabel1 = _YAxis.get_ValueAdapter().value2String(yMin);
         String yLabel2 = _YAxis.get_ValueAdapter().value2String(yMax);
         String lonngestLabel = yLabel1.length() >= yLabel2.length() ? yLabel1 : yLabel2;
 
-        _XAxis.calAreaDimens(lonngestLabel, "mm/s");
-        _YAxis.calAreaDimens(lonngestLabel, "hz");
+        _XAxis.calAreaDimens_Label(lonngestLabel);
+        _YAxis.calAreaDimens_Label(lonngestLabel);
 
         limitMainPlotArea();
 
@@ -190,7 +192,7 @@ public class LineChart extends Chart {
     }
 
     private void offsetPadding() {
-        float pad=Utils.dp2px(padding);
+        float pad = Utils.dp2px(padding);
         // other
         _MainPlotRect.left += pad;
         _MainPlotRect.top += pad;
@@ -247,24 +249,6 @@ public class LineChart extends Chart {
         return xy.getY();
     }
 
-    public void highLight_PixXY(float px, float py) {
-        Single_XY xy = _TransformManager.getValueByPx(px, py);
-        highLight_ValueXY(xy.getX(), xy.getY());
-    }
-
-    public void highLight_ValueXY(float x, float y) {
-        _LineRender.highLight_ValueXY(x, y);
-        invalidate();
-    }
-
-    public void highLightLeft() {
-
-    }
-
-    public void highLightRight() {
-
-    }
-
 
     public void setLines(Lines lines) {
         _lines = lines;
@@ -284,4 +268,35 @@ public class LineChart extends Chart {
     public ViewPortManager get_ViewPortManager() {
         return _ViewPortManager;
     }
+
+
+    ////////////////////////////////  便捷的方法  //////////////////////////////////
+
+    public void highLight_PixXY(float px, float py) {
+        Single_XY xy = _TransformManager.getValueByPx(px, py);
+        highLight_ValueXY(xy.getX(), xy.getY());
+    }
+
+    public void highLight_ValueXY(float x, float y) {
+        _LineRender.highLight_ValueXY(x, y);
+        invalidate();
+    }
+
+    public void highLightLeft() {
+
+    }
+
+    public void highLightRight() {
+
+    }
+
+    public void setXAxisUnit(String unit) {
+        _XAxis.set_unit(unit);
+    }
+
+    public void setYAxisUnit(String unit) {
+        _YAxis.set_unit(unit);
+    }
+
+
 }
