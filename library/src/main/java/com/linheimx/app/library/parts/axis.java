@@ -14,6 +14,11 @@ import com.linheimx.app.library.utils.Utils;
 
 public abstract class Axis {
 
+    public static final float D_AXIS_WIDTH = 2;
+    public static final float D_LEG_WIDTH = 5;
+    public static final float D_LABEL_TXT = 7;
+    public static final float D_UNIT_TXT = 14;
+
     boolean enable = true;// axis is enable?
 
     //////////////////////////  label 相关  /////////////////////////
@@ -35,13 +40,14 @@ public abstract class Axis {
     float ulSpace = 5;// unit与label之间的间隙
 
     int axisColor = Color.BLACK;
-    float axisWidth = 2;
-    int labelColor = Color.BLUE;
-    float labelTextSize = 7;
-    float unitTxtSize = 14;
-    int unitColor = Color.RED;
-    float indicator = 5;//多出来的小不点
+    float axisWidth;
 
+    int labelColor = Color.BLUE;
+    float labelTextSize;
+    float unitTxtSize;
+    int unitColor = Color.RED;
+
+    float leg;//多出来的小不点(叫他小腿吧)
 
     Paint _PaintAxis;
     Paint _PaintGridline;
@@ -52,18 +58,19 @@ public abstract class Axis {
     IValueAdapter _ValueAdapter;
 
     public Axis() {
-        init();
+
+        axisWidth = Utils.dp2px(D_AXIS_WIDTH);
+        labelTextSize = Utils.dp2px(D_LABEL_TXT);
+        leg = Utils.dp2px(D_LEG_WIDTH);
+        unitTxtSize = Utils.dp2px(D_UNIT_TXT);
+
+        internalReload();
     }
 
     /**
      * 内部使用
      */
-    public void init() {
-
-        axisWidth = Utils.dp2px(axisWidth);
-        labelTextSize = Utils.dp2px(labelTextSize);
-        indicator = Utils.dp2px(indicator);
-        unitTxtSize = Utils.dp2px(unitTxtSize);
+    public void internalReload() {
 
         _PaintAxis = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintLabel = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -175,13 +182,10 @@ public abstract class Axis {
 
     /**
      * 计算轴线上的各部分的尺寸
-     * ------------------
-     * 1. label
-     * 2. unit
      *
      * @param longestLabel
      */
-    public void calAreaDimens_Label(String longestLabel) {
+    public void calDimens_Label(String longestLabel) {
         // 1. label
         _PaintLabel.setColor(labelColor);
         _PaintLabel.setTextSize(labelTextSize);
@@ -190,16 +194,19 @@ public abstract class Axis {
         labelHeight = Utils.textHeight(_PaintLabel);
     }
 
-    public void calAreaDimens_Unit(String unit) {
+    /**
+     * 计算轴线上的各部分的尺寸
+     */
+    public void calDimens_Unit() {
         //_unit
-        if (!TextUtils.isEmpty(unit)) {
+        if (!TextUtils.isEmpty(_unit)) {
             _enableUnit = true;
 
             _PaintUnit.setColor(Color.RED);
             _PaintUnit.setTextSize(labelTextSize * 2f);
 
             unitHeight = Utils.textHeight(_PaintUnit);
-            unitWidth = Utils.textWidth(_PaintUnit, unit);
+            unitWidth = Utils.textWidth(_PaintUnit, _unit);
         } else {
             _enableUnit = false;
         }
@@ -242,7 +249,7 @@ public abstract class Axis {
      * @return
      */
     public float getArea_LableWidth() {
-        return indicator * 1.3f + labelWidth;
+        return leg * 1.3f + labelWidth;
     }
 
     /**
@@ -251,7 +258,7 @@ public abstract class Axis {
      * @return
      */
     public float getArea_LableHeight() {
-        return indicator * 1.3f + labelHeight;
+        return leg * 1.3f + labelHeight;
     }
 
     /**
@@ -346,8 +353,6 @@ public abstract class Axis {
 
     public void set_unit(String _unit) {
         this._unit = _unit;
-
-        calAreaDimens_Unit(_unit);
     }
 
     public float getUnitHeight() {
@@ -390,12 +395,12 @@ public abstract class Axis {
         this.enable = enable;
     }
 
-    public float getIndicator() {
-        return indicator;
+    public float getLeg() {
+        return leg;
     }
 
-    public void setIndicator(float indicator) {
-        this.indicator = indicator;
+    public void setLeg(float leg) {
+        this.leg = leg;
     }
 
     public boolean isPerfectLabel() {

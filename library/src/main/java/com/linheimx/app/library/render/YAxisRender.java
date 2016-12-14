@@ -59,7 +59,7 @@ public class YAxisRender extends AxisRender {
         IValueAdapter adapter = _Axis.get_ValueAdapter();
         float[] values = _Axis.getLabelValues();
         Paint _PaintLabel = _Axis.get_PaintLabel();
-        float indicator = _Axis.getIndicator();
+        float indicator = _Axis.getLeg();
         float y = 0;
 
         float left = _ViewPortManager.contentLeft();

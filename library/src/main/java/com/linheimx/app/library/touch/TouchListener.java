@@ -109,8 +109,11 @@ public class TouchListener implements View.OnTouchListener {
 
 
     private void doDrag(float dx, float dy) {
-        _TransformManager.translate(dx, dy);
-        _LineChart.postInvalidate();
+
+        boolean needRefresh = _TransformManager.translate(dx, dy);
+        if (needRefresh) {
+            _LineChart.postInvalidate();
+        }
     }
 
     private void doPinch(MotionEvent event) {

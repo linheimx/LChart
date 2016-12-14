@@ -2,7 +2,6 @@ package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.text.TextUtils;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
@@ -59,7 +58,7 @@ public class XAxisRender extends AxisRender {
 
         IValueAdapter adapter = _Axis.get_ValueAdapter();
         float[] values = _Axis.getLabelValues();
-        float indicator = _Axis.getIndicator();
+        float indicator = _Axis.getLeg();
         Paint paintLabel=_Axis.get_PaintLabel();
 
         float x = 0;

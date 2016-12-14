@@ -16,7 +16,6 @@ import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.TouchListener;
-import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -146,15 +145,22 @@ public class LineChart extends Chart {
 
         _ViewPortManager.setChartWH(w, h);
 
-        dataChanged();
+        notifyDataChanged();
     }
 
 
-    private void dataChanged() {
+    /**
+     * 通知数据改变
+     */
+    private void notifyDataChanged() {
 
         if (_lines == null) {
             return;
         }
+
+        /************************  各部分请做好自己的职责  *************************/
+        _XAxis.internalReload();
+        _YAxis.internalReload();
 
         // 数据来了
         float yMin = _lines.getmYMin();
@@ -163,8 +169,10 @@ public class LineChart extends Chart {
         String yLabel2 = _YAxis.get_ValueAdapter().value2String(yMax);
         String lonngestLabel = yLabel1.length() >= yLabel2.length() ? yLabel1 : yLabel2;
 
-        _XAxis.calAreaDimens_Label(lonngestLabel);
-        _YAxis.calAreaDimens_Label(lonngestLabel);
+        _XAxis.calDimens_Label(lonngestLabel);
+        _YAxis.calDimens_Label(lonngestLabel);
+        _XAxis.calDimens_Unit();
+        _YAxis.calDimens_Unit();
 
         limitMainPlotArea();
 
@@ -253,7 +261,7 @@ public class LineChart extends Chart {
     public void setLines(Lines lines) {
         _lines = lines;
 
-        dataChanged();
+        notifyDataChanged();
         postInvalidate();
     }
 

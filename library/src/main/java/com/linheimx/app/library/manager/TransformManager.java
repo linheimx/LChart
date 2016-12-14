@@ -51,7 +51,7 @@ public class TransformManager {
         _matrixK.postScale(1, -1);
     }
 
-    public void prepareRelation(float xMin,float xRange,float yMin,float yRange) {
+    public void prepareRelation(float xMin, float xRange, float yMin, float yRange) {
         k(xMin, xRange, yMin, yRange);
         off();
     }
@@ -168,8 +168,10 @@ public class TransformManager {
         }
     }
 
-    public void translate(float dx, float dy) {
+    public boolean translate(float dx, float dy) {
+
         _matrixTouch.postTranslate(dx, dy);
+        return true;
     }
 
 
