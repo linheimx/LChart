@@ -11,6 +11,7 @@ import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 

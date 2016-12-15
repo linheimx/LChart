@@ -3,6 +3,8 @@ package com.linheimx.app.library.data;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.linheimx.app.library.utils.LogUtil;
+
 import java.util.List;
 
 /**
@@ -75,11 +77,11 @@ public class Line {
      * 考虑到性能的原因，采用二分查找法。(速度很快，不错！)
      *
      * @param entries
-     * @param xValue
+     * @param hitValue
      * @param rounding
      * @return
      */
-    public static int getEntryIndex(List<Entry> entries, float xValue, Rounding rounding) {
+    public static int getEntryIndex(List<Entry> entries, float hitValue, Rounding rounding) {
 
         if (entries == null || entries.isEmpty())
             return -1;
@@ -94,11 +96,11 @@ public class Line {
             float fm = entries.get(m).getX();// middle
             float fr = entries.get(m + 1).getX();// right
 
-            if (xValue >= fm && xValue <= fr) {
+            if (hitValue >= fm && hitValue <= fr) {
 
                 // 中_右
-                float d1 = Math.abs(xValue - fm);
-                float d2 = Math.abs(xValue - fr);
+                float d1 = Math.abs(hitValue - fm);
+                float d2 = Math.abs(hitValue - fr);
 
                 if (d1 <= d2) {
                     closet = m;
@@ -109,15 +111,15 @@ public class Line {
                 low = high = closet;
                 break;
 
-            } else if (xValue < fm) {
+            } else if (hitValue < fm) {
 
                 if (m >= 1) {
                     float fl = entries.get(m - 1).getX();// left
 
-                    if (xValue >= fl && xValue <= fm) {
+                    if (hitValue >= fl && hitValue <= fm) {
                         // 中_左
-                        float d0 = Math.abs(xValue - fl);
-                        float d1 = Math.abs(xValue - fm);
+                        float d0 = Math.abs(hitValue - fl);
+                        float d1 = Math.abs(hitValue - fm);
 
                         if (d0 <= d1) {
                             closet = m - 1;
@@ -129,15 +131,17 @@ public class Line {
                         break;
                     }
                 }
+
                 high = m - 1;
-            } else if (xValue > fr) {
+                closet = high;
+            } else if (hitValue > fr) {
                 low = m + 1;
+                closet = low;
             }
         }
 
         high++;
         low--;
-
 
         int result = low;
         if (rounding == Rounding.UP) {

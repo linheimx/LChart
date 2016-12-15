@@ -59,7 +59,7 @@ public class XAxisRender extends AxisRender {
         IValueAdapter adapter = _Axis.get_ValueAdapter();
         float[] values = _Axis.getLabelValues();
         float indicator = _Axis.getLeg();
-        Paint paintLabel=_Axis.get_PaintLabel();
+        Paint paintLabel = _Axis.get_PaintLabel();
 
         float x = 0;
 
@@ -82,7 +82,7 @@ public class XAxisRender extends AxisRender {
 
             // label
             float labelX = x - Utils.textWidth(paintLabel, label) / 2;
-            float labelY = bottom + _Axis.getArea_LableHeight();
+            float labelY = bottom + _Axis.getArea_Label();
             canvas.drawText(label, labelX, labelY, paintLabel);
         }
     }

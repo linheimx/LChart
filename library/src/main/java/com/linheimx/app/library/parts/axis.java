@@ -9,45 +9,43 @@ import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.utils.Utils;
 
 /**
+ * 轴线相关
+ * -----------------------
+ * 区域事先约定，优于计算！
+ * <p>
  * Created by Administrator on 2016/12/5.
  */
 
 public abstract class Axis {
 
-    public static final float D_AXIS_WIDTH = 2;
+    public static final float D_AXIS_WIDTH = 2;// d 代表default
     public static final float D_LEG_WIDTH = 5;
     public static final float D_LABEL_TXT = 7;
     public static final float D_UNIT_TXT = 14;
 
-    boolean enable = true;// axis is enable?
+    public static final int D_LABEL_COUNT = 6;// 建议label的数量
+
 
     //////////////////////////  label 相关  /////////////////////////
     float[] labelValues = new float[]{};
     int labelCount = 6;
-    int _labelCountAdvice = labelCount;
-    boolean isPerfectLabel = true;
+    int _labelCountAdvice = D_LABEL_COUNT;
+    boolean isPerfectLabel = false;
+    float labelArea;
+    int labelColor = Color.BLUE;
+    float labelTextSize;
 
     ///////////////////////////////  unit 相关  ////////////////////////////
     boolean _enableUnit = true;
     String _unit = "";
-
-    //////////////////////////////  自动计算  //////////////////////////
-    float unitHeight;// need cal ---> calAreaDimens
-    float unitWidth;// need cal ---> calAreaDimens
-    float labelWidth;// need cal ---> calAreaDimens
-    float labelHeight;// need cal ---> calAreaDimens
-
-    float ulSpace = 5;// unit与label之间的间隙
-
-    int axisColor = Color.BLACK;
-    float axisWidth;
-
-    int labelColor = Color.BLUE;
-    float labelTextSize;
+    float unitArea;
     float unitTxtSize;
     int unitColor = Color.RED;
 
-    float leg;//多出来的小不点(叫他小腿吧)
+    /////////////////////////////////  轴线相关  //////////////////////////////////
+    int axisColor = Color.BLACK;
+    float axisWidth;
+    float leg;// 轴线上的小腿（多出来的小不点：叫他小腿吧)
 
     Paint _PaintAxis;
     Paint _PaintGridline;
@@ -55,6 +53,7 @@ public abstract class Axis {
     Paint _PaintLabel;
     Paint _PaintUnit;
 
+    boolean enable = true;// axis is enable?
     IValueAdapter _ValueAdapter;
 
     public Axis() {
@@ -64,13 +63,13 @@ public abstract class Axis {
         leg = Utils.dp2px(D_LEG_WIDTH);
         unitTxtSize = Utils.dp2px(D_UNIT_TXT);
 
-        internalReload();
+        internalSetup();
     }
 
     /**
      * 内部使用
      */
-    public void internalReload() {
+    public void internalSetup() {
 
         _PaintAxis = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintLabel = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -181,49 +180,16 @@ public abstract class Axis {
     }
 
     /**
-     * 计算轴线上的各部分的尺寸
-     *
-     * @param longestLabel
-     */
-    public void calDimens_Label(String longestLabel) {
-        // 1. label
-        _PaintLabel.setColor(labelColor);
-        _PaintLabel.setTextSize(labelTextSize);
-
-        labelWidth = Utils.textWidth(_PaintLabel, longestLabel);
-        labelHeight = Utils.textHeight(_PaintLabel);
-    }
-
-    /**
-     * 计算轴线上的各部分的尺寸
-     */
-    public void calDimens_Unit() {
-        //_unit
-        if (!TextUtils.isEmpty(_unit)) {
-            _enableUnit = true;
-
-            _PaintUnit.setColor(Color.RED);
-            _PaintUnit.setTextSize(labelTextSize * 2f);
-
-            unitHeight = Utils.textHeight(_PaintUnit);
-            unitWidth = Utils.textWidth(_PaintUnit, _unit);
-        } else {
-            _enableUnit = false;
-        }
-    }
-
-
-    /**
      * 轴线左边 label和indicator的距离
      *
      * @return
      */
     public float offsetLeft() {
         float dimen;
-        dimen = getArea_LableWidth();
+        dimen = getArea_Label();
 
         if (_enableUnit) {
-            dimen += ulSpace + getArea_UnitHeight();
+            dimen += getArea_Unit();
         }
         return dimen;
     }
@@ -235,50 +201,22 @@ public abstract class Axis {
      */
     public float offsetBottom() {
         float dimen;
-        dimen = getArea_LableHeight();
+        dimen = getArea_Label();
 
         if (_enableUnit) {
-            dimen += ulSpace + getArea_UnitHeight();
+            dimen += getArea_Unit();
         }
         return dimen;
     }
 
-    /**
-     * lebel 区域的宽
-     *
-     * @return
-     */
-    public float getArea_LableWidth() {
-        return leg * 1.3f + labelWidth;
+
+    public float getArea_Label() {
+        return labelArea;
     }
 
-    /**
-     * label 区域的高
-     *
-     * @return
-     */
-    public float getArea_LableHeight() {
-        return leg * 1.3f + labelHeight;
+    public float getArea_Unit() {
+        return unitArea;
     }
-
-    /**
-     * _unit 区域的高
-     *
-     * @return
-     */
-    public float getArea_UnitHeight() {
-        return unitHeight;
-    }
-
-    /**
-     * _unit 区域的宽
-     *
-     * @return
-     */
-    public float getArea_UnitWidth() {
-        return unitWidth;
-    }
-
 
     ///////////////////////////////  get set  //////////////////////////////////////
 
@@ -355,22 +293,6 @@ public abstract class Axis {
         this._unit = _unit;
     }
 
-    public float getUnitHeight() {
-        return unitHeight;
-    }
-
-    public void setUnitHeight(float unitHeight) {
-        this.unitHeight = unitHeight;
-    }
-
-    public float getUnitWidth() {
-        return unitWidth;
-    }
-
-    public void setUnitWidth(float unitWidth) {
-        this.unitWidth = unitWidth;
-    }
-
     public int getAxisColor() {
         return axisColor;
     }
@@ -411,36 +333,12 @@ public abstract class Axis {
         isPerfectLabel = perfectLabel;
     }
 
-    public float getLabelHeight() {
-        return labelHeight;
-    }
-
-    public void setLabelHeight(float labelHeight) {
-        this.labelHeight = labelHeight;
-    }
-
     public float getLabelTextSize() {
         return labelTextSize;
     }
 
     public void setLabelTextSize(float labelTextSize) {
         this.labelTextSize = labelTextSize;
-    }
-
-    public float getLabelWidth() {
-        return labelWidth;
-    }
-
-    public void setLabelWidth(float labelWidth) {
-        this.labelWidth = labelWidth;
-    }
-
-    public float getUlSpace() {
-        return ulSpace;
-    }
-
-    public void setUlSpace(float ulSpace) {
-        this.ulSpace = ulSpace;
     }
 
     public int getLabelColor() {

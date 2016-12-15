@@ -159,20 +159,8 @@ public class LineChart extends Chart {
         }
 
         /************************  各部分请做好自己的职责  *************************/
-        _XAxis.internalReload();
-        _YAxis.internalReload();
-
-        // 数据来了
-        float yMin = _lines.getmYMin();
-        float yMax = _lines.getmYMax();
-        String yLabel1 = _YAxis.get_ValueAdapter().value2String(yMin);
-        String yLabel2 = _YAxis.get_ValueAdapter().value2String(yMax);
-        String lonngestLabel = yLabel1.length() >= yLabel2.length() ? yLabel1 : yLabel2;
-
-        _XAxis.calDimens_Label(lonngestLabel);
-        _YAxis.calDimens_Label(lonngestLabel);
-        _XAxis.calDimens_Unit();
-        _YAxis.calDimens_Unit();
+        _XAxis.internalSetup();
+        _YAxis.internalSetup();
 
         limitMainPlotArea();
 
@@ -189,13 +177,10 @@ public class LineChart extends Chart {
 
         _MainPlotRect.setEmpty();
 
-        // 计算其他的 offset
-
         // 0. padding
         offsetPadding();
-
-        // 1. 计算label的 宽高
-        offsetLabel();
+        // 1. 计算label,unit的宽高
+        offsetArea();
 
     }
 
@@ -208,11 +193,9 @@ public class LineChart extends Chart {
         _MainPlotRect.bottom += pad;
     }
 
-    private void offsetLabel() {
-
+    private void offsetArea() {
         // bottom
         _MainPlotRect.bottom += _XAxis.offsetBottom();
-
         // left
         _MainPlotRect.left += _XAxis.offsetLeft();
 
