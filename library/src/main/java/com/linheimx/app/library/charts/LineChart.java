@@ -6,11 +6,13 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import com.linheimx.app.library.DataProvider.HightLight;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.parts.XAxis;
-import com.linheimx.app.library.parts.YAxis;
+import com.linheimx.app.library.DataProvider.XAxis;
+import com.linheimx.app.library.DataProvider.YAxis;
+import com.linheimx.app.library.render.HighLightRender;
 import com.linheimx.app.library.render.LineRender;
 import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
@@ -33,12 +35,14 @@ public class LineChart extends Chart {
     ///////////////////////////////// parts ////////////////////////////////
     XAxis _XAxis;
     YAxis _YAxis;
+    HightLight _HightLight;
 
     //////////////////////////////////  render  /////////////////////////////
     NoDataRender _NoDataRender;
     XAxisRender _XAxisRender;
     YAxisRender _YAxisRender;
     LineRender _LineRender;
+    HighLightRender _HighLightRender;
 
 
     ////////////////////////////// touch  /////////////////////////////
@@ -71,12 +75,14 @@ public class LineChart extends Chart {
         // parts
         _XAxis = new XAxis();
         _YAxis = new YAxis();
+        _HightLight = new HightLight();
 
         // render
         _NoDataRender = new NoDataRender(_ViewPortManager, _TransformManager);
         _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager, _XAxis);
         _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager, _YAxis);
         _LineRender = new LineRender(_ViewPortManager, _TransformManager, _lines, this);
+        _HighLightRender = new HighLightRender(_ViewPortManager, _TransformManager, _lines, _HightLight);
 
         // touch listener
         _touchListener = new TouchListener(this);
@@ -98,6 +104,8 @@ public class LineChart extends Chart {
         if (!isTouchEnabled) {
             return false;
         }
+
+        requestDisallowInterceptTouchEvent(true);
 
         return _touchListener.onTouch(this, event);
     }
@@ -124,6 +132,8 @@ public class LineChart extends Chart {
 
         // render line
         _LineRender.render(canvas);
+        // render high light
+        _HighLightRender.render(canvas);
         canvas.restore();
 
         // render Axis
@@ -158,16 +168,13 @@ public class LineChart extends Chart {
             return;
         }
 
-        /************************  各部分请做好自己的职责  *************************/
-        _XAxis.internalSetup();
-        _YAxis.internalSetup();
-
         limitMainPlotArea();
 
         prepareMap();
 
-        // 2. notifyDataChanged
-        _LineRender.notifyDataChanged(_lines);
+        // 2. onDataChanged
+        _LineRender.onDataChanged(_lines);
+        _HighLightRender.onDataChanged(_lines);
     }
 
     /**
@@ -269,12 +276,13 @@ public class LineChart extends Chart {
     }
 
     public void highLight_ValueXY(float x, float y) {
-        _LineRender.highLight_ValueXY(x, y);
+        _HighLightRender.highLight_ValueXY(x, y);
         invalidate();
     }
 
     public void highLightLeft() {
-
+        _HighLightRender.highLightLeft();
+        invalidate();
     }
 
     public void highLightRight() {

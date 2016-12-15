@@ -1,8 +1,7 @@
-package com.linheimx.app.library.parts;
+package com.linheimx.app.library.DataProvider;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.text.TextUtils;
 
 import com.linheimx.app.library.adapter.DefaultValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
@@ -30,7 +29,7 @@ public abstract class Axis {
     float[] labelValues = new float[]{};
     int labelCount = 6;
     int _labelCountAdvice = D_LABEL_COUNT;
-    boolean isPerfectLabel = false;
+    boolean isPerfectLabel = true;
     float labelArea;
     int labelColor = Color.BLUE;
     float labelTextSize;
@@ -47,11 +46,6 @@ public abstract class Axis {
     float axisWidth;
     float leg;// 轴线上的小腿（多出来的小不点：叫他小腿吧)
 
-    Paint _PaintAxis;
-    Paint _PaintGridline;
-    Paint _PaintLittle;
-    Paint _PaintLabel;
-    Paint _PaintUnit;
 
     boolean enable = true;// axis is enable?
     IValueAdapter _ValueAdapter;
@@ -62,40 +56,6 @@ public abstract class Axis {
         labelTextSize = Utils.dp2px(D_LABEL_TXT);
         leg = Utils.dp2px(D_LEG_WIDTH);
         unitTxtSize = Utils.dp2px(D_UNIT_TXT);
-
-        internalSetup();
-    }
-
-    /**
-     * 内部使用
-     */
-    public void internalSetup() {
-
-        _PaintAxis = new Paint(Paint.ANTI_ALIAS_FLAG);
-        _PaintLabel = new Paint(Paint.ANTI_ALIAS_FLAG);
-        _PaintLittle = new Paint(Paint.ANTI_ALIAS_FLAG);
-        _PaintGridline = new Paint(Paint.ANTI_ALIAS_FLAG);
-        _PaintUnit = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-        // Axis
-        _PaintAxis.setColor(axisColor);
-        _PaintAxis.setStrokeWidth(axisWidth);
-
-        // label
-        _PaintLabel.setColor(labelColor);
-        _PaintLabel.setTextSize(labelTextSize);
-
-        // little
-        _PaintLittle.setColor(axisColor);
-        _PaintLittle.setStrokeWidth(axisWidth);
-
-        // grid line
-        _PaintGridline.setColor(Color.GRAY);
-        _PaintGridline.setStrokeWidth(Utils.dp2px(1));
-
-        // unit
-        _PaintUnit.setColor(unitColor);
-        _PaintUnit.setTextSize(unitTxtSize);
 
         // value adapter
         _ValueAdapter = new DefaultValueAdapter(2);
@@ -245,52 +205,28 @@ public abstract class Axis {
         this._labelCountAdvice = _labelCountAdvice;
     }
 
-    public Paint get_PaintAxis() {
-        return _PaintAxis;
-    }
-
-    public void set_PaintAxis(Paint _PaintAxis) {
-        this._PaintAxis = _PaintAxis;
-    }
-
-    public Paint get_PaintGridline() {
-        return _PaintGridline;
-    }
-
-    public void set_PaintGridline(Paint _PaintGridline) {
-        this._PaintGridline = _PaintGridline;
-    }
-
-    public Paint get_PaintLabel() {
-        return _PaintLabel;
-    }
-
-    public void set_PaintLabel(Paint _PaintLabel) {
-        this._PaintLabel = _PaintLabel;
-    }
-
-    public Paint get_PaintLittle() {
-        return _PaintLittle;
-    }
-
-    public void set_PaintLittle(Paint _PaintLittle) {
-        this._PaintLittle = _PaintLittle;
-    }
-
-    public Paint get_PaintUnit() {
-        return _PaintUnit;
-    }
-
-    public void set_PaintUnit(Paint _PaintUnit) {
-        this._PaintUnit = _PaintUnit;
-    }
-
     public String get_unit() {
         return _unit;
     }
 
     public void set_unit(String _unit) {
         this._unit = _unit;
+    }
+
+    public float getUnitTxtSize() {
+        return unitTxtSize;
+    }
+
+    public void setUnitTxtSize(float unitTxtSize) {
+        this.unitTxtSize = unitTxtSize;
+    }
+
+    public int getUnitColor() {
+        return unitColor;
+    }
+
+    public void setUnitColor(int unitColor) {
+        this.unitColor = unitColor;
     }
 
     public int getAxisColor() {

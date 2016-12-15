@@ -1,12 +1,13 @@
 package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
 import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.parts.Axis;
+import com.linheimx.app.library.DataProvider.Axis;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -22,18 +23,20 @@ public class XAxisRender extends AxisRender {
 
     @Override
     public void renderAxisLine(Canvas canvas) {
+        super.renderAxisLine(canvas);
 
         float startX = _ViewPortManager.contentLeft();
         float startY = _ViewPortManager.contentBottom();
         float stopX = _ViewPortManager.contentRight();
         float stopY = _ViewPortManager.contentBottom();
 
-        canvas.drawLine(startX, startY, stopX, stopY, _Axis.get_PaintAxis());
+        canvas.drawLine(startX, startY, stopX, stopY, _PaintAxis);
     }
 
 
     @Override
     public void renderGridline(Canvas canvas) {
+        super.renderGridline(canvas);
 
         float[] values = _Axis.getLabelValues();
 
@@ -49,17 +52,17 @@ public class XAxisRender extends AxisRender {
             x = xy.getX();
 
             // grid line
-            canvas.drawLine(x, bottom, x, top, _Axis.get_PaintGridline());
+            canvas.drawLine(x, bottom, x, top, _PaintGridline);
         }
     }
 
     @Override
     public void renderLabels(Canvas canvas) {
+        super.renderLabels(canvas);
 
         IValueAdapter adapter = _Axis.get_ValueAdapter();
         float[] values = _Axis.getLabelValues();
         float indicator = _Axis.getLeg();
-        Paint paintLabel = _Axis.get_PaintLabel();
 
         float x = 0;
 
@@ -78,27 +81,28 @@ public class XAxisRender extends AxisRender {
             }
 
             // indicator
-            canvas.drawLine(x, bottom, x, bottom + indicator, _Axis.get_PaintLittle());
+            canvas.drawLine(x, bottom, x, bottom + indicator, _PaintLittle);
 
             // label
-            float labelX = x - Utils.textWidth(paintLabel, label) / 2;
+            float labelX = x - Utils.textWidth(_PaintLabel, label) / 2;
             float labelY = bottom + _Axis.getArea_Label();
-            canvas.drawText(label, labelX, labelY, paintLabel);
+            canvas.drawText(label, labelX, labelY, _PaintLabel);
         }
     }
 
 
     @Override
     public void renderUnit(Canvas canvas) {
+        super.renderUnit(canvas);
 
         String unit = _Axis.get_unit();
-        Paint paintUnit = _Axis.get_PaintUnit();
+        Paint paintUnit = _PaintUnit;
 
         float bottom = _ViewPortManager.contentBottom();
         float labelX = _ViewPortManager.getContentRect().centerX() - Utils.textWidth(paintUnit, unit) / 2;
         float labelY = bottom + _Axis.offsetBottom();
 
-        canvas.drawText(unit, labelX, labelY, paintUnit);
+        canvas.drawText(unit, labelX, labelY, _PaintUnit);
     }
 
 }

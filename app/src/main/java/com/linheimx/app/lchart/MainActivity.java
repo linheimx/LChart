@@ -61,5 +61,19 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        }, 5000);
 
+
+        goLeft();
+    }
+
+    void goLeft(){
+
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                goLeft();
+//            }
+//        },3000);
+
+        _lineChart.highLightLeft();
     }
 }

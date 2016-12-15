@@ -140,8 +140,10 @@ public class Line {
             }
         }
 
+        // trick
         high++;
         low--;
+        closet = Math.min(Math.max(closet, 0), entries.size() - 1);
 
         int result = low;
         if (rounding == Rounding.UP) {
