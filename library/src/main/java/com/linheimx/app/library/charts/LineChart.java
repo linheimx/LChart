@@ -5,6 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import com.linheimx.app.library.DataProvider.HightLight;
 import com.linheimx.app.library.data.Lines;
@@ -105,7 +108,10 @@ public class LineChart extends Chart {
             return false;
         }
 
-        requestDisallowInterceptTouchEvent(true);
+        ViewParent parent = getParent();
+        if (parent != null) {
+            parent.requestDisallowInterceptTouchEvent(true);
+        }
 
         return _touchListener.onTouch(this, event);
     }
@@ -286,7 +292,8 @@ public class LineChart extends Chart {
     }
 
     public void highLightRight() {
-
+        _HighLightRender.highLightRight();
+        invalidate();
     }
 
     public void setXAxisUnit(String unit) {

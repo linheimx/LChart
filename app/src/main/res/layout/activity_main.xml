@@ -10,9 +10,28 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.linheimx.app.lchart.MainActivity">
 
-    <com.linheimx.app.library.charts.LineChart
-        android:id="@+id/chart"
-        android:layout_width="3500dp"
-        android:layout_height="400dp"
-        android:background="#a2a5a2"></com.linheimx.app.library.charts.LineChart>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="btn1"
+                android:text="基本折线图" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="btn2"
+                android:text="带功能按钮的折线图" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>

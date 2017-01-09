@@ -2,7 +2,9 @@ package com.linheimx.app.library.charts;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.linheimx.app.library.touch.TouchListener;
 import com.linheimx.app.library.utils.Utils;
@@ -11,7 +13,7 @@ import com.linheimx.app.library.utils.Utils;
  * Created by Administrator on 2016/11/13.
  */
 
-public abstract class Chart extends ViewGroup implements IFunction {
+public abstract class Chart extends View implements IFunction {
 
     ////////////////////////// function //////////////////////////
     boolean isHighLightEnabled = true;
@@ -35,7 +37,7 @@ public abstract class Chart extends ViewGroup implements IFunction {
 
 
     protected void init(Context context) {
-        setWillNotDraw(false); // 我要canvas绘制，so will render
+
     }
 
     @Override
@@ -52,13 +54,6 @@ public abstract class Chart extends ViewGroup implements IFunction {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        for (int i = 0; i < getChildCount(); i++) {
-            getChildAt(i).layout(l, t, r, b);
-        }
     }
 
 

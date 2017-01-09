@@ -48,7 +48,7 @@ public class HighLightRender extends BaseRender {
     }
 
     public void highLightRight() {
-
+        hightX++;
     }
 
 
