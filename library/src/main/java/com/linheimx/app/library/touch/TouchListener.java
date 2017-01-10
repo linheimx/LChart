@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.manager.TransformManager;
-import com.linheimx.app.library.manager.ViewPortManager;
+import com.linheimx.app.library.manager.FrameManager;
 
 /**
  * Created by Administrator on 2016/11/20.
@@ -18,7 +18,7 @@ public class TouchListener implements View.OnTouchListener {
     GestureDetector _GestureDetector;
 
     LineChart _LineChart;
-    ViewPortManager _ViewPortManager;
+    FrameManager _FrameManager;
     TransformManager _TransformManager;
 
     VelocityTracker _VelocityTracker;
@@ -28,7 +28,7 @@ public class TouchListener implements View.OnTouchListener {
         this._LineChart = lineChart;
 
         _GestureDetector = new GestureDetector(_LineChart.getContext(), new GestureListener());
-        _ViewPortManager = lineChart.get_ViewPortManager();
+        _FrameManager = lineChart.get_FrameManager();
         _TransformManager = lineChart.get_TransformManager();
 
 
@@ -36,7 +36,7 @@ public class TouchListener implements View.OnTouchListener {
 
 
     float _lastX, _lastY;
-    float _disX = 1, _disY = 1, _disXY = 1, _cX, _cY;
+    float _disX = 1, _disY = 1, _cX, _cY;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -67,15 +67,12 @@ public class TouchListener implements View.OnTouchListener {
                 if (event.getPointerCount() >= 2) {
                     _disX = getXDist(event);
                     _disY = getYDist(event);
-                    _disXY = getABSDist(event);
                     float tmpX = event.getX(0) + event.getX(1);
                     float tmpY = event.getY(0) + event.getY(1);
                     _cX = (tmpX / 2f);
                     _cY = (tmpY / 2f);
 
-                    if (_disXY > 10) {
-                        _TouchMode = TouchMode.PINCH_ZOOM;
-                    }
+                    _TouchMode = TouchMode.PINCH_ZOOM;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -108,28 +105,28 @@ public class TouchListener implements View.OnTouchListener {
     }
 
 
-    private void doDrag(float dx, float dy) {
-
-        boolean needRefresh = _TransformManager.translate(dx, dy);
-        if (needRefresh) {
-            _LineChart.postInvalidate();
-        }
-    }
-
     private void doPinch(MotionEvent event) {
-        float absDist = getABSDist(event);
-        float scale = absDist / _disXY;
-        zoom(scale, scale, _cX, _cY);
+        float dx = getXDist(event);
+        float dy = getYDist(event);
 
-        _disXY = absDist;
+        float sx = dx / _disX;
+        float sy = dy / _disY;
+
+        zoom(sx, sy, _cX, _cY);
+
+        _disX = dx;
+        _disY = dy;
     }
 
+
+    private void doDrag(float dx, float dy) {
+        _TransformManager.translate(dx, dy);
+        _LineChart.postInvalidate();
+    }
 
     private void zoom(float scaleX, float scaleY, float cx, float cy) {
-        boolean needRefresh = _TransformManager.zoom(scaleX, scaleY, cx, cy);
-        if (needRefresh) {
-            _LineChart.postInvalidate();
-        }
+        _TransformManager.zoom(scaleX, scaleY, cx, cy);
+        _LineChart.postInvalidate();
     }
 
 
@@ -155,7 +152,7 @@ public class TouchListener implements View.OnTouchListener {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
 
-            float x = e.getX() - _ViewPortManager.offsetLeft();
+            float x = e.getX() - _FrameManager.offsetLeft();
             float y = e.getY();
 
             zoom(1.4f, 1.4f, x, y);
@@ -185,7 +182,7 @@ public class TouchListener implements View.OnTouchListener {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
 
-            _LineChart.highLight_PixXY(e.getX(),e.getY());
+            _LineChart.highLight_PixXY(e.getX(), e.getY());
             return true;
         }
     }

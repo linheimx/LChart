@@ -1,7 +1,6 @@
-package com.linheimx.app.library.DataProvider;
+package com.linheimx.app.library.dataprovider;
 
 import android.graphics.Color;
-import android.graphics.Paint;
 
 import com.linheimx.app.library.utils.Utils;
 

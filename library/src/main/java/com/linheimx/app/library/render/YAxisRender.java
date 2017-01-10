@@ -1,12 +1,11 @@
 package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.TransformManager;
-import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.DataProvider.Axis;
+import com.linheimx.app.library.manager.FrameManager;
+import com.linheimx.app.library.dataprovider.Axis;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -17,18 +16,18 @@ import com.linheimx.app.library.utils.Utils;
 public class YAxisRender extends AxisRender {
 
 
-    public YAxisRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Axis axis) {
-        super(_ViewPortManager, _TransformManager, axis);
+    public YAxisRender(FrameManager _FrameManager, TransformManager _TransformManager, Axis axis) {
+        super(_FrameManager, _TransformManager, axis);
     }
 
     @Override
     public void renderAxisLine(Canvas canvas) {
         super.renderAxisLine(canvas);
 
-        float startX = _ViewPortManager.contentLeft();
-        float startY = _ViewPortManager.contentBottom();
-        float stopX = _ViewPortManager.contentLeft();
-        float stopY = _ViewPortManager.contentTop();
+        float startX = _FrameManager.frameLeft();
+        float startY = _FrameManager.frameBottom();
+        float stopX = _FrameManager.frameLeft();
+        float stopY = _FrameManager.frameTop();
 
         canvas.drawLine(startX, startY, stopX, stopY, _PaintAxis);
     }
@@ -40,8 +39,8 @@ public class YAxisRender extends AxisRender {
         float[] values = _Axis.getLabelValues();
         float y = 0;
 
-        float left = _ViewPortManager.contentLeft();
-        float right = _ViewPortManager.contentRight();
+        float left = _FrameManager.frameLeft();
+        float right = _FrameManager.frameRight();
 
         for (int i = 0; i < _Axis.getLabelCount(); i++) {
             float value = values[i];
@@ -65,7 +64,7 @@ public class YAxisRender extends AxisRender {
         float indicator = _Axis.getLeg();
         float y = 0;
 
-        float left = _ViewPortManager.contentLeft();
+        float left = _FrameManager.frameLeft();
 
         int txtHeight = Utils.textHeightAsc(_PaintLabel);
 
@@ -76,7 +75,7 @@ public class YAxisRender extends AxisRender {
             Single_XY xy = _TransformManager.getPxByValue(0, value);
             y = xy.getY();
 
-            if (y < _ViewPortManager.contentTop() || y > _ViewPortManager.contentBottom()) {
+            if (y < _FrameManager.frameTop() || y > _FrameManager.frameBottom()) {
                 continue;
             }
 
@@ -96,9 +95,9 @@ public class YAxisRender extends AxisRender {
         _PaintUnit.setColor(_Axis.getUnitColor());
         _PaintUnit.setTextSize(_Axis.getUnitTxtSize());
 
-        float left = _ViewPortManager.contentLeft();
+        float left = _FrameManager.frameLeft();
         float px = left - _Axis.getArea_Label() - _Axis.getArea_Unit();
-        float py = _ViewPortManager.getContentRect().centerY() + _Axis.getArea_Unit() / 2;
+        float py = _FrameManager.getFrameRect().centerY() + _Axis.getArea_Unit() / 2;
 
         canvas.save();
         canvas.rotate(-90, px, py);

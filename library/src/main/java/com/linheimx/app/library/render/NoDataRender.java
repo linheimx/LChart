@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.linheimx.app.library.manager.TransformManager;
-import com.linheimx.app.library.manager.ViewPortManager;
+import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -19,8 +19,8 @@ public class NoDataRender extends BaseRender {
     int txtColor = Color.RED;
     int txtSize = 30;
 
-    public NoDataRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager) {
-        super(_ViewPortManager, _TransformManager);
+    public NoDataRender(FrameManager _FrameManager, TransformManager _TransformManager) {
+        super(_FrameManager, _TransformManager);
 
         _Paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
@@ -30,8 +30,8 @@ public class NoDataRender extends BaseRender {
         _Paint.setColor(txtColor);
         _Paint.setTextSize(txtSize);
 
-        float x = _ViewPortManager.getContentCenter().getX();
-        float y = _ViewPortManager.getContentCenter().getY();
+        float x = _FrameManager.getFrameCenter().getX();
+        float y = _FrameManager.getFrameCenter().getY();
 
         float halfW = Utils.textWidth(_Paint, txt) / 2;
         float halfH = Utils.textHeightAsc(_Paint) / 2;

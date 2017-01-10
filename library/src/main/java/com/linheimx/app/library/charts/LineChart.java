@@ -5,22 +5,21 @@ import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import com.linheimx.app.library.DataProvider.HightLight;
+import com.linheimx.app.library.dataprovider.HightLight;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.TransformManager;
-import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.DataProvider.XAxis;
-import com.linheimx.app.library.DataProvider.YAxis;
+import com.linheimx.app.library.manager.FrameManager;
+import com.linheimx.app.library.dataprovider.XAxis;
+import com.linheimx.app.library.dataprovider.YAxis;
 import com.linheimx.app.library.render.HighLightRender;
 import com.linheimx.app.library.render.LineRender;
 import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.TouchListener;
+import com.linheimx.app.library.touch.TouchListenerPlus;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -30,7 +29,7 @@ import com.linheimx.app.library.utils.Utils;
 
 public class LineChart extends Chart {
 
-    ViewPortManager _ViewPortManager;
+    FrameManager _FrameManager;
     TransformManager _TransformManager;
 
     Lines _lines;
@@ -50,6 +49,7 @@ public class LineChart extends Chart {
 
     ////////////////////////////// touch  /////////////////////////////
     TouchListener _touchListener;
+    TouchListenerPlus _touchListenerPlus;
 
     //////////////////////////// other ///////////////////////////
     private RectF _MainPlotRect = new RectF();// 主要的 图谱区域
@@ -72,8 +72,8 @@ public class LineChart extends Chart {
     protected void init(Context context) {
         super.init(context);
 
-        _ViewPortManager = new ViewPortManager();
-        _TransformManager = new TransformManager(_ViewPortManager);
+        _FrameManager = new FrameManager();
+        _TransformManager = new TransformManager(_FrameManager);
 
         // parts
         _XAxis = new XAxis();
@@ -81,15 +81,15 @@ public class LineChart extends Chart {
         _HightLight = new HightLight();
 
         // render
-        _NoDataRender = new NoDataRender(_ViewPortManager, _TransformManager);
-        _XAxisRender = new XAxisRender(_ViewPortManager, _TransformManager, _XAxis);
-        _YAxisRender = new YAxisRender(_ViewPortManager, _TransformManager, _YAxis);
-        _LineRender = new LineRender(_ViewPortManager, _TransformManager, _lines, this);
-        _HighLightRender = new HighLightRender(_ViewPortManager, _TransformManager, _lines, _HightLight);
+        _NoDataRender = new NoDataRender(_FrameManager, _TransformManager);
+        _XAxisRender = new XAxisRender(_FrameManager, _TransformManager, _XAxis);
+        _YAxisRender = new YAxisRender(_FrameManager, _TransformManager, _YAxis);
+        _LineRender = new LineRender(_FrameManager, _TransformManager, _lines, this);
+        _HighLightRender = new HighLightRender(_FrameManager, _TransformManager, _lines, _HightLight);
 
         // touch listener
         _touchListener = new TouchListener(this);
-
+        _touchListenerPlus = new TouchListenerPlus(this);
 
         ////////////////////// other  ///////////////////////
         setXAxisUnit("mm/s");
@@ -130,7 +130,7 @@ public class LineChart extends Chart {
         _YAxis.calValues(getVisiableMinY(), getVisiableMaxY());
 
         canvas.save();
-        canvas.clipRect(_ViewPortManager.getContentRect());
+        canvas.clipRect(_FrameManager.getFrameRect());
 
         // render grid line
         _XAxisRender.renderGridline(canvas);
@@ -159,7 +159,7 @@ public class LineChart extends Chart {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        _ViewPortManager.setChartWH(w, h);
+        _FrameManager.setChartWH(w, h);
 
         notifyDataChanged();
     }
@@ -222,7 +222,7 @@ public class LineChart extends Chart {
         float yMin = _lines.getmYMin();
         float yMax = _lines.getmYMax();
 
-        _ViewPortManager.setViewPort(_MainPlotRect.left, _MainPlotRect.top, _MainPlotRect.right, _MainPlotRect.bottom);
+        _FrameManager.setFrame(_MainPlotRect.left, _MainPlotRect.top, _MainPlotRect.right, _MainPlotRect.bottom);
         _TransformManager.prepareRelation(
                 xMin, xMax - xMin,
                 yMin, yMax - yMin);
@@ -230,25 +230,25 @@ public class LineChart extends Chart {
 
 
     public float getVisiableMinX() {
-        float px = _ViewPortManager.contentLeft();
+        float px = _FrameManager.frameLeft();
         Single_XY xy = _TransformManager.getValueByPx(px, 0);
         return xy.getX();
     }
 
     public float getVisiableMaxX() {
-        float px = _ViewPortManager.contentRight();
+        float px = _FrameManager.frameRight();
         Single_XY xy = _TransformManager.getValueByPx(px, 0);
         return xy.getX();
     }
 
     public float getVisiableMinY() {
-        float py = _ViewPortManager.contentBottom();
+        float py = _FrameManager.frameBottom();
         Single_XY xy = _TransformManager.getValueByPx(0, py);
         return xy.getY();
     }
 
     public float getVisiableMaxY() {
-        float py = _ViewPortManager.contentTop();
+        float py = _FrameManager.frameTop();
         Single_XY xy = _TransformManager.getValueByPx(0, py);
         return xy.getY();
     }
@@ -269,8 +269,8 @@ public class LineChart extends Chart {
         return _TransformManager;
     }
 
-    public ViewPortManager get_ViewPortManager() {
-        return _ViewPortManager;
+    public FrameManager get_FrameManager() {
+        return _FrameManager;
     }
 
 

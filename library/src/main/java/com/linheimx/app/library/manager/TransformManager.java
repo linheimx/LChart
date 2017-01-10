@@ -11,53 +11,31 @@ import com.linheimx.app.library.utils.Single_XY;
  */
 
 public class TransformManager {
-    /**
-     * matrix 要严格遵从运算顺序
-     */
-    Matrix _matrixOff = new Matrix();//偏离
-    Matrix _matrixK = new Matrix();//比例系数
+
     Matrix _matrixTouch = new Matrix();
 
-    ViewPortManager _viewPortManager;
+    FrameManager _frameManager;
 
-    public TransformManager(ViewPortManager viewPortManager) {
-        _viewPortManager = viewPortManager;
+    public TransformManager(FrameManager frameManager) {
+        _frameManager = frameManager;
     }
 
-    /**
-     * 处理偏离
-     */
-    private void off() {
-        _matrixOff.reset();
-        _matrixOff.postTranslate(_viewPortManager.offsetLeft(),
-                _viewPortManager.getChartHeight() - _viewPortManager.offsetBottom());
-    }
+    float _xMin, _yMin;
+    float _baseKx, _baseKy;
 
-    /**
-     * 处理比例
-     *
-     * @param xMin
-     * @param xDelta
-     * @param yMin
-     * @param yDelta
-     */
-    private void k(float xMin, float xDelta, float yMin, float yDelta) {
-        float kx = (_viewPortManager.contentWidth()) / xDelta;
-        float ky = (_viewPortManager.contentHeight()) / yDelta;
-
-        _matrixK.reset();
-        _matrixK.postTranslate(-xMin, -yMin);
-        _matrixK.postScale(kx, ky);
-        _matrixK.postScale(1, -1);
-    }
+    float _touchKx, _touchKy;
+    float _touchDx, _touchDy;
 
     public void prepareRelation(float xMin, float xRange, float yMin, float yRange) {
-        k(xMin, xRange, yMin, yRange);
-        off();
+
+        _xMin = xMin;
+        _yMin = yMin;
+        _baseKx = (_frameManager.frameWidth()) / xRange;
+        _baseKy = (_frameManager.frameHeight()) / yRange;
+
+        _touchKx = _touchKy = 1;
+        _touchDx = _touchDy = 0;
     }
-
-
-    float[] xyBuffer = new float[2];
 
     /**
      * 根据像素位置变换成数值
@@ -68,13 +46,8 @@ public class TransformManager {
      */
     public Single_XY getValueByPx(float x, float y) {
 
-        xyBuffer[0] = x;
-        xyBuffer[1] = y;
-
-        px2Value(xyBuffer);
-
         Single_XY value = Single_XY.getInstance();
-        value.setX(xyBuffer[0]).setY(xyBuffer[1]);
+        value.setX(p2v_x(x)).setY(p2v_y(y));
         return value;
     }
 
@@ -91,35 +64,9 @@ public class TransformManager {
      */
     public Single_XY getPxByValue(float x, float y) {
 
-        xyBuffer[0] = x;
-        xyBuffer[1] = y;
-
-        value2Px(xyBuffer);
-
         Single_XY value = Single_XY.getInstance();
-        value.setX(xyBuffer[0]).setY(xyBuffer[1]);
+        value.setX(v2p_x(x)).setY(v2p_y(y));
         return value;
-    }
-
-
-    Matrix _bufferPV = new Matrix();
-
-    /**
-     * 将屏幕上的位置(x,y,x,y,...) 变换成chart上的数值。
-     *
-     * @param pxs
-     */
-    public void px2Value(float[] pxs) {
-        _bufferPV.reset();
-
-        _matrixTouch.invert(_bufferPV);
-        _bufferPV.mapPoints(pxs);
-
-        _matrixOff.invert(_bufferPV);
-        _bufferPV.mapPoints(pxs);
-
-        _matrixK.invert(_bufferPV);
-        _bufferPV.mapPoints(pxs);
     }
 
     /**
@@ -127,15 +74,42 @@ public class TransformManager {
      *
      * @param values
      */
-    public void value2Px(float[] values) {
-        //----------------------------> 注意运算顺序（先乘除，再加减） <------------------------
-        _matrixK.mapPoints(values);
-        _matrixOff.mapPoints(values);
-        _matrixTouch.mapPoints(values);
+    public void values2Px(float[] values) {
+
+        for (int i = 0; i < values.length; i++) {
+            if (i % 2 == 0) {
+                // x
+                values[i] = v2p_x(values[i]);
+            } else {
+                //y
+                values[i] = v2p_y(values[i]);
+            }
+        }
     }
 
+    public float v2p_x(float xValue) {
+        float px = (xValue - _xMin) * _baseKx * _touchKx + _frameManager.offsetLeft();
+        px += _touchDx;
+        return px;
+    }
 
-    Matrix _matrixTmp = new Matrix();
+    public float v2p_y(float yValue) {
+        float py = _frameManager.frameHeight() - (yValue - _yMin) * _baseKy * _touchKy;
+        py += _touchDy;
+        return py;
+    }
+
+    public float p2v_x(float xPix) {
+        xPix -= _touchDx;
+        float px = _xMin + (xPix - _frameManager.offsetLeft()) / _baseKx / _touchKy;
+        return px;
+    }
+
+    public float p2v_y(float yPix) {
+        yPix -= _touchDy;
+        float py = _yMin + (_frameManager.frameHeight() - yPix) / _baseKy / _touchKy;
+        return py;
+    }
 
     /**
      * @param scaleX
@@ -144,34 +118,25 @@ public class TransformManager {
      * @param cy
      * @return true:刷新 false:不刷新
      */
-    public boolean zoom(float scaleX, float scaleY, float cx, float cy) {
-
-        _matrixTmp.reset();
-        _matrixTmp.set(_matrixTouch);
-        _matrixTmp.postScale(scaleX, scaleY, cx, cy);
-        _matrixTmp.getValues(_mvBuffer);
-
-        float sx = _mvBuffer[Matrix.MSCALE_X];
-        float sy = _mvBuffer[Matrix.MSCALE_Y];
-
-        float frame_width = _viewPortManager.contentWidth();
-        float frame_height = _viewPortManager.contentHeight();
-
-        float pic_width = frame_width * sx;
-        float pic_height = frame_height * sy;
-
-        if (pic_width < frame_width && pic_height < frame_height) {
-            return false;
-        } else {
-            _matrixTouch.postScale(scaleX, scaleY, cx, cy);
-            return true;
-        }
+    public void zoom(float scaleX, float scaleY, float cx, float cy) {
+        _touchKx = _touchKx * scaleX;
+        _touchKy = _touchKy * scaleY;
     }
 
-    public boolean translate(float dx, float dy) {
+    public void translate(float dx, float dy) {
+        _touchDx += dx;
+        _touchDy += dy;
+    }
 
-        _matrixTouch.postTranslate(dx, dy);
-        return true;
+
+    protected final float[] matrixBuffer = new float[9];
+
+    /**
+     * 限制 缩放移动后的映射关系
+     */
+    private void restrain() {
+
+
     }
 
 
@@ -189,8 +154,8 @@ public class TransformManager {
         float ty = _mvBuffer[Matrix.MTRANS_Y];
         float sy = _mvBuffer[Matrix.MSCALE_Y];
 
-        float frame_width = _viewPortManager.contentWidth();
-        float frame_height = _viewPortManager.contentHeight();
+        float frame_width = _frameManager.frameWidth();
+        float frame_height = _frameManager.frameHeight();
 
         float pic_width = frame_width * sx;
         float pic_height = frame_height * sy;

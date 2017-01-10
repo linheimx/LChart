@@ -1,17 +1,14 @@
 package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.TransformManager;
-import com.linheimx.app.library.manager.ViewPortManager;
-import com.linheimx.app.library.utils.LogUtil;
+import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -30,8 +27,8 @@ public class LineRender extends BaseRender {
     Paint _PaintCircle;
 
 
-    public LineRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Lines _lines, LineChart lineChart) {
-        super(_ViewPortManager, _TransformManager);
+    public LineRender(FrameManager _FrameManager, TransformManager _TransformManager, Lines _lines, LineChart lineChart) {
+        super(_FrameManager, _TransformManager);
         this._lines = _lines;
         this.lineChart = lineChart;
 
@@ -46,7 +43,7 @@ public class LineRender extends BaseRender {
         }
 
         canvas.save();
-        canvas.clipRect(_ViewPortManager.getContentRect());
+        canvas.clipRect(_FrameManager.getFrameRect());
         // render line
         for (Line line : _lines.getLines()) {
             drawLine_Circle(canvas, line);
@@ -112,7 +109,7 @@ public class LineRender extends BaseRender {
             }
         }
 
-        _TransformManager.value2Px(_LineBuffer);
+        _TransformManager.values2Px(_LineBuffer);
 
         canvas.drawLines(_LineBuffer, _PaintLine);
     }

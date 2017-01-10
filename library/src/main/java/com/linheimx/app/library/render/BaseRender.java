@@ -1,18 +1,18 @@
 package com.linheimx.app.library.render;
 
 import com.linheimx.app.library.manager.TransformManager;
-import com.linheimx.app.library.manager.ViewPortManager;
+import com.linheimx.app.library.manager.FrameManager;
 
 /**
  * Created by LJIAN on 2016/11/14.
  */
 
 public abstract class BaseRender {
-    ViewPortManager _ViewPortManager;
+    FrameManager _FrameManager;
     TransformManager _TransformManager;
 
-    public BaseRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager) {
-        this._ViewPortManager = _ViewPortManager;
+    public BaseRender(FrameManager _FrameManager, TransformManager _TransformManager) {
+        this._FrameManager = _FrameManager;
         this._TransformManager = _TransformManager;
     }
 

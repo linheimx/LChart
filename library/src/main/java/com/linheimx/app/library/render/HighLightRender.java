@@ -3,12 +3,12 @@ package com.linheimx.app.library.render;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.linheimx.app.library.DataProvider.HightLight;
+import com.linheimx.app.library.dataprovider.HightLight;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.TransformManager;
-import com.linheimx.app.library.manager.ViewPortManager;
+import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -24,8 +24,8 @@ public class HighLightRender extends BaseRender {
     Paint paintHighLight;
     Paint paintHint;
 
-    public HighLightRender(ViewPortManager _ViewPortManager, TransformManager _TransformManager, Lines lines, HightLight hightLight) {
-        super(_ViewPortManager, _TransformManager);
+    public HighLightRender(FrameManager _FrameManager, TransformManager _TransformManager, Lines lines, HightLight hightLight) {
+        super(_FrameManager, _TransformManager);
 
         this._lines = lines;
         this._hightLight = hightLight;
@@ -59,7 +59,7 @@ public class HighLightRender extends BaseRender {
         }
 
         canvas.save();
-        canvas.clipRect(_ViewPortManager.getContentRect());
+        canvas.clipRect(_FrameManager.getFrameRect());
         drawHighLight_Hint(canvas);
         canvas.restore();
     }
@@ -117,8 +117,8 @@ public class HighLightRender extends BaseRender {
         paintHighLight.setStrokeWidth(_hightLight.getHighLightWidth());
         paintHighLight.setColor(_hightLight.getHighLightColor());
 
-        canvas.drawLine(_ViewPortManager.contentLeft(), xy.getY(), _ViewPortManager.contentRight(), xy.getY(), paintHighLight);
-        canvas.drawLine(xy.getX(), _ViewPortManager.contentTop(), xy.getX(), _ViewPortManager.contentBottom(), paintHighLight);
+        canvas.drawLine(_FrameManager.frameLeft(), xy.getY(), _FrameManager.frameRight(), xy.getY(), paintHighLight);
+        canvas.drawLine(xy.getX(), _FrameManager.frameTop(), xy.getX(), _FrameManager.frameBottom(), paintHighLight);
 
 
         // draw hint
@@ -130,8 +130,8 @@ public class HighLightRender extends BaseRender {
         float txtHeight = Utils.textHeight(paintHint);
         float txtWidth = Math.max(Utils.textWidth(paintHint, xStr), Utils.textWidth(paintHint, yStr));
 
-        float x = _ViewPortManager.contentRight() - txtWidth - 10;
-        float y = _ViewPortManager.contentTop() + Utils.dp2px(20);
+        float x = _FrameManager.frameRight() - txtWidth - 10;
+        float y = _FrameManager.frameTop() + Utils.dp2px(20);
 
         canvas.drawText(xStr, x, y, paintHint);
         canvas.drawText(yStr, x, y + txtHeight, paintHint);

@@ -1,4 +1,4 @@
-package com.linheimx.app.library.DataProvider;
+package com.linheimx.app.library.dataprovider;
 
 
 import com.linheimx.app.library.utils.Utils;
