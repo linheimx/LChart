@@ -36,7 +36,7 @@ public class TouchListener implements View.OnTouchListener {
 
 
     float _lastX, _lastY;
-    float _disX = 1, _disY = 1, _cX, _cY;
+    float _disX = 1, _disY = 1, _disXY = 1, _cX, _cY;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -67,12 +67,15 @@ public class TouchListener implements View.OnTouchListener {
                 if (event.getPointerCount() >= 2) {
                     _disX = getXDist(event);
                     _disY = getYDist(event);
+                    _disXY = getABSDist(event);
                     float tmpX = event.getX(0) + event.getX(1);
                     float tmpY = event.getY(0) + event.getY(1);
                     _cX = (tmpX / 2f);
                     _cY = (tmpY / 2f);
 
-                    _TouchMode = TouchMode.PINCH_ZOOM;
+                    if (_disXY > 10) {
+                        _TouchMode = TouchMode.PINCH_ZOOM;
+                    }
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -106,16 +109,11 @@ public class TouchListener implements View.OnTouchListener {
 
 
     private void doPinch(MotionEvent event) {
-        float dx = getXDist(event);
-        float dy = getYDist(event);
+        float absDist = getABSDist(event);
+        float scale = absDist / _disXY;
+        zoom(scale, scale, _cX, _cY);
 
-        float sx = dx / _disX;
-        float sy = dy / _disY;
-
-        zoom(sx, sy, _cX, _cY);
-
-        _disX = dx;
-        _disY = dy;
+        _disXY = absDist;
     }
 
 
@@ -124,7 +122,21 @@ public class TouchListener implements View.OnTouchListener {
         _LineChart.postInvalidate();
     }
 
+
+    boolean canX_zoom =true;
+    boolean canY_zoom =false;
+
     private void zoom(float scaleX, float scaleY, float cx, float cy) {
+        cx = cx - _FrameManager.frameLeft();
+        cy = cy - _FrameManager.frameTop();
+
+        if(!canX_zoom){
+            scaleX=1;
+        }
+        if(!canY_zoom){
+            scaleY=1;
+        }
+
         _TransformManager.zoom(scaleX, scaleY, cx, cy);
         _LineChart.postInvalidate();
     }
@@ -153,7 +165,7 @@ public class TouchListener implements View.OnTouchListener {
         public boolean onDoubleTap(MotionEvent e) {
 
             float x = e.getX() - _FrameManager.offsetLeft();
-            float y = e.getY();
+            float y = e.getY() - _FrameManager.offsetTop();
 
             zoom(1.4f, 1.4f, x, y);
             return true;

@@ -19,7 +19,6 @@ import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.TouchListener;
-import com.linheimx.app.library.touch.TouchListenerPlus;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -49,7 +48,6 @@ public class LineChart extends Chart {
 
     ////////////////////////////// touch  /////////////////////////////
     TouchListener _touchListener;
-    TouchListenerPlus _touchListenerPlus;
 
     //////////////////////////// other ///////////////////////////
     private RectF _MainPlotRect = new RectF();// 主要的 图谱区域
@@ -89,7 +87,6 @@ public class LineChart extends Chart {
 
         // touch listener
         _touchListener = new TouchListener(this);
-        _touchListenerPlus = new TouchListenerPlus(this);
 
         ////////////////////// other  ///////////////////////
         setXAxisUnit("mm/s");

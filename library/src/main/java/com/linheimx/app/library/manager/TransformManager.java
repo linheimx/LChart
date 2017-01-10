@@ -101,7 +101,7 @@ public class TransformManager {
 
     public float p2v_x(float xPix) {
         xPix -= _touchDx;
-        float px = _xMin + (xPix - _frameManager.offsetLeft()) / _baseKx / _touchKy;
+        float px = _xMin + (xPix - _frameManager.offsetLeft()) / _baseKx / _touchKx;
         return px;
     }
 
@@ -111,16 +111,31 @@ public class TransformManager {
         return py;
     }
 
-    /**
-     * @param scaleX
-     * @param scaleY
-     * @param cx
-     * @param cy
-     * @return true:刷新 false:不刷新
-     */
+
+    float deleteX, deleteY;
+
     public void zoom(float scaleX, float scaleY, float cx, float cy) {
+
+        _touchDx -= deleteX;
+        _touchDy -= deleteY;
+
         _touchKx = _touchKx * scaleX;
         _touchKy = _touchKy * scaleY;
+
+        float oldw = _frameManager.getFrameRect().width();
+        float oldh = _frameManager.getFrameRect().height();
+
+        float neww = oldw * _touchKx;
+        float newh = oldh * _touchKy;
+
+        float x = -(cx / oldw * neww - cx);
+        _touchDx += x;
+
+        float y = cy / oldh * newh - cy;
+        _touchDy += y;
+
+        deleteX = x;
+        deleteY = y;
     }
 
     public void translate(float dx, float dy) {
