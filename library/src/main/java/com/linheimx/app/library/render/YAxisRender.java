@@ -3,7 +3,7 @@ package com.linheimx.app.library.render;
 import android.graphics.Canvas;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
-import com.linheimx.app.library.manager.TransformManager;
+import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.dataprovider.Axis;
 import com.linheimx.app.library.utils.Single_XY;
@@ -16,8 +16,8 @@ import com.linheimx.app.library.utils.Utils;
 public class YAxisRender extends AxisRender {
 
 
-    public YAxisRender(FrameManager _FrameManager, TransformManager _TransformManager, Axis axis) {
-        super(_FrameManager, _TransformManager, axis);
+    public YAxisRender(FrameManager _FrameManager, MappingManager _MappingManager, Axis axis) {
+        super(_FrameManager, _MappingManager, axis);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class YAxisRender extends AxisRender {
         for (int i = 0; i < _Axis.getLabelCount(); i++) {
             float value = values[i];
 
-            Single_XY xy = _TransformManager.getPxByValue(0, value);
+            Single_XY xy = _MappingManager.getPxByValue(0, value);
             y = xy.getY();
 
             // grid line
@@ -72,7 +72,7 @@ public class YAxisRender extends AxisRender {
             float value = values[i];
             String label = adapter.value2String(value);
 
-            Single_XY xy = _TransformManager.getPxByValue(0, value);
+            Single_XY xy = _MappingManager.getPxByValue(0, value);
             y = xy.getY();
 
             if (y < _FrameManager.frameTop() || y > _FrameManager.frameBottom()) {

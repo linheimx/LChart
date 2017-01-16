@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.linheimx.app.library.manager.TransformManager;
+import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.utils.Utils;
 
@@ -19,8 +19,8 @@ public class NoDataRender extends BaseRender {
     int txtColor = Color.RED;
     int txtSize = 30;
 
-    public NoDataRender(FrameManager _FrameManager, TransformManager _TransformManager) {
-        super(_FrameManager, _TransformManager);
+    public NoDataRender(FrameManager _FrameManager, MappingManager _MappingManager) {
+        super(_FrameManager, _MappingManager);
 
         _Paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }

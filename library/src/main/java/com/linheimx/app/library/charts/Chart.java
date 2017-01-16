@@ -13,12 +13,7 @@ import com.linheimx.app.library.utils.Utils;
  * Created by Administrator on 2016/11/13.
  */
 
-public abstract class Chart extends View implements IFunction {
-
-    ////////////////////////// function //////////////////////////
-    boolean isHighLightEnabled = true;
-    boolean isTouchEnabled = true;
-
+public abstract class Chart extends View {
 
     public Chart(Context context) {
         super(context);
@@ -54,22 +49,5 @@ public abstract class Chart extends View implements IFunction {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-    }
-
-
-    public boolean isHighLightEnabled() {
-        return isHighLightEnabled;
-    }
-
-    public void setHighLightEnabled(boolean highLightEnabled) {
-        isHighLightEnabled = highLightEnabled;
-    }
-
-    public boolean isTouchEnabled() {
-        return isTouchEnabled;
-    }
-
-    public void setTouchEnabled(boolean touchEnabled) {
-        isTouchEnabled = touchEnabled;
     }
 }

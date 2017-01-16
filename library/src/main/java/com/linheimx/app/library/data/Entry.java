@@ -5,6 +5,7 @@ package com.linheimx.app.library.data;
  */
 
 public class Entry {
+
     protected float x;
     protected float y;
 

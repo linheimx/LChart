@@ -1,6 +1,6 @@
 package com.linheimx.app.library.render;
 
-import com.linheimx.app.library.manager.TransformManager;
+import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.manager.FrameManager;
 
 /**
@@ -9,11 +9,11 @@ import com.linheimx.app.library.manager.FrameManager;
 
 public abstract class BaseRender {
     FrameManager _FrameManager;
-    TransformManager _TransformManager;
+    MappingManager _MappingManager;
 
-    public BaseRender(FrameManager _FrameManager, TransformManager _TransformManager) {
+    public BaseRender(FrameManager _FrameManager, MappingManager _MappingManager) {
         this._FrameManager = _FrameManager;
-        this._TransformManager = _TransformManager;
+        this._MappingManager = _MappingManager;
     }
 
 }

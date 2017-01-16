@@ -7,7 +7,7 @@ import com.linheimx.app.library.dataprovider.HightLight;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
-import com.linheimx.app.library.manager.TransformManager;
+import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
@@ -24,8 +24,8 @@ public class HighLightRender extends BaseRender {
     Paint paintHighLight;
     Paint paintHint;
 
-    public HighLightRender(FrameManager _FrameManager, TransformManager _TransformManager, Lines lines, HightLight hightLight) {
-        super(_FrameManager, _TransformManager);
+    public HighLightRender(FrameManager _FrameManager, MappingManager _MappingManager, Lines lines, HightLight hightLight) {
+        super(_FrameManager, _MappingManager);
 
         this._lines = lines;
         this._hightLight = hightLight;
@@ -110,7 +110,7 @@ public class HighLightRender extends BaseRender {
 
         hightX = hitEntry.getX();// real indexX
 
-        Single_XY xy = _TransformManager.getPxByEntry(hitEntry);
+        Single_XY xy = _MappingManager.getPxByEntry(hitEntry);
 
 
         // draw high light

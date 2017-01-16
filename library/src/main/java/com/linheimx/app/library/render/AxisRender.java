@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.linheimx.app.library.manager.TransformManager;
+import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.dataprovider.Axis;
 import com.linheimx.app.library.utils.Utils;
@@ -23,8 +23,8 @@ public abstract class AxisRender extends BaseRender {
     Paint _PaintLabel;
     Paint _PaintUnit;
 
-    public AxisRender(FrameManager _FrameManager, TransformManager _TransformManager, Axis axis) {
-        super(_FrameManager, _TransformManager);
+    public AxisRender(FrameManager _FrameManager, MappingManager _MappingManager, Axis axis) {
+        super(_FrameManager, _MappingManager);
 
         this._Axis = axis;
 

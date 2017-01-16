@@ -7,7 +7,7 @@ import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
-import com.linheimx.app.library.manager.TransformManager;
+import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
@@ -27,8 +27,8 @@ public class LineRender extends BaseRender {
     Paint _PaintCircle;
 
 
-    public LineRender(FrameManager _FrameManager, TransformManager _TransformManager, Lines _lines, LineChart lineChart) {
-        super(_FrameManager, _TransformManager);
+    public LineRender(FrameManager _FrameManager, MappingManager _MappingManager, Lines _lines, LineChart lineChart) {
+        super(_FrameManager, _MappingManager);
         this._lines = _lines;
         this.lineChart = lineChart;
 
@@ -97,19 +97,19 @@ public class LineRender extends BaseRender {
             _LineBuffer[index++] = end.getY();
 
             if (line.isDrawCircle()) {
-                Single_XY xy = _TransformManager.getPxByEntry(start);
+                Single_XY xy = _MappingManager.getPxByEntry(start);
                 canvas.drawCircle(xy.getX(), xy.getY(), Utils.dp2px(line.getCircleR()), _PaintCircle);
 
                 // 把最后点一个绘制出来
                 if (i == maxIndex - 1) {
                     Entry last = list.get(maxIndex);
-                    xy = _TransformManager.getPxByEntry(last);
+                    xy = _MappingManager.getPxByEntry(last);
                     canvas.drawCircle(xy.getX(), xy.getY(), Utils.dp2px(line.getCircleR()), _PaintCircle);
                 }
             }
         }
 
-        _TransformManager.values2Px(_LineBuffer);
+        _MappingManager.values2Px(_LineBuffer);
 
         canvas.drawLines(_LineBuffer, _PaintLine);
     }

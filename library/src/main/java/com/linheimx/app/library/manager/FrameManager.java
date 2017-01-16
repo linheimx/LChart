@@ -13,49 +13,22 @@ import com.linheimx.app.library.utils.Single_XY;
 public class FrameManager {
 
     protected RectF mFrameRect;//相框
-    protected float mChartWidth;
-    protected float mChartHeight;
 
     public FrameManager() {
         mFrameRect = new RectF();
     }
 
 
-    public void setChartWH(float width, float height) {
-
-        float offsetLeft = offsetLeft();
-        float offsetTop = offsetTop();
-        float offsetRight = offsetRight();
-        float offsetBottom = offsetBottom();
-
-        mChartHeight = height;
-        mChartWidth = width;
-
-        setFrame(offsetLeft, offsetTop, offsetRight, offsetBottom);
+    public void setFrame(RectF rectF) {
+        mFrameRect.set(rectF);
     }
-
-    public void setFrame(float offsetLeft, float offsetTop,
-                         float offsetRight, float offsetBottom) {
-
-        mFrameRect.set(offsetLeft, offsetTop, mChartWidth - offsetRight, mChartHeight
-                - offsetBottom);
-    }
-
 
     public float offsetLeft() {
         return mFrameRect.left;
     }
 
-    public float offsetRight() {
-        return mChartWidth - mFrameRect.right;
-    }
-
     public float offsetTop() {
         return mFrameRect.top;
-    }
-
-    public float offsetBottom() {
-        return mChartHeight - mFrameRect.bottom;
     }
 
     public float frameTop() {
@@ -84,14 +57,6 @@ public class FrameManager {
 
     public RectF getFrameRect() {
         return mFrameRect;
-    }
-
-    public float getChartWidth() {
-        return mChartWidth;
-    }
-
-    public float getChartHeight() {
-        return mChartHeight;
     }
 
     public Single_XY getFrameCenter() {

@@ -7,16 +7,20 @@ import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Single_XY;
 
 /**
+ * 数据源与绘出来的图之间的映射关系
+ * -------------------
+ * 人与照片直接的映射关系
+ * <p>
  * Created by Administrator on 2016/11/13.
  */
 
-public class TransformManager {
+public class MappingManager {
 
     Matrix _matrixTouch = new Matrix();
 
     FrameManager _frameManager;
 
-    public TransformManager(FrameManager frameManager) {
+    public MappingManager(FrameManager frameManager) {
         _frameManager = frameManager;
     }
 
@@ -26,7 +30,10 @@ public class TransformManager {
     float _touchKx, _touchKy;
     float _touchDx, _touchDy;
 
-    public void prepareRelation(float xMin, float xRange, float yMin, float yRange) {
+    public void prepareRelation(float xMin, float xMax, float yMin, float yMax) {
+
+        float xRange = xMax - xMin;
+        float yRange = yMax - yMin;
 
         _xMin = xMin;
         _yMin = yMin;

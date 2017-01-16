@@ -6,7 +6,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 
 import com.linheimx.app.library.charts.LineChart;
-import com.linheimx.app.library.manager.TransformManager;
+import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.manager.FrameManager;
 
 /**
@@ -19,7 +19,7 @@ public class TouchListener implements View.OnTouchListener {
 
     LineChart _LineChart;
     FrameManager _FrameManager;
-    TransformManager _TransformManager;
+    MappingManager _MappingManager;
 
     VelocityTracker _VelocityTracker;
     TouchMode _TouchMode = TouchMode.NONE;
@@ -29,7 +29,7 @@ public class TouchListener implements View.OnTouchListener {
 
         _GestureDetector = new GestureDetector(_LineChart.getContext(), new GestureListener());
         _FrameManager = lineChart.get_FrameManager();
-        _TransformManager = lineChart.get_TransformManager();
+        _MappingManager = lineChart.get_MappingManager();
 
 
     }
@@ -118,7 +118,7 @@ public class TouchListener implements View.OnTouchListener {
 
 
     private void doDrag(float dx, float dy) {
-        _TransformManager.translate(dx, dy);
+        _MappingManager.translate(dx, dy);
         _LineChart.postInvalidate();
     }
 
@@ -137,7 +137,7 @@ public class TouchListener implements View.OnTouchListener {
             scaleY=1;
         }
 
-        _TransformManager.zoom(scaleX, scaleY, cx, cy);
+        _MappingManager.zoom(scaleX, scaleY, cx, cy);
         _LineChart.postInvalidate();
     }
 
