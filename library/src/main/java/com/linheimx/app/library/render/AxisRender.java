@@ -6,7 +6,7 @@ import android.graphics.Paint;
 
 import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.manager.FrameManager;
-import com.linheimx.app.library.dataprovider.Axis;
+import com.linheimx.app.library.model.Axis;
 import com.linheimx.app.library.utils.Utils;
 
 /**

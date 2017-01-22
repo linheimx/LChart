@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.manager.FrameManager;
-import com.linheimx.app.library.dataprovider.Axis;
+import com.linheimx.app.library.model.Axis;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 

@@ -1,4 +1,4 @@
-package com.linheimx.app.library.dataprovider;
+package com.linheimx.app.library.model;
 
 import android.graphics.Color;
 

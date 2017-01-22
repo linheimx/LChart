@@ -1,7 +1,5 @@
 package com.linheimx.app.library.manager;
 
-import android.graphics.Matrix;
-
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Single_XY;
@@ -15,8 +13,6 @@ import com.linheimx.app.library.utils.Single_XY;
  */
 
 public class MappingManager {
-
-    Matrix _matrixTouch = new Matrix();
 
     FrameManager _frameManager;
 
@@ -129,16 +125,10 @@ public class MappingManager {
         _touchKx = _touchKx * scaleX;
         _touchKy = _touchKy * scaleY;
 
-        float oldw = _frameManager.getFrameRect().width();
-        float oldh = _frameManager.getFrameRect().height();
-
-        float neww = oldw * _touchKx;
-        float newh = oldh * _touchKy;
-
-        float x = -(cx / oldw * neww - cx);
+        float x = (cx * scaleX - cx);
         _touchDx += x;
 
-        float y = cy / oldh * newh - cy;
+        float y = (cy * scaleY - cy);
         _touchDy += y;
 
         deleteX = x;
@@ -149,54 +139,4 @@ public class MappingManager {
         _touchDx += dx;
         _touchDy += dy;
     }
-
-
-    protected final float[] matrixBuffer = new float[9];
-
-    /**
-     * 限制 缩放移动后的映射关系
-     */
-    private void restrain() {
-
-
-    }
-
-
-    float[] _mvBuffer = new float[9];
-
-    /**
-     * 检查平移与缩放的范围
-     */
-    private void checkRange(Matrix touch) {
-
-        touch.getValues(_mvBuffer);
-
-        float tx = _mvBuffer[Matrix.MTRANS_X];
-        float sx = _mvBuffer[Matrix.MSCALE_X];
-        float ty = _mvBuffer[Matrix.MTRANS_Y];
-        float sy = _mvBuffer[Matrix.MSCALE_Y];
-
-        float frame_width = _frameManager.frameWidth();
-        float frame_height = _frameManager.frameHeight();
-
-        float pic_width = frame_width * sx;
-        float pic_height = frame_height * sy;
-
-        if (pic_width < frame_width) {
-            sx = 1;
-        }
-        if (pic_height < frame_height) {
-            sy = 1;
-        }
-
-        LogUtil.e("---->" + tx + "    " + ty);
-
-        _mvBuffer[Matrix.MTRANS_X] = tx;
-        _mvBuffer[Matrix.MSCALE_X] = sx;
-        _mvBuffer[Matrix.MTRANS_Y] = ty;
-        _mvBuffer[Matrix.MSCALE_Y] = sy;
-
-        _matrixTouch.setValues(_mvBuffer);
-    }
-
 }

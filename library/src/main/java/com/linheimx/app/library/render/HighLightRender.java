@@ -3,7 +3,7 @@ package com.linheimx.app.library.render;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.linheimx.app.library.dataprovider.HightLight;
+import com.linheimx.app.library.model.HightLight;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;

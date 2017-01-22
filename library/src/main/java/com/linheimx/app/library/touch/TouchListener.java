@@ -73,9 +73,9 @@ public class TouchListener implements View.OnTouchListener {
                     _cX = (tmpX / 2f);
                     _cY = (tmpY / 2f);
 
-                    if (_disXY > 10) {
-                        _TouchMode = TouchMode.PINCH_ZOOM;
-                    }
+//                    if (_disXY > 10) {
+                    _TouchMode = TouchMode.PINCH_ZOOM;
+//                    }
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -109,9 +109,13 @@ public class TouchListener implements View.OnTouchListener {
 
 
     private void doPinch(MotionEvent event) {
+        float cx = (event.getX(0) + event.getX(1)) / 2;
+        float cy = (event.getY(0) + event.getY(1)) / 2;
+
         float absDist = getABSDist(event);
         float scale = absDist / _disXY;
-        zoom(scale, scale, _cX, _cY);
+
+        zoom(scale, scale, cx, cy);
 
         _disXY = absDist;
     }
@@ -123,18 +127,19 @@ public class TouchListener implements View.OnTouchListener {
     }
 
 
-    boolean canX_zoom =true;
-    boolean canY_zoom =false;
+    boolean canX_zoom = true;
+    boolean canY_zoom = true;
 
     private void zoom(float scaleX, float scaleY, float cx, float cy) {
+
         cx = cx - _FrameManager.frameLeft();
         cy = cy - _FrameManager.frameTop();
 
-        if(!canX_zoom){
-            scaleX=1;
+        if (!canX_zoom) {
+            scaleX = 1;
         }
-        if(!canY_zoom){
-            scaleY=1;
+        if (!canY_zoom) {
+            scaleY = 1;
         }
 
         _MappingManager.zoom(scaleX, scaleY, cx, cy);
@@ -164,10 +169,7 @@ public class TouchListener implements View.OnTouchListener {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
 
-            float x = e.getX() - _FrameManager.offsetLeft();
-            float y = e.getY() - _FrameManager.offsetTop();
-
-            zoom(1.4f, 1.4f, x, y);
+            zoom(1.4f, 1.4f, e.getX(), e.getY());
             return true;
         }
 

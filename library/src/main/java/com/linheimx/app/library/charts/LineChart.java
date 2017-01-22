@@ -7,12 +7,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewParent;
 
-import com.linheimx.app.library.dataprovider.HightLight;
+import com.linheimx.app.library.model.HightLight;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.manager.FrameManager;
-import com.linheimx.app.library.dataprovider.XAxis;
-import com.linheimx.app.library.dataprovider.YAxis;
+import com.linheimx.app.library.model.XAxis;
+import com.linheimx.app.library.model.YAxis;
 import com.linheimx.app.library.render.HighLightRender;
 import com.linheimx.app.library.render.LineRender;
 import com.linheimx.app.library.render.NoDataRender;
@@ -77,7 +77,7 @@ public class LineChart extends Chart {
         _FrameManager = new FrameManager();
         _MappingManager = new MappingManager(_FrameManager);
 
-        // parts
+        // models
         _XAxis = new XAxis();
         _YAxis = new YAxis();
         _HightLight = new HightLight();
@@ -213,6 +213,9 @@ public class LineChart extends Chart {
     }
 
 
+    /**
+     * 准备映射关系
+     */
     private void prepareMap() {
 
         float xMin = _lines.getmXMin();
