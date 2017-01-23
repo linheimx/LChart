@@ -132,9 +132,6 @@ public class TouchListener implements View.OnTouchListener {
 
     private void zoom(float scaleX, float scaleY, float cx, float cy) {
 
-        cx = cx - _FrameManager.frameLeft();
-        cy = cy - _FrameManager.frameTop();
-
         if (!canX_zoom) {
             scaleX = 1;
         }
@@ -143,6 +140,8 @@ public class TouchListener implements View.OnTouchListener {
         }
 
         _MappingManager.zoom(scaleX, scaleY, cx, cy);
+        _LineChart.cx = cx;
+        _LineChart.cy = cy;
         _LineChart.postInvalidate();
     }
 
@@ -170,6 +169,7 @@ public class TouchListener implements View.OnTouchListener {
         public boolean onDoubleTap(MotionEvent e) {
 
             zoom(1.4f, 1.4f, e.getX(), e.getY());
+
             return true;
         }
 

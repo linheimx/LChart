@@ -2,6 +2,8 @@ package com.linheimx.app.library.charts;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -70,6 +72,9 @@ public class LineChart extends Chart {
         super(context, attrs, defStyleAttr);
     }
 
+    public float cx = 0, cy = 0;
+    Paint _Paint;
+
     @Override
     protected void init(Context context) {
         super.init(context);
@@ -95,6 +100,11 @@ public class LineChart extends Chart {
         ////////////////////// other  ///////////////////////
         setXAxisUnit("mm/s");
         setYAxisUnit("hz");
+
+
+        //////
+        _Paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _Paint.setColor(Color.RED);
     }
 
 
@@ -154,6 +164,8 @@ public class LineChart extends Chart {
         // render unit
         _XAxisRender.renderUnit(canvas);
         _YAxisRender.renderUnit(canvas);
+
+        canvas.drawCircle(cx, cy, 20, _Paint);
     }
 
     @Override

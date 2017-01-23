@@ -115,24 +115,16 @@ public class MappingManager {
     }
 
 
-    float deleteX, deleteY;
-
     public void zoom(float scaleX, float scaleY, float cx, float cy) {
-
-        _touchDx -= deleteX;
-        _touchDy -= deleteY;
 
         _touchKx = _touchKx * scaleX;
         _touchKy = _touchKy * scaleY;
 
-        float x = (cx * scaleX - cx);
-        _touchDx += x;
+        float dx = -(cx * scaleX - cx);
+        _touchDx += dx;
 
-        float y = (cy * scaleY - cy);
-        _touchDy += y;
-
-        deleteX = x;
-        deleteY = y;
+        float dy = (cy * scaleY - cy);
+        _touchDy += dy;
     }
 
     public void translate(float dx, float dy) {
