@@ -25,29 +25,20 @@ public class LineChartActivity extends AppCompatActivity {
 
         _lineChart = (LineChart) findViewById(R.id.chart);
 
-        initChart(_lineChart);
-
-        goLeft();
-    }
-
-
-    void initChart(LineChart lineChart) {
-
         Line line = new Line();
-        line.setDrawCircle(false);
         List<Entry> list = new ArrayList<>();
-        Random random = new Random();
-        for (int i = 0; i < 100; i++) {
-            list.add(new Entry(i,random.nextInt()));
-        }
-
+        list.add(new Entry(1, 5));
+        list.add(new Entry(2, 4));
+        list.add(new Entry(3, 2));
+        list.add(new Entry(4, 3));
+        list.add(new Entry(5, 8));
         line.setEntries(list);
 
         List<Line> list2 = new ArrayList<>();
         list2.add(line);
         Lines lines = new Lines(list2);
 
-        lineChart.setLines(lines);
+        _lineChart.setLines(lines);
     }
 
     void test() {

@@ -80,7 +80,7 @@ public class LineChart extends Chart {
         super.init(context);
 
         _FrameManager = new FrameManager();
-        _MappingManager = new MappingManager(_FrameManager);
+        _MappingManager = new MappingManager(_FrameManager.getFrameRect());
 
         // models
         _XAxis = new XAxis();

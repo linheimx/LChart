@@ -1,5 +1,7 @@
 package com.linheimx.app.library.manager;
 
+import android.graphics.RectF;
+
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Single_XY;
@@ -14,30 +16,26 @@ import com.linheimx.app.library.utils.Single_XY;
 
 public class MappingManager {
 
-    FrameManager _frameManager;
+    RectF _contentRect;
 
-    public MappingManager(FrameManager frameManager) {
-        _frameManager = frameManager;
+    RectF _maxViewPort;
+    RectF _currentViewPort;
+
+    public MappingManager(RectF contentRect) {
+
+        _contentRect = contentRect;
+        _maxViewPort = new RectF();
+        _currentViewPort = new RectF();
     }
-
-    float _xMin, _yMin;
-    float _baseKx, _baseKy;
-
-    float _touchKx, _touchKy;
-    float _touchDx, _touchDy;
 
     public void prepareRelation(float xMin, float xMax, float yMin, float yMax) {
 
-        float xRange = xMax - xMin;
-        float yRange = yMax - yMin;
+        _maxViewPort.left = xMin;
+        _maxViewPort.right = xMax;
+        _maxViewPort.bottom = yMin;
+        _maxViewPort.top = yMax;
 
-        _xMin = xMin;
-        _yMin = yMin;
-        _baseKx = (_frameManager.frameWidth()) / xRange;
-        _baseKy = (_frameManager.frameHeight()) / yRange;
-
-        _touchKx = _touchKy = 1;
-        _touchDx = _touchDy = 0;
+        _currentViewPort.set(_maxViewPort);
     }
 
     /**
@@ -91,44 +89,57 @@ public class MappingManager {
     }
 
     public float v2p_x(float xValue) {
-        float px = (xValue - _xMin) * _baseKx * _touchKx + _touchDx;
+        float px = _contentRect.left + _contentRect.width() * (xValue - _currentViewPort.left) / Math.abs(_currentViewPort.width());
         return px;
     }
 
     public float v2p_y(float yValue) {
-        float py = _frameManager.frameHeight() - ((yValue - _yMin) * _baseKy * _touchKy) + _touchDy;
+        float py = _contentRect.top + _contentRect.height() - _contentRect.height() * (yValue - _currentViewPort.bottom) / Math.abs(_currentViewPort.height());
         return py;
     }
 
     public float p2v_x(float xPix) {
-        xPix -= _touchDx;
-        xPix = xPix / _touchKx / _baseKx;
-        float px = xPix + _xMin;
-        return px;
+        xPix -= _contentRect.left;
+        xPix = xPix / _contentRect.width() * Math.abs(_currentViewPort.width());
+        float value = xPix + _currentViewPort.left;
+        return value;
     }
 
     public float p2v_y(float yPix) {
-        yPix = _frameManager.frameHeight() - yPix + _touchDy;
-        yPix = yPix / _touchKy / _baseKy;
-        float py = yPix + _yMin;
-        return py;
+        yPix -= (_contentRect.top + _contentRect.height());
+        yPix = yPix / -_contentRect.height() * Math.abs(_currentViewPort.height());
+        float value = yPix + _currentViewPort.bottom;
+        return value;
     }
 
 
     public void zoom(float scaleX, float scaleY, float cx, float cy) {
 
-        _touchKx = _touchKx * scaleX;
-        _touchKy = _touchKy * scaleY;
+        float newWidth = scaleX * Math.abs(_currentViewPort.width());
+        float newHeight = scaleY * Math.abs(_currentViewPort.height());
 
-        float dx = -(cx * scaleX - cx);
-        _touchDx += dx;
+        float dx = cx - newWidth * (cx - _contentRect.left) / Math.abs(_contentRect.width());
+        float left = p2v_x(cx);
 
-        float dy = (cy * scaleY - cy);
-        _touchDy += dy;
+        float dy = cy - newHeight * (_contentRect.bottom - cy) / Math.abs(_contentRect.height());
+        float bottom = p2v_y(cy);
+
+//        _currentViewPort.left = left - dx;
+//        _currentViewPort.bottom = bottom - dy;
+        _currentViewPort.right = _currentViewPort.left + newWidth;
+        _currentViewPort.top = _currentViewPort.bottom + newHeight;
     }
 
     public void translate(float dx, float dy) {
-        _touchDx += dx;
-        _touchDy += dy;
+        float ddx = _currentViewPort.width() * dx / _contentRect.width();
+        float ddy = _currentViewPort.height() * dy / _contentRect.height();
+
+        float w = Math.abs(_currentViewPort.width());
+        float h = Math.abs(_currentViewPort.height());
+
+        _currentViewPort.left += -ddx;
+        _currentViewPort.bottom += -ddy;
+        _currentViewPort.right = _currentViewPort.left + w;
+        _currentViewPort.top = _currentViewPort.bottom + h;
     }
 }
