@@ -113,7 +113,7 @@ public class TouchListener implements View.OnTouchListener {
         float cy = (event.getY(0) + event.getY(1)) / 2;
 
         float absDist = getABSDist(event);
-        float scale = absDist / _disXY;
+        float scale = _disXY / absDist;
 
         zoom(scale, scale, _cX, _cY);
 
@@ -128,7 +128,7 @@ public class TouchListener implements View.OnTouchListener {
 
 
     boolean canX_zoom = true;
-    boolean canY_zoom = false;
+    boolean canY_zoom = true;
 
     private void zoom(float scaleX, float scaleY, float cx, float cy) {
 
@@ -168,7 +168,7 @@ public class TouchListener implements View.OnTouchListener {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
 
-            zoom(1.4f, 1.4f, e.getX(), e.getY());
+            zoom(0.7f, 0.7f, e.getX(), e.getY());
 
             return true;
         }

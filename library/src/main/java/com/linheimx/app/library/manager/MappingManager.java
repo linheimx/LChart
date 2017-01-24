@@ -118,14 +118,14 @@ public class MappingManager {
         float newWidth = scaleX * Math.abs(_currentViewPort.width());
         float newHeight = scaleY * Math.abs(_currentViewPort.height());
 
-        float dx = cx - newWidth * (cx - _contentRect.left) / Math.abs(_contentRect.width());
-        float left = p2v_x(cx);
+        float hitValueX = p2v_x(cx);
+        float left = hitValueX - newWidth * (cx - _contentRect.left) / Math.abs(_contentRect.width());
 
-        float dy = cy - newHeight * (_contentRect.bottom - cy) / Math.abs(_contentRect.height());
-        float bottom = p2v_y(cy);
+        float hitValueY = p2v_y(cy);
+        float bottom = hitValueY - newHeight * (_contentRect.bottom - cy) / Math.abs(_contentRect.height());
 
-//        _currentViewPort.left = left - dx;
-//        _currentViewPort.bottom = bottom - dy;
+        _currentViewPort.left = left;
+        _currentViewPort.bottom = bottom ;
         _currentViewPort.right = _currentViewPort.left + newWidth;
         _currentViewPort.top = _currentViewPort.bottom + newHeight;
     }
