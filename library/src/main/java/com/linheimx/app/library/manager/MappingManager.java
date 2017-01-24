@@ -91,26 +91,26 @@ public class MappingManager {
     }
 
     public float v2p_x(float xValue) {
-        float px = (xValue - _xMin) * _baseKx * _touchKx + _frameManager.offsetLeft();
-        px += _touchDx;
+        float px = (xValue - _xMin) * _baseKx * _touchKx + _touchDx;
         return px;
     }
 
     public float v2p_y(float yValue) {
-        float py = _frameManager.frameHeight() - (yValue - _yMin) * _baseKy * _touchKy;
-        py += _touchDy;
+        float py = _frameManager.frameHeight() - ((yValue - _yMin) * _baseKy * _touchKy) + _touchDy;
         return py;
     }
 
     public float p2v_x(float xPix) {
         xPix -= _touchDx;
-        float px = _xMin + (xPix - _frameManager.offsetLeft()) / _baseKx / _touchKx;
+        xPix = xPix / _touchKx / _baseKx;
+        float px = xPix + _xMin;
         return px;
     }
 
     public float p2v_y(float yPix) {
-        yPix -= _touchDy;
-        float py = _yMin + (_frameManager.frameHeight() - yPix) / _baseKy / _touchKy;
+        yPix = _frameManager.frameHeight() - yPix + _touchDy;
+        yPix = yPix / _touchKy / _baseKy;
+        float py = yPix + _yMin;
         return py;
     }
 

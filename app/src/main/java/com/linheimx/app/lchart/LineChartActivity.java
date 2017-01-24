@@ -11,6 +11,7 @@ import com.linheimx.app.library.data.Lines;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class LineChartActivity extends AppCompatActivity {
 
@@ -33,12 +34,13 @@ public class LineChartActivity extends AppCompatActivity {
     void initChart(LineChart lineChart) {
 
         Line line = new Line();
+        line.setDrawCircle(false);
         List<Entry> list = new ArrayList<>();
-        list.add(new Entry(1, 5));
-        list.add(new Entry(2, 4));
-        list.add(new Entry(3, 2));
-        list.add(new Entry(4, 3));
-        list.add(new Entry(5, 8));
+        Random random = new Random();
+        for (int i = 0; i < 100; i++) {
+            list.add(new Entry(i,random.nextInt()));
+        }
+
         line.setEntries(list);
 
         List<Line> list2 = new ArrayList<>();

@@ -115,7 +115,7 @@ public class TouchListener implements View.OnTouchListener {
         float absDist = getABSDist(event);
         float scale = absDist / _disXY;
 
-        zoom(scale, scale, cx, cy);
+        zoom(scale, scale, _cX, _cY);
 
         _disXY = absDist;
     }
@@ -128,7 +128,7 @@ public class TouchListener implements View.OnTouchListener {
 
 
     boolean canX_zoom = true;
-    boolean canY_zoom = true;
+    boolean canY_zoom = false;
 
     private void zoom(float scaleX, float scaleY, float cx, float cy) {
 

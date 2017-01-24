@@ -203,10 +203,10 @@ public class LineChart extends Chart {
         _MainPlotRect.right += _MainPlotRect.left + getWidth();
         _MainPlotRect.bottom += _MainPlotRect.top + getHeight();
 
-        // 0. padding
-        offsetPadding();
-        // 1. 计算label,unit的宽高
-        offsetArea();
+//        // 0. padding
+//        offsetPadding();
+//        // 1. 计算label,unit的宽高
+//        offsetArea();
 
     }
 
