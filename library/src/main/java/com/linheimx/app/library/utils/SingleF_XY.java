@@ -9,37 +9,37 @@ package com.linheimx.app.library.utils;
  * Created by LJIAN on 2016/11/14.
  */
 
-public class Single_XY {
-    private double x;
-    private double y;
+public class SingleF_XY {
+    private float x;
+    private float y;
 
-    private static Single_XY value;
+    private static SingleF_XY value;
 
-    private Single_XY() {
+    private SingleF_XY() {
 
     }
 
-    public synchronized static Single_XY getInstance() {
+    public synchronized static SingleF_XY getInstance() {
         if (value == null) {
-            value = new Single_XY();
+            value = new SingleF_XY();
         }
         return value;
     }
 
-    public double getX() {
+    public float getX() {
         return x;
     }
 
-    public Single_XY setX(double x) {
+    public SingleF_XY setX(float x) {
         this.x = x;
         return this;
     }
 
-    public double getY() {
+    public float getY() {
         return y;
     }
 
-    public Single_XY setY(double y) {
+    public SingleF_XY setY(float y) {
         this.y = y;
         return this;
     }

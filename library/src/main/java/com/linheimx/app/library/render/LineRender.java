@@ -2,13 +2,14 @@ package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
-import com.linheimx.app.library.manager.FrameManager;
+import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -27,8 +28,8 @@ public class LineRender extends BaseRender {
     Paint _PaintCircle;
 
 
-    public LineRender(FrameManager _FrameManager, MappingManager _MappingManager, Lines _lines, LineChart lineChart) {
-        super(_FrameManager, _MappingManager);
+    public LineRender(RectF rectMain, MappingManager _MappingManager, Lines _lines, LineChart lineChart) {
+        super(rectMain, _MappingManager);
         this._lines = _lines;
         this.lineChart = lineChart;
 
@@ -43,7 +44,7 @@ public class LineRender extends BaseRender {
         }
 
         canvas.save();
-        canvas.clipRect(_FrameManager.getFrameRect());
+        canvas.clipRect(_rectMain);
         // render line
         for (Line line : _lines.getLines()) {
             drawLine_Circle(canvas, line);
@@ -69,8 +70,8 @@ public class LineRender extends BaseRender {
         }
 
 
-        float xMin_Visiable = lineChart.getVisiableMinX();
-        float xMax_Visiable = lineChart.getVisiableMaxX();
+        double xMin_Visiable = lineChart.getVisiableMinX();
+        double xMax_Visiable = lineChart.getVisiableMaxX();
 
         int minIndex = Line.getEntryIndex(list, xMin_Visiable, Line.Rounding.DOWN);
         int maxIndex = Line.getEntryIndex(list, xMax_Visiable, Line.Rounding.UP);
@@ -85,19 +86,18 @@ public class LineRender extends BaseRender {
             _LineBuffer = new float[lineCount * 4];
         }
 
-
-        int index = 0;
+        int count = 0;
         for (int i = minIndex; i < maxIndex; i++) {
             Entry start = list.get(i);
             Entry end = list.get(i + 1);
 
-            _LineBuffer[index++] = start.getX();
-            _LineBuffer[index++] = start.getY();
-            _LineBuffer[index++] = end.getX();
-            _LineBuffer[index++] = end.getY();
+            _LineBuffer[count++] = _MappingManager.v2p_x(start.getX());
+            _LineBuffer[count++] = _MappingManager.v2p_y(start.getY());
+            _LineBuffer[count++] = _MappingManager.v2p_x(end.getX());
+            _LineBuffer[count++] = _MappingManager.v2p_y(end.getY());
 
             if (line.isDrawCircle()) {
-                Single_XY xy = _MappingManager.getPxByEntry(start);
+                SingleF_XY xy = _MappingManager.getPxByEntry(start);
                 canvas.drawCircle(xy.getX(), xy.getY(), Utils.dp2px(line.getCircleR()), _PaintCircle);
 
                 // 把最后点一个绘制出来
@@ -109,9 +109,7 @@ public class LineRender extends BaseRender {
             }
         }
 
-        _MappingManager.values2Px(_LineBuffer);
-
-        canvas.drawLines(_LineBuffer, _PaintLine);
+        canvas.drawLines(_LineBuffer, 0, count, _PaintLine);
     }
 
 

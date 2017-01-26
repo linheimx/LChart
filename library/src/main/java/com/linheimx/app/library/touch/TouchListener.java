@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.manager.MappingManager;
-import com.linheimx.app.library.manager.FrameManager;
 
 /**
  * Created by Administrator on 2016/11/20.
@@ -18,7 +17,6 @@ public class TouchListener implements View.OnTouchListener {
     GestureDetector _GestureDetector;
 
     LineChart _LineChart;
-    FrameManager _FrameManager;
     MappingManager _MappingManager;
 
     VelocityTracker _VelocityTracker;
@@ -28,10 +26,7 @@ public class TouchListener implements View.OnTouchListener {
         this._LineChart = lineChart;
 
         _GestureDetector = new GestureDetector(_LineChart.getContext(), new GestureListener());
-        _FrameManager = lineChart.get_FrameManager();
         _MappingManager = lineChart.get_MappingManager();
-
-
     }
 
 

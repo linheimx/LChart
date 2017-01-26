@@ -56,7 +56,7 @@ public class LineChartPlusActivity extends AppCompatActivity {
                 Line line = new Line();
                 List<Entry> list = new ArrayList<>();
 
-                for (int i = 0; i < 1000; i++) {
+                for (int i = 0; i < 2000; i++) {
                     list.add(new Entry(i, (float) Math.random()));
                 }
                 line.setEntries(list);

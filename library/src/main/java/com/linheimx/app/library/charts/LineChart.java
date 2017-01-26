@@ -12,7 +12,6 @@ import android.view.ViewParent;
 import com.linheimx.app.library.model.HightLight;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
-import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.model.XAxis;
 import com.linheimx.app.library.model.YAxis;
 import com.linheimx.app.library.render.HighLightRender;
@@ -30,7 +29,6 @@ import com.linheimx.app.library.utils.Utils;
 
 public class LineChart extends Chart {
 
-    FrameManager _FrameManager;
     MappingManager _MappingManager;
 
     Lines _lines;
@@ -55,8 +53,8 @@ public class LineChart extends Chart {
     ////////////////////////////// touch  /////////////////////////////
     TouchListener _touchListener;
 
-    //////////////////////////// other ///////////////////////////
-    private RectF _MainPlotRect = new RectF();// 主要的绘图区域
+    //////////////////////////// 区域 ///////////////////////////
+    private RectF _MainPlotRect;// 主要的绘图区域
     float padding = 15;
 
 
@@ -79,8 +77,8 @@ public class LineChart extends Chart {
     protected void init(Context context) {
         super.init(context);
 
-        _FrameManager = new FrameManager();
-        _MappingManager = new MappingManager(_FrameManager.getFrameRect());
+        _MainPlotRect = new RectF();
+        _MappingManager = new MappingManager(_MainPlotRect);
 
         // models
         _XAxis = new XAxis();
@@ -88,11 +86,11 @@ public class LineChart extends Chart {
         _HightLight = new HightLight();
 
         // render
-        _NoDataRender = new NoDataRender(_FrameManager, _MappingManager);
-        _XAxisRender = new XAxisRender(_FrameManager, _MappingManager, _XAxis);
-        _YAxisRender = new YAxisRender(_FrameManager, _MappingManager, _YAxis);
-        _LineRender = new LineRender(_FrameManager, _MappingManager, _lines, this);
-        _HighLightRender = new HighLightRender(_FrameManager, _MappingManager, _lines, _HightLight);
+        _NoDataRender = new NoDataRender(_MainPlotRect, _MappingManager);
+        _XAxisRender = new XAxisRender(_MainPlotRect, _MappingManager, _XAxis);
+        _YAxisRender = new YAxisRender(_MainPlotRect, _MappingManager, _YAxis);
+        _LineRender = new LineRender(_MainPlotRect, _MappingManager, _lines, this);
+        _HighLightRender = new HighLightRender(_MainPlotRect, _MappingManager, _lines, _HightLight);
 
         // touch listener
         _touchListener = new TouchListener(this);
@@ -141,7 +139,7 @@ public class LineChart extends Chart {
         _YAxis.calValues(getVisiableMinY(), getVisiableMaxY());
 
         canvas.save();
-        canvas.clipRect(_FrameManager.getFrameRect());
+        canvas.clipRect(_MainPlotRect);
 
         // render grid line
         _XAxisRender.renderGridline(canvas);
@@ -203,11 +201,10 @@ public class LineChart extends Chart {
         _MainPlotRect.right += _MainPlotRect.left + getWidth();
         _MainPlotRect.bottom += _MainPlotRect.top + getHeight();
 
-//        // 0. padding
-//        offsetPadding();
-//        // 1. 计算label,unit的宽高
-//        offsetArea();
-
+        // 0. padding
+        offsetPadding();
+        // 1. 计算label,unit的宽高
+        offsetArea();
     }
 
     private void offsetPadding() {
@@ -230,36 +227,35 @@ public class LineChart extends Chart {
      */
     private void prepareMap() {
 
-        float xMin = _lines.getmXMin();
-        float xMax = _lines.getmXMax();
-        float yMin = _lines.getmYMin();
-        float yMax = _lines.getmYMax();
+        double xMin = _lines.getmXMin();
+        double xMax = _lines.getmXMax();
+        double yMin = _lines.getmYMin();
+        double yMax = _lines.getmYMax();
 
-        _FrameManager.setFrame(_MainPlotRect);
         _MappingManager.prepareRelation(xMin, xMax, yMin, yMax);
     }
 
 
-    public float getVisiableMinX() {
-        float px = _FrameManager.frameLeft();
+    public double getVisiableMinX() {
+        float px = _MainPlotRect.left;
         Single_XY xy = _MappingManager.getValueByPx(px, 0);
         return xy.getX();
     }
 
-    public float getVisiableMaxX() {
-        float px = _FrameManager.frameRight();
+    public double getVisiableMaxX() {
+        float px = _MainPlotRect.right;
         Single_XY xy = _MappingManager.getValueByPx(px, 0);
         return xy.getX();
     }
 
-    public float getVisiableMinY() {
-        float py = _FrameManager.frameBottom();
+    public double getVisiableMinY() {
+        float py = _MainPlotRect.bottom;
         Single_XY xy = _MappingManager.getValueByPx(0, py);
         return xy.getY();
     }
 
-    public float getVisiableMaxY() {
-        float py = _FrameManager.frameTop();
+    public double getVisiableMaxY() {
+        float py = _MainPlotRect.top;
         Single_XY xy = _MappingManager.getValueByPx(0, py);
         return xy.getY();
     }
@@ -280,10 +276,6 @@ public class LineChart extends Chart {
         return _MappingManager;
     }
 
-    public FrameManager get_FrameManager() {
-        return _FrameManager;
-    }
-
 
     ////////////////////////////////  便捷的方法  //////////////////////////////////
 
@@ -292,7 +284,7 @@ public class LineChart extends Chart {
         highLight_ValueXY(xy.getX(), xy.getY());
     }
 
-    public void highLight_ValueXY(float x, float y) {
+    public void highLight_ValueXY(double x, double y) {
         _HighLightRender.highLight_ValueXY(x, y);
         invalidate();
     }

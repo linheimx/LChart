@@ -3,9 +3,9 @@ package com.linheimx.app.library.render;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 import com.linheimx.app.library.manager.MappingManager;
-import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -19,7 +19,7 @@ public class NoDataRender extends BaseRender {
     int txtColor = Color.RED;
     int txtSize = 30;
 
-    public NoDataRender(FrameManager _FrameManager, MappingManager _MappingManager) {
+    public NoDataRender(RectF _FrameManager, MappingManager _MappingManager) {
         super(_FrameManager, _MappingManager);
 
         _Paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -30,8 +30,8 @@ public class NoDataRender extends BaseRender {
         _Paint.setColor(txtColor);
         _Paint.setTextSize(txtSize);
 
-        float x = _FrameManager.getFrameCenter().getX();
-        float y = _FrameManager.getFrameCenter().getY();
+        float x = _rectMain.centerX();
+        float y = _rectMain.centerY();
 
         float halfW = Utils.textWidth(_Paint, txt) / 2;
         float halfH = Utils.textHeightAsc(_Paint) / 2;

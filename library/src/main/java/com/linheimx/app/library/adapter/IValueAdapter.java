@@ -5,5 +5,5 @@ package com.linheimx.app.library.adapter;
  */
 
 public interface IValueAdapter {
-    String value2String(float value);
+    String value2String(double value);
 }

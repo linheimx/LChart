@@ -25,7 +25,7 @@ public abstract class Axis {
 
 
     //////////////////////////  label 相关  /////////////////////////
-    float[] labelValues = new float[]{};
+    double[] labelValues = new double[]{};
     int labelCount = 6;
     int _labelCountAdvice = D_LABEL_COUNT;
     boolean isPerfectLabel = true;
@@ -65,9 +65,9 @@ public abstract class Axis {
      * -----------------------------
      * 注意：可见区域！
      */
-    public void calValues(float min, float max) {
+    public void calValues(double min, double max) {
 
-        float range;
+        double range;
         range = max - min;
 
         if (Math.abs(max - min) == 0) {
@@ -99,7 +99,7 @@ public abstract class Axis {
             labelCount = n;
 
             if (labelValues.length < labelCount) {
-                labelValues = new float[labelCount];
+                labelValues = new double[labelCount];
             }
 
             f = first;
@@ -123,11 +123,11 @@ public abstract class Axis {
 
         } else {
             if (labelValues.length < labelCount) {
-                labelValues = new float[labelCount];
+                labelValues = new double[labelCount];
             }
 
-            float v = min;
-            float interval = range / (labelCount - 1);
+            double v = min;
+            double interval = range / (labelCount - 1);
 
             labelValues[0] = min;
             for (int i = 1; i < labelCount - 1; i++) {
@@ -292,11 +292,11 @@ public abstract class Axis {
         this.labelCount = labelCount;
     }
 
-    public float[] getLabelValues() {
+    public double[] getLabelValues() {
         return labelValues;
     }
 
-    public void setLabelValues(float[] labelValues) {
+    public void setLabelValues(double[] labelValues) {
         this.labelValues = labelValues;
     }
 }

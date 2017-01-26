@@ -2,12 +2,12 @@ package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.MappingManager;
-import com.linheimx.app.library.manager.FrameManager;
 import com.linheimx.app.library.model.Axis;
-import com.linheimx.app.library.utils.Single_XY;
+import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -16,7 +16,7 @@ import com.linheimx.app.library.utils.Utils;
 
 public class XAxisRender extends AxisRender {
 
-    public XAxisRender(FrameManager _FrameManager, MappingManager _MappingManager, Axis axis) {
+    public XAxisRender(RectF _FrameManager, MappingManager _MappingManager, Axis axis) {
         super(_FrameManager, _MappingManager, axis);
     }
 
@@ -24,10 +24,10 @@ public class XAxisRender extends AxisRender {
     public void renderAxisLine(Canvas canvas) {
         super.renderAxisLine(canvas);
 
-        float startX = _FrameManager.frameLeft();
-        float startY = _FrameManager.frameBottom();
-        float stopX = _FrameManager.frameRight();
-        float stopY = _FrameManager.frameBottom();
+        float startX = _rectMain.left;
+        float startY = _rectMain.bottom;
+        float stopX = _rectMain.right;
+        float stopY = _rectMain.bottom;
 
         canvas.drawLine(startX, startY, stopX, stopY, _PaintAxis);
     }
@@ -37,17 +37,17 @@ public class XAxisRender extends AxisRender {
     public void renderGridline(Canvas canvas) {
         super.renderGridline(canvas);
 
-        float[] values = _Axis.getLabelValues();
+        double[] values = _Axis.getLabelValues();
 
         float x = 0;
 
-        float top = _FrameManager.frameTop();
-        float bottom = _FrameManager.frameBottom();
+        float top = _rectMain.top;
+        float bottom = _rectMain.bottom;
 
         for (int i = 0; i < _Axis.getLabelCount(); i++) {
-            float value = values[i];
+            double value = values[i];
 
-            Single_XY xy = _MappingManager.getPxByValue(value, 0);
+            SingleF_XY xy = _MappingManager.getPxByValue(value, 0);
             x = xy.getX();
 
             // grid line
@@ -60,22 +60,22 @@ public class XAxisRender extends AxisRender {
         super.renderLabels(canvas);
 
         IValueAdapter adapter = _Axis.get_ValueAdapter();
-        float[] values = _Axis.getLabelValues();
+        double[] values = _Axis.getLabelValues();
         float indicator = _Axis.getLeg();
 
         float x = 0;
 
-        float bottom = _FrameManager.frameBottom();
+        float bottom = _rectMain.bottom;
 
         for (int i = 0; i < _Axis.getLabelCount(); i++) {
-            float value = values[i];
+            double value = values[i];
             String label = adapter.value2String(value);
 
-            Single_XY xy = _MappingManager.getPxByValue(value, 0);
+            SingleF_XY xy = _MappingManager.getPxByValue(value, 0);
             x = xy.getX();
 
             // check
-            if (x < _FrameManager.frameLeft() || x > _FrameManager.frameRight()) {
+            if (x < _rectMain.left || x > _rectMain.right) {
                 continue;
             }
 
@@ -97,8 +97,8 @@ public class XAxisRender extends AxisRender {
         String unit = _Axis.get_unit();
         Paint paintUnit = _PaintUnit;
 
-        float bottom = _FrameManager.frameBottom();
-        float labelX = _FrameManager.getFrameRect().centerX() - Utils.textWidth(paintUnit, unit) / 2;
+        float bottom = _rectMain.bottom;
+        float labelX = _rectMain.centerX() - Utils.textWidth(paintUnit, unit) / 2;
         float labelY = bottom + _Axis.offsetBottom();
 
         canvas.drawText(unit, labelX, labelY, _PaintUnit);

@@ -6,15 +6,15 @@ package com.linheimx.app.library.data;
 
 public class Entry {
 
-    protected float x;
-    protected float y;
+    protected double x;
+    protected double y;
 
-    public Entry(float x, float y) {
+    public Entry(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
@@ -22,7 +22,7 @@ public class Entry {
         this.x = x;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
     }
 

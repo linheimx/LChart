@@ -2,13 +2,14 @@ package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 import com.linheimx.app.library.model.HightLight;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
-import com.linheimx.app.library.manager.FrameManager;
+import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -24,8 +25,8 @@ public class HighLightRender extends BaseRender {
     Paint paintHighLight;
     Paint paintHint;
 
-    public HighLightRender(FrameManager _FrameManager, MappingManager _MappingManager, Lines lines, HightLight hightLight) {
-        super(_FrameManager, _MappingManager);
+    public HighLightRender(RectF rectMain, MappingManager _MappingManager, Lines lines, HightLight hightLight) {
+        super(rectMain, _MappingManager);
 
         this._lines = lines;
         this._hightLight = hightLight;
@@ -35,10 +36,10 @@ public class HighLightRender extends BaseRender {
     }
 
 
-    float hightX = Float.MIN_VALUE;
-    float hightY = Float.MIN_VALUE;
+    double hightX = Double.MIN_VALUE;
+    double hightY = Double.MIN_VALUE;
 
-    public void highLight_ValueXY(float x, float y) {
+    public void highLight_ValueXY(double x, double y) {
         hightX = x;
         hightY = y;
     }
@@ -59,7 +60,7 @@ public class HighLightRender extends BaseRender {
         }
 
         canvas.save();
-        canvas.clipRect(_FrameManager.getFrameRect());
+        canvas.clipRect(_rectMain);
         drawHighLight_Hint(canvas);
         canvas.restore();
     }
@@ -76,8 +77,8 @@ public class HighLightRender extends BaseRender {
             return;
         }
 
-        float disX = Float.MAX_VALUE;
-        float disY = Float.MAX_VALUE;
+        double disX = Float.MAX_VALUE;
+        double disY = Float.MAX_VALUE;
         Entry hitEntry = null;
 
         for (Line line : _lines.getLines()) {
@@ -85,9 +86,9 @@ public class HighLightRender extends BaseRender {
             int index = Line.getEntryIndex(line.getEntries(), hightX, Line.Rounding.CLOSEST);
             Entry entry = line.getEntries().get(index);
 
-            float dx = Math.abs(entry.getX() - hightX);
+            double dx = Math.abs(entry.getX() - hightX);
 
-            float dy = 0;
+            double dy = 0;
             if (hightY != Float.MIN_VALUE) {
                 dy = Math.abs(entry.getY() - hightY);
             }
@@ -110,15 +111,15 @@ public class HighLightRender extends BaseRender {
 
         hightX = hitEntry.getX();// real indexX
 
-        Single_XY xy = _MappingManager.getPxByEntry(hitEntry);
+        SingleF_XY xy = _MappingManager.getPxByEntry(hitEntry);
 
 
         // draw high light
         paintHighLight.setStrokeWidth(_hightLight.getHighLightWidth());
         paintHighLight.setColor(_hightLight.getHighLightColor());
 
-        canvas.drawLine(_FrameManager.frameLeft(), xy.getY(), _FrameManager.frameRight(), xy.getY(), paintHighLight);
-        canvas.drawLine(xy.getX(), _FrameManager.frameTop(), xy.getX(), _FrameManager.frameBottom(), paintHighLight);
+        canvas.drawLine(_rectMain.left, xy.getY(), _rectMain.right, xy.getY(), paintHighLight);
+        canvas.drawLine(xy.getX(), _rectMain.top, xy.getX(), _rectMain.bottom, paintHighLight);
 
 
         // draw hint
@@ -130,8 +131,8 @@ public class HighLightRender extends BaseRender {
         float txtHeight = Utils.textHeight(paintHint);
         float txtWidth = Math.max(Utils.textWidth(paintHint, xStr), Utils.textWidth(paintHint, yStr));
 
-        float x = _FrameManager.frameRight() - txtWidth - 10;
-        float y = _FrameManager.frameTop() + Utils.dp2px(20);
+        float x = _rectMain.right - txtWidth - 10;
+        float y = _rectMain.top + Utils.dp2px(20);
 
         canvas.drawText(xStr, x, y, paintHint);
         canvas.drawText(yStr, x, y + txtHeight, paintHint);

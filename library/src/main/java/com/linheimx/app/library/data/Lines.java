@@ -10,10 +10,10 @@ public class Lines {
 
     private List<Line> lines;
 
-    protected float mYMax = -Float.MAX_VALUE;
-    protected float mYMin = Float.MAX_VALUE;
-    protected float mXMax = -Float.MAX_VALUE;
-    protected float mXMin = Float.MAX_VALUE;
+    protected double mYMax = -Double.MAX_VALUE;
+    protected double mYMin = Double.MAX_VALUE;
+    protected double mXMax = -Double.MAX_VALUE;
+    protected double mXMin = Double.MAX_VALUE;
 
     public Lines(List<Line> lines) {
         setLines(lines);
@@ -48,19 +48,19 @@ public class Lines {
     }
 
 
-    public float getmYMax() {
+    public double getmYMax() {
         return mYMax;
     }
 
-    public float getmYMin() {
+    public double getmYMin() {
         return mYMin;
     }
 
-    public float getmXMax() {
+    public double getmXMax() {
         return mXMax;
     }
 
-    public float getmXMin() {
+    public double getmXMin() {
         return mXMin;
     }
 }

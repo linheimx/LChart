@@ -16,10 +16,10 @@ public class Line {
     private List<Entry> entries;
 
 
-    private float mYMax = -Float.MAX_VALUE;
-    private float mYMin = Float.MAX_VALUE;
-    private float mXMax = -Float.MAX_VALUE;
-    private float mXMin = Float.MAX_VALUE;
+    private double mYMax = -Double.MAX_VALUE;
+    private double mYMin = Double.MAX_VALUE;
+    private double mXMax = -Double.MAX_VALUE;
+    private double mXMin = Double.MAX_VALUE;
 
     private int lineColor = Color.RED;
     private int lineWidth = 1;
@@ -81,7 +81,7 @@ public class Line {
      * @param rounding
      * @return
      */
-    public static int getEntryIndex(List<Entry> entries, float hitValue, Rounding rounding) {
+    public static int getEntryIndex(List<Entry> entries, double hitValue, Rounding rounding) {
 
         if (entries == null || entries.isEmpty())
             return -1;
@@ -93,14 +93,14 @@ public class Line {
         while (low < high) {
             int m = (low + high) / 2;
 
-            float fm = entries.get(m).getX();// middle
-            float fr = entries.get(m + 1).getX();// right
+            double fm = entries.get(m).getX();// middle
+            double fr = entries.get(m + 1).getX();// right
 
             if (hitValue >= fm && hitValue <= fr) {
 
                 // 中_右
-                float d1 = Math.abs(hitValue - fm);
-                float d2 = Math.abs(hitValue - fr);
+                double d1 = Math.abs(hitValue - fm);
+                double d2 = Math.abs(hitValue - fr);
 
                 if (d1 <= d2) {
                     closet = m;
@@ -114,12 +114,12 @@ public class Line {
             } else if (hitValue < fm) {
 
                 if (m >= 1) {
-                    float fl = entries.get(m - 1).getX();// left
+                    double fl = entries.get(m - 1).getX();// left
 
                     if (hitValue >= fl && hitValue <= fm) {
                         // 中_左
-                        float d0 = Math.abs(hitValue - fl);
-                        float d1 = Math.abs(hitValue - fm);
+                        double d0 = Math.abs(hitValue - fl);
+                        double d1 = Math.abs(hitValue - fm);
 
                         if (d0 <= d1) {
                             closet = m - 1;
@@ -157,19 +157,19 @@ public class Line {
     }
 
 
-    public float getmXMax() {
+    public double getmXMax() {
         return mXMax;
     }
 
-    public float getmXMin() {
+    public double getmXMin() {
         return mXMin;
     }
 
-    public float getmYMax() {
+    public double getmYMax() {
         return mYMax;
     }
 
-    public float getmYMin() {
+    public double getmYMin() {
         return mYMin;
     }
 
