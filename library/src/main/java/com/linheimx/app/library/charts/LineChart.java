@@ -20,7 +20,8 @@ import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.TouchListener;
-import com.linheimx.app.library.utils.Single_XY;
+import com.linheimx.app.library.touch.Zoomer;
+import com.linheimx.app.library.utils.SingleD_XY;
 import com.linheimx.app.library.utils.Utils;
 
 /**
@@ -51,6 +52,7 @@ public class LineChart extends Chart {
 
 
     ////////////////////////////// touch  /////////////////////////////
+    Zoomer _Zoomer;
     TouchListener _touchListener;
 
     //////////////////////////// 区域 ///////////////////////////
@@ -93,7 +95,8 @@ public class LineChart extends Chart {
         _HighLightRender = new HighLightRender(_MainPlotRect, _MappingManager, _lines, _HightLight);
 
         // touch listener
-        _touchListener = new TouchListener(this);
+        _Zoomer = new Zoomer();
+        _touchListener = new TouchListener(this, _Zoomer);
 
         ////////////////////// other  ///////////////////////
         setXAxisUnit("mm/s");
@@ -105,6 +108,13 @@ public class LineChart extends Chart {
         _Paint.setColor(Color.RED);
     }
 
+
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+
+        _touchListener.computeScroll();
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -235,28 +245,27 @@ public class LineChart extends Chart {
         _MappingManager.prepareRelation(xMin, xMax, yMin, yMax);
     }
 
-
     public double getVisiableMinX() {
         float px = _MainPlotRect.left;
-        Single_XY xy = _MappingManager.getValueByPx(px, 0);
+        SingleD_XY xy = _MappingManager.getValueByPx(px, 0);
         return xy.getX();
     }
 
     public double getVisiableMaxX() {
         float px = _MainPlotRect.right;
-        Single_XY xy = _MappingManager.getValueByPx(px, 0);
+        SingleD_XY xy = _MappingManager.getValueByPx(px, 0);
         return xy.getX();
     }
 
     public double getVisiableMinY() {
         float py = _MainPlotRect.bottom;
-        Single_XY xy = _MappingManager.getValueByPx(0, py);
+        SingleD_XY xy = _MappingManager.getValueByPx(0, py);
         return xy.getY();
     }
 
     public double getVisiableMaxY() {
         float py = _MainPlotRect.top;
-        Single_XY xy = _MappingManager.getValueByPx(0, py);
+        SingleD_XY xy = _MappingManager.getValueByPx(0, py);
         return xy.getY();
     }
 
@@ -280,7 +289,7 @@ public class LineChart extends Chart {
     ////////////////////////////////  便捷的方法  //////////////////////////////////
 
     public void highLight_PixXY(float px, float py) {
-        Single_XY xy = _MappingManager.getValueByPx(px, py);
+        SingleD_XY xy = _MappingManager.getValueByPx(px, py);
         highLight_ValueXY(xy.getX(), xy.getY());
     }
 

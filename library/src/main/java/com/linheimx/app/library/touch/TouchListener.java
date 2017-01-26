@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.manager.MappingManager;
+import com.linheimx.app.library.utils.LogUtil;
 
 /**
  * Created by Administrator on 2016/11/20.
@@ -15,6 +16,7 @@ import com.linheimx.app.library.manager.MappingManager;
 public class TouchListener implements View.OnTouchListener {
 
     GestureDetector _GestureDetector;
+    Zoomer _Zoomer;
 
     LineChart _LineChart;
     MappingManager _MappingManager;
@@ -22,9 +24,10 @@ public class TouchListener implements View.OnTouchListener {
     VelocityTracker _VelocityTracker;
     TouchMode _TouchMode = TouchMode.NONE;
 
-    public TouchListener(LineChart lineChart) {
+    public TouchListener(LineChart lineChart, Zoomer zoomer) {
         this._LineChart = lineChart;
 
+        _Zoomer = zoomer;
         _GestureDetector = new GestureDetector(_LineChart.getContext(), new GestureListener());
         _MappingManager = lineChart.get_MappingManager();
     }
@@ -48,7 +51,11 @@ public class TouchListener implements View.OnTouchListener {
             }
         }
 
-        _GestureDetector.onTouchEvent(event);
+        boolean hit = _GestureDetector.onTouchEvent(event);
+        if (hit) {
+            _LineChart.invalidate();
+            return true;
+        }
 
         float x = event.getX();
         float y = event.getY();
@@ -102,10 +109,14 @@ public class TouchListener implements View.OnTouchListener {
         return true;
     }
 
+    public void computeScroll() {
+        if (_Zoomer.computeZoom()) {
+            float currentLevel = _Zoomer.getCurrentZoom();
+            zoom(currentLevel, _zoom_w, _zoom_h, _zoom_cx, _zoom_cy);
+        }
+    }
 
     private void doPinch(MotionEvent event) {
-        float cx = (event.getX(0) + event.getX(1)) / 2;
-        float cy = (event.getY(0) + event.getY(1)) / 2;
 
         float absDist = getABSDist(event);
         float scale = _disXY / absDist;
@@ -125,6 +136,14 @@ public class TouchListener implements View.OnTouchListener {
     boolean canX_zoom = true;
     boolean canY_zoom = true;
 
+    /**
+     * 应用于指定的缩放
+     *
+     * @param scaleX
+     * @param scaleY
+     * @param cx
+     * @param cy
+     */
     private void zoom(float scaleX, float scaleY, float cx, float cy) {
 
         if (!canX_zoom) {
@@ -140,6 +159,30 @@ public class TouchListener implements View.OnTouchListener {
         _LineChart.postInvalidate();
     }
 
+
+    /**
+     * 应用于平滑的缩放
+     *
+     * @param level
+     * @param startW
+     * @param startH
+     * @param cx
+     * @param cy
+     */
+    private void zoom(float level, double startW, double startH, float cx, float cy) {
+
+        if (!canX_zoom) {
+            startW = _MappingManager.get_currentViewPort().width();
+        }
+        if (!canY_zoom) {
+            startH = _MappingManager.get_currentViewPort().height();
+        }
+
+        _MappingManager.zoom(level, startW, startH, cx, cy);
+        _LineChart.cx = cx;
+        _LineChart.cy = cy;
+        _LineChart.postInvalidate();
+    }
 
     private static float getABSDist(MotionEvent event) {
         float x = event.getX(0) - event.getX(1);
@@ -158,12 +201,23 @@ public class TouchListener implements View.OnTouchListener {
     }
 
 
+    ///////////////////////////////////  平滑的缩放  ///////////////////////////////////
+    double _zoom_w, _zoom_h;
+    float _zoom_cx, _zoom_cy;
+
+
     class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
 
-            zoom(0.7f, 0.7f, e.getX(), e.getY());
+            _zoom_w = _MappingManager.get_currentViewPort().width();
+            _zoom_h = _MappingManager.get_currentViewPort().height();
+
+            _zoom_cx = e.getX();
+            _zoom_cy = e.getY();
+
+            _Zoomer.startZoom(0.5f);
 
             return true;
         }

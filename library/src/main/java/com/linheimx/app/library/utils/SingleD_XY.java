@@ -9,19 +9,19 @@ package com.linheimx.app.library.utils;
  * Created by LJIAN on 2016/11/14.
  */
 
-public class Single_XY {
+public class SingleD_XY {
     private double x;
     private double y;
 
-    private static Single_XY value;
+    private static SingleD_XY value;
 
-    private Single_XY() {
+    private SingleD_XY() {
 
     }
 
-    public synchronized static Single_XY getInstance() {
+    public synchronized static SingleD_XY getInstance() {
         if (value == null) {
-            value = new Single_XY();
+            value = new SingleD_XY();
         }
         return value;
     }
@@ -30,7 +30,7 @@ public class Single_XY {
         return x;
     }
 
-    public Single_XY setX(double x) {
+    public SingleD_XY setX(double x) {
         this.x = x;
         return this;
     }
@@ -39,7 +39,7 @@ public class Single_XY {
         return y;
     }
 
-    public Single_XY setY(double y) {
+    public SingleD_XY setY(double y) {
         this.y = y;
         return this;
     }

@@ -3,10 +3,9 @@ package com.linheimx.app.library.manager;
 import android.graphics.RectF;
 
 import com.linheimx.app.library.data.Entry;
-import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.RectD;
 import com.linheimx.app.library.utils.SingleF_XY;
-import com.linheimx.app.library.utils.Single_XY;
+import com.linheimx.app.library.utils.SingleD_XY;
 
 /**
  * 数据源与绘出来的图之间的映射关系
@@ -52,8 +51,8 @@ public class MappingManager {
      * @param y
      * @return
      */
-    public Single_XY getValueByPx(float x, float y) {
-        Single_XY value = Single_XY.getInstance();
+    public SingleD_XY getValueByPx(float x, float y) {
+        SingleD_XY value = SingleD_XY.getInstance();
         value.setX(p2v_x(x)).setY(p2v_y(y));
         return value;
     }
@@ -118,6 +117,23 @@ public class MappingManager {
         _currentViewPort.top = _currentViewPort.bottom + newHeight;
     }
 
+    public void zoom(float level, double startW, double startH, float cx, float cy) {
+
+        double newWidth = startW * level;
+        double newHeight = startH * level;
+
+        double hitValueX = p2v_x(cx);
+        double left = hitValueX - newWidth * (cx - _contentRect.left) / _contentRect.width();
+
+        double hitValueY = p2v_y(cy);
+        double bottom = hitValueY - newHeight * (_contentRect.bottom - cy) / _contentRect.height();
+
+        _currentViewPort.left = left;
+        _currentViewPort.bottom = bottom;
+        _currentViewPort.right = _currentViewPort.left + newWidth;
+        _currentViewPort.top = _currentViewPort.bottom + newHeight;
+    }
+
     public void translate(float dx, float dy) {
         double ddx = _currentViewPort.width() * dx / _contentRect.width();
         double ddy = _currentViewPort.height() * dy / _contentRect.height();
@@ -129,5 +145,22 @@ public class MappingManager {
         _currentViewPort.bottom += ddy;
         _currentViewPort.right = _currentViewPort.left + w;
         _currentViewPort.top = _currentViewPort.bottom + h;
+    }
+
+
+    public RectD get_maxViewPort() {
+        return _maxViewPort;
+    }
+
+    public void set_maxViewPort(RectD _maxViewPort) {
+        this._maxViewPort = _maxViewPort;
+    }
+
+    public RectD get_currentViewPort() {
+        return _currentViewPort;
+    }
+
+    public void set_currentViewPort(RectD _currentViewPort) {
+        this._currentViewPort = _currentViewPort;
     }
 }

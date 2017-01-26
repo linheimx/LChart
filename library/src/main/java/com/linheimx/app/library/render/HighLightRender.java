@@ -10,7 +10,6 @@ import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.utils.SingleF_XY;
-import com.linheimx.app.library.utils.Single_XY;
 import com.linheimx.app.library.utils.Utils;
 
 /**
