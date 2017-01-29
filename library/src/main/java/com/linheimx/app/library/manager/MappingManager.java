@@ -163,4 +163,12 @@ public class MappingManager {
     public void set_currentViewPort(RectD _currentViewPort) {
         this._currentViewPort = _currentViewPort;
     }
+
+    public RectF get_contentRect() {
+        return _contentRect;
+    }
+
+    public void set_contentRect(RectF _contentRect) {
+        this._contentRect = _contentRect;
+    }
 }

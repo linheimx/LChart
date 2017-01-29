@@ -4,8 +4,6 @@ import android.os.SystemClock;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
-import com.linheimx.app.library.utils.LogUtil;
-
 /**
  * Created by x1c on 2017/1/26.
  */
@@ -13,7 +11,7 @@ import com.linheimx.app.library.utils.LogUtil;
 public class Zoomer {
 
     long _startTime;
-    int _duration = 1 * 1000;// 动画的持续时间
+    int _duration = 1 * 500;// 动画的持续时间
     Interpolator _Interpolator;//校对机
 
     float _endZoom;
@@ -58,6 +56,10 @@ public class Zoomer {
         float t = d * 1f / _duration;
         _currentLevel = 1 - (1 - _endZoom) * _Interpolator.getInterpolation(t);
         return true;
+    }
+
+    public void stop() {
+        _isFinish = true;
     }
 
 

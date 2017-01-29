@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewParent;
+import android.widget.OverScroller;
 
 import com.linheimx.app.library.model.HightLight;
 import com.linheimx.app.library.data.Lines;
@@ -52,7 +53,6 @@ public class LineChart extends Chart {
 
 
     ////////////////////////////// touch  /////////////////////////////
-    Zoomer _Zoomer;
     TouchListener _touchListener;
 
     //////////////////////////// 区域 ///////////////////////////
@@ -95,8 +95,7 @@ public class LineChart extends Chart {
         _HighLightRender = new HighLightRender(_MainPlotRect, _MappingManager, _lines, _HightLight);
 
         // touch listener
-        _Zoomer = new Zoomer();
-        _touchListener = new TouchListener(this, _Zoomer);
+        _touchListener = new TouchListener(this);
 
         ////////////////////// other  ///////////////////////
         setXAxisUnit("mm/s");

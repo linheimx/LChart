@@ -4,10 +4,11 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.widget.Scroller;
 
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.manager.MappingManager;
-import com.linheimx.app.library.utils.LogUtil;
+import com.linheimx.app.library.utils.RectD;
 
 /**
  * Created by Administrator on 2016/11/20.
@@ -17,6 +18,7 @@ public class TouchListener implements View.OnTouchListener {
 
     GestureDetector _GestureDetector;
     Zoomer _Zoomer;
+    Scroller _Scroller;
 
     LineChart _LineChart;
     MappingManager _MappingManager;
@@ -24,12 +26,22 @@ public class TouchListener implements View.OnTouchListener {
     VelocityTracker _VelocityTracker;
     TouchMode _TouchMode = TouchMode.NONE;
 
-    public TouchListener(LineChart lineChart, Zoomer zoomer) {
+    ///////////////////////////////////  平滑的缩放  ///////////////////////////////////
+    double _zoom_w, _zoom_h;
+    float _zoom_cx, _zoom_cy;
+
+    ///////////////////////////////////  平滑的滚动  ///////////////////////////////////
+    RectD _startViewport = new RectD();
+    float _big_w, _big_h;
+
+    public TouchListener(LineChart lineChart) {
         this._LineChart = lineChart;
 
-        _Zoomer = zoomer;
         _GestureDetector = new GestureDetector(_LineChart.getContext(), new GestureListener());
         _MappingManager = lineChart.get_MappingManager();
+
+        _Zoomer = new Zoomer();
+        _Scroller = new Scroller(lineChart.getContext());
     }
 
 
@@ -62,6 +74,7 @@ public class TouchListener implements View.OnTouchListener {
 
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                stopAll();
                 _lastX = x;
                 _lastY = y;
                 break;
@@ -75,9 +88,7 @@ public class TouchListener implements View.OnTouchListener {
                     _cX = (tmpX / 2f);
                     _cY = (tmpY / 2f);
 
-//                    if (_disXY > 10) {
                     _TouchMode = TouchMode.PINCH_ZOOM;
-//                    }
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -99,6 +110,16 @@ public class TouchListener implements View.OnTouchListener {
                 _TouchMode = TouchMode.NONE;
                 break;
             case MotionEvent.ACTION_UP:
+                if (_TouchMode == TouchMode.DRAG) {
+                    _TouchMode = TouchMode.FLING;
+
+                    _VelocityTracker.computeCurrentVelocity(1000, 5000);
+                    int vx = (int) _VelocityTracker.getXVelocity();
+                    int vy = (int) _VelocityTracker.getYVelocity();
+                    if (vx > 20 || vy > 20) {
+                        doFling(event.getX(), event.getY(), vx, vy);
+                    }
+                }
                 _TouchMode = TouchMode.NONE;
                 break;
             case MotionEvent.ACTION_CANCEL:
@@ -109,13 +130,41 @@ public class TouchListener implements View.OnTouchListener {
         return true;
     }
 
+    float _lastScrollX, _lastScrollY;
+
     public void computeScroll() {
+        // 考虑滚动
+        if (_Scroller.computeScrollOffset()) {
+
+            int currX = _Scroller.getCurrX();
+            int currY = _Scroller.getCurrY();
+
+            float dx = currX - _lastScrollX;
+            float dy = currY - _lastScrollY;
+
+            doDrag(dx, dy);
+
+            _lastScrollX = currX;
+            _lastScrollY = currY;
+        }
+
+        // 考虑缩放
         if (_Zoomer.computeZoom()) {
             float currentLevel = _Zoomer.getCurrentZoom();
             zoom(currentLevel, _zoom_w, _zoom_h, _zoom_cx, _zoom_cy);
         }
     }
 
+    private void stopAll(){
+        _Scroller.forceFinished(true);
+        _Zoomer.stop();
+    }
+
+    /**
+     * 双手缩放
+     *
+     * @param event
+     */
     private void doPinch(MotionEvent event) {
 
         float absDist = getABSDist(event);
@@ -127,9 +176,35 @@ public class TouchListener implements View.OnTouchListener {
     }
 
 
+    /**
+     * 拖拽
+     *
+     * @param dx
+     * @param dy
+     */
     private void doDrag(float dx, float dy) {
         _MappingManager.translate(dx, dy);
         _LineChart.postInvalidate();
+    }
+
+
+    /**
+     * 抛掷
+     */
+    private void doFling(float x, float y, int velocityX, int velocityY) {
+
+        _Scroller.forceFinished(true);
+
+        _lastScrollX = x;
+        _lastScrollY = y;
+
+        _Scroller.fling(
+                (int) x, (int) y,
+                velocityX, velocityY,
+                Integer.MIN_VALUE, Integer.MAX_VALUE,
+                Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+        _LineChart.invalidate();
     }
 
 
@@ -201,15 +276,12 @@ public class TouchListener implements View.OnTouchListener {
     }
 
 
-    ///////////////////////////////////  平滑的缩放  ///////////////////////////////////
-    double _zoom_w, _zoom_h;
-    float _zoom_cx, _zoom_cy;
-
-
     class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
+
+            _Zoomer.stop();
 
             _zoom_w = _MappingManager.get_currentViewPort().width();
             _zoom_h = _MappingManager.get_currentViewPort().height();
