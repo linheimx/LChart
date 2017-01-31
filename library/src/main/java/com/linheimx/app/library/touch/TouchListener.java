@@ -30,10 +30,6 @@ public class TouchListener implements View.OnTouchListener {
     double _zoom_w, _zoom_h;
     float _zoom_cx, _zoom_cy;
 
-    ///////////////////////////////////  平滑的滚动  ///////////////////////////////////
-    RectD _startViewport = new RectD();
-    float _big_w, _big_h;
-
     public TouchListener(LineChart lineChart) {
         this._LineChart = lineChart;
 

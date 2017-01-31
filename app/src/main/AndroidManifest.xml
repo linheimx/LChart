@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".LineChartActivity" />
-        <activity android:name=".LineChartPlusActivity"></activity>
+        <activity android:name=".LineChartPlusActivity" />
+        <activity android:name=".GodActivity"></activity>
     </application>
 
 </manifest>

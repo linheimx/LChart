@@ -35,26 +35,38 @@ public class HighLightRender extends BaseRender {
     }
 
 
-    double hightX = Double.MIN_VALUE;
-    double hightY = Double.MIN_VALUE;
+    double highValueX = Double.MIN_VALUE;
+    double hightValueY = Double.MIN_VALUE;
+
+    int recordIndex = 0;
+    boolean isClick = false;
 
     public void highLight_ValueXY(double x, double y) {
-        hightX = x;
-        hightY = y;
+        highValueX = x;
+        hightValueY = y;
+        isClick = true;
     }
 
     public void highLightLeft() {
-        hightX--;
+        recordIndex--;
     }
 
     public void highLightRight() {
-        hightX++;
+        recordIndex++;
     }
 
 
     public void render(Canvas canvas) {
 
         if (_lines == null) {
+            return;
+        }
+
+        if (_lines.getLines().size() == 0) {
+            return;
+        }
+
+        if (highValueX == Double.MIN_VALUE || hightValueY == Double.MIN_VALUE) {
             return;
         }
 
@@ -67,29 +79,30 @@ public class HighLightRender extends BaseRender {
 
     private void drawHighLight_Hint(Canvas canvas) {
 
-        // check
-        if (hightX == Float.MIN_VALUE) {
-            return;
-        }
-
-        if (_lines.getLines().size() == 0) {
-            return;
-        }
-
         double disX = Float.MAX_VALUE;
         double disY = Float.MAX_VALUE;
         Entry hitEntry = null;
 
         for (Line line : _lines.getLines()) {
+            int index = recordIndex;
 
-            int index = Line.getEntryIndex(line.getEntries(), hightX, Line.Rounding.CLOSEST);
+            if (isClick) {
+                index = Line.getEntryIndex(line.getEntries(), highValueX, Line.Rounding.CLOSEST);
+                recordIndex = index;
+                isClick = false;
+            }
+
+            if (index < 0 || index >= line.getEntries().size()) {
+                continue;
+            }
+
             Entry entry = line.getEntries().get(index);
 
-            double dx = Math.abs(entry.getX() - hightX);
+            double dx = Math.abs(entry.getX() - highValueX);
 
             double dy = 0;
-            if (hightY != Float.MIN_VALUE) {
-                dy = Math.abs(entry.getY() - hightY);
+            if (hightValueY != Float.MIN_VALUE) {
+                dy = Math.abs(entry.getY() - hightValueY);
             }
 
 
@@ -98,7 +111,7 @@ public class HighLightRender extends BaseRender {
                 disX = dx;
 
                 // 再考虑 y
-                if (hightY != Float.MIN_VALUE) {
+                if (hightValueY != Float.MIN_VALUE) {
                     if (dy <= disY) {
                         hitEntry = entry;
                     }
@@ -108,7 +121,11 @@ public class HighLightRender extends BaseRender {
             }
         }
 
-        hightX = hitEntry.getX();// real indexX
+        if (hitEntry == null) {
+            return;
+        }
+        
+        highValueX = hitEntry.getX();// real indexX
 
         SingleF_XY xy = _MappingManager.getPxByEntry(hitEntry);
 

@@ -22,6 +22,8 @@ public class LineChartPlusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_chart_plus);
 
+        getSupportActionBar().setTitle("带功能按钮的折线图");
+
         lineChartPlus = (LineChartPlus) findViewById(R.id.chartPlus);
 
         initChart(lineChartPlus);
@@ -36,7 +38,7 @@ public class LineChartPlusActivity extends AppCompatActivity {
         list.add(new Entry(2, 4));
         list.add(new Entry(3, 2));
         list.add(new Entry(4, 3));
-        list.add(new Entry(5, 8));
+        list.add(new Entry(10, 8));
         line.setEntries(list);
 
         List<Line> list2 = new ArrayList<>();

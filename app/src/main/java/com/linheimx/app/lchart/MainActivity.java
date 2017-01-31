@@ -31,4 +31,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, LineChartPlusActivity.class));
     }
 
+    public void btn3(View v) {
+        startActivity(new Intent(MainActivity.this, GodActivity.class));
+    }
+
+
 }

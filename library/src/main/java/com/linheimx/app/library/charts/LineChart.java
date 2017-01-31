@@ -8,20 +8,21 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewParent;
-import android.widget.OverScroller;
 
 import com.linheimx.app.library.model.HightLight;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.model.XAxis;
 import com.linheimx.app.library.model.YAxis;
+import com.linheimx.app.library.render.GodRender;
 import com.linheimx.app.library.render.HighLightRender;
 import com.linheimx.app.library.render.LineRender;
 import com.linheimx.app.library.render.NoDataRender;
 import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
+import com.linheimx.app.library.touch.GodTouchListener;
 import com.linheimx.app.library.touch.TouchListener;
-import com.linheimx.app.library.touch.Zoomer;
+import com.linheimx.app.library.utils.RectD;
 import com.linheimx.app.library.utils.SingleD_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -38,6 +39,7 @@ public class LineChart extends Chart {
     ////////////////////////// function //////////////////////////
     boolean isHighLightEnabled = true;
     boolean isTouchEnabled = true;
+    ChartMode _ChartMode;
 
     ///////////////////////////////// parts ////////////////////////////////
     XAxis _XAxis;
@@ -50,14 +52,17 @@ public class LineChart extends Chart {
     YAxisRender _YAxisRender;
     LineRender _LineRender;
     HighLightRender _HighLightRender;
+    GodRender _GodRender;
 
 
     ////////////////////////////// touch  /////////////////////////////
-    TouchListener _touchListener;
+    TouchListener _TouchListener;
+    GodTouchListener _GodTouchListener;
 
     //////////////////////////// 区域 ///////////////////////////
-    private RectF _MainPlotRect;// 主要的绘图区域
+    RectF _MainPlotRect;// 主要的绘图区域
     float padding = 15;
+    RectF _GodRect;//
 
 
     public LineChart(Context context) {
@@ -79,8 +84,13 @@ public class LineChart extends Chart {
     protected void init(Context context) {
         super.init(context);
 
+        // func
+        _ChartMode = ChartMode.Normal;
+
+        // init v
         _MainPlotRect = new RectF();
         _MappingManager = new MappingManager(_MainPlotRect);
+        _GodRect = new RectF();
 
         // models
         _XAxis = new XAxis();
@@ -93,9 +103,11 @@ public class LineChart extends Chart {
         _YAxisRender = new YAxisRender(_MainPlotRect, _MappingManager, _YAxis);
         _LineRender = new LineRender(_MainPlotRect, _MappingManager, _lines, this);
         _HighLightRender = new HighLightRender(_MainPlotRect, _MappingManager, _lines, _HightLight);
+        _GodRender = new GodRender(_MainPlotRect, _MappingManager, _GodRect);
 
         // touch listener
-        _touchListener = new TouchListener(this);
+        _TouchListener = new TouchListener(this);
+        _GodTouchListener = new GodTouchListener(this);
 
         ////////////////////// other  ///////////////////////
         setXAxisUnit("mm/s");
@@ -112,7 +124,9 @@ public class LineChart extends Chart {
     public void computeScroll() {
         super.computeScroll();
 
-        _touchListener.computeScroll();
+        if (_ChartMode == ChartMode.Normal) {
+            _TouchListener.computeScroll();
+        }
     }
 
     @Override
@@ -131,7 +145,13 @@ public class LineChart extends Chart {
             parent.requestDisallowInterceptTouchEvent(true);
         }
 
-        return _touchListener.onTouch(this, event);
+        if (_ChartMode == ChartMode.Normal) {
+            return _TouchListener.onTouch(this, event);
+        } else if (_ChartMode == ChartMode.God) {
+            return _GodTouchListener.onTouch(this, event);
+        }
+
+        return false;
     }
 
     @Override
@@ -158,6 +178,12 @@ public class LineChart extends Chart {
         _LineRender.render(canvas);
         // render high light
         _HighLightRender.render(canvas);
+
+        // render god
+        if (_ChartMode == ChartMode.God) {
+            _GodRender.render(canvas);
+        }
+
         canvas.restore();
 
         // render Axis
@@ -214,6 +240,11 @@ public class LineChart extends Chart {
         offsetPadding();
         // 1. 计算label,unit的宽高
         offsetArea();
+
+        if (_ChartMode == ChartMode.God) {
+            _GodRect.set(_MainPlotRect);
+            _GodRect.right = _GodRect.right / 3;
+        }
     }
 
     private void offsetPadding() {
@@ -313,6 +344,51 @@ public class LineChart extends Chart {
 
     public void setYAxisUnit(String unit) {
         _YAxis.set_unit(unit);
+    }
+
+    public RectF get_GodRect() {
+        return _GodRect;
+    }
+
+    public void set_GodRect(RectF _GodRect) {
+        this._GodRect = _GodRect;
+    }
+
+    public RectF get_MainPlotRect() {
+        return _MainPlotRect;
+    }
+
+    public void set_MainPlotRect(RectF _MainPlotRect) {
+        this._MainPlotRect = _MainPlotRect;
+    }
+
+    public ChartMode get_ChartMode() {
+        return _ChartMode;
+    }
+
+    public LineChart set_ChartMode(ChartMode _ChartMode) {
+        this._ChartMode = _ChartMode;
+        return this;
+    }
+
+    LineChart _ob_linechart;
+
+    public void registObserver(LineChart lineChartOb) {
+        this._ob_linechart = lineChartOb;
+    }
+
+    public void notifyOB_ViewportChanged(RectD _currentViewPort) {
+        _ob_linechart.set_CurrentViewPort(_currentViewPort);
+        _ob_linechart.invalidate();
+    }
+
+    public LineChart set_CurrentViewPort(RectD _currentViewPort) {
+        _MappingManager.set_currentViewPort(_currentViewPort);
+        return this;
+    }
+
+    public enum ChartMode {
+        Normal, God
     }
 
 

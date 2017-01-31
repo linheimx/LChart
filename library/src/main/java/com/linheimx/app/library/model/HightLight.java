@@ -10,11 +10,11 @@ import com.linheimx.app.library.utils.Utils;
 
 public class HightLight {
 
-    public static final float D_HIGHLIGHT_WIDTH = 2;
+    public static final float D_HIGHLIGHT_WIDTH = 1;
     public static final float D_HINT_TEXT_SIZE = 15;
 
     //////////////////////// high light ////////////////////////
-    int highLightColor = Color.BLUE;
+    int highLightColor = Color.YELLOW;
     float highLightWidth;
 
     //////////////////////// hint ////////////////////////

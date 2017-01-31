@@ -23,6 +23,8 @@ public class LineChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_chart);
 
+        getSupportActionBar().setTitle("基本折线图");
+
         _lineChart = (LineChart) findViewById(R.id.chart);
 
         Line line = new Line();
@@ -31,7 +33,7 @@ public class LineChartActivity extends AppCompatActivity {
         list.add(new Entry(2, 4));
         list.add(new Entry(3, 2));
         list.add(new Entry(4, 3));
-        list.add(new Entry(5, 8));
+        list.add(new Entry(10, 8));
         line.setEntries(list);
 
         List<Line> list2 = new ArrayList<>();
