@@ -18,12 +18,12 @@ public class GodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_god);
 
-        getSupportActionBar().setTitle("预览折线图");
+        getSupportActionBar().setTitle("折线图：上帝视角");
 
         LineChart lineChart1 = (LineChart) findViewById(R.id.chart1);
         LineChart lineChart2 = (LineChart) findViewById(R.id.chart2);
 
-        lineChart2.set_ChartMode(LineChart.ChartMode.God);//切换成上帝视角
+//        lineChart2.set_ChartMode(LineChart.ChartMode.God);//切换成上帝视角  xml已经写了
         lineChart2.registObserver(lineChart1);
 
         addData(lineChart1);

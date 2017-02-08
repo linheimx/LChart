@@ -3,6 +3,7 @@ package com.linheimx.app.library.touch;
 import android.graphics.RectF;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.linheimx.app.library.charts.LineChart;
@@ -16,16 +17,20 @@ import com.linheimx.app.library.utils.RectD;
 public class GodTouchListener implements View.OnTouchListener {
 
     GestureDetector _GestureDetector;
+    ScaleGestureDetector _ScaleGestureDetector;
     LineChart _LineChart;
 
     public GodTouchListener(LineChart lineChart) {
         _LineChart = lineChart;
         _GestureDetector = new GestureDetector(lineChart.getContext(), new GestureListener());
+        _ScaleGestureDetector = new ScaleGestureDetector(lineChart.getContext(), new ScaleListener());
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
         boolean hit = _GestureDetector.onTouchEvent(event);
+        hit |= _ScaleGestureDetector.onTouchEvent(event);
         if (hit) {
             _LineChart.invalidate();
             return true;
@@ -34,7 +39,57 @@ public class GodTouchListener implements View.OnTouchListener {
         return false;
     }
 
-    RectD _rectD = new RectD();
+
+    class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+
+        float _lastSpanX, _lastSpanY;
+
+        public ScaleListener() {
+            super();
+        }
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+
+            float spanX = detector.getCurrentSpanX();
+            float kx = spanX / _lastSpanX;
+
+            float spanY = detector.getCurrentSpanY();
+            float ky = spanY / _lastSpanY;
+
+            RectF godRect = _LineChart.get_GodRect();
+            RectF mainRect = _LineChart.get_MainPlotRect();
+
+            godRect.right = godRect.left + godRect.width() * kx;
+            godRect.bottom = godRect.top + godRect.height() * ky;
+
+            constrainRect(godRect, mainRect);
+
+            nofityViewPortChanged(godRect);
+
+            _lastSpanX = spanX;
+            _lastSpanY = spanY;
+
+            return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+
+            _lastSpanX = detector.getCurrentSpanX();
+            _lastSpanY = detector.getCurrentSpanY();
+
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector detector) {
+            super.onScaleEnd(detector);
+        }
+    }
+
+
+    RectD _rectD_ob = new RectD();
 
     class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
@@ -73,18 +128,7 @@ public class GodTouchListener implements View.OnTouchListener {
 
             constrainRect(godRect, mainRect);
 
-            // 计算出godRect对应的viewport
-            MappingManager mappingManager = _LineChart.get_MappingManager();
-            double left = mappingManager.p2v_x(godRect.left);
-            double right = mappingManager.p2v_x(godRect.right);
-            double bottom = mappingManager.p2v_y(godRect.bottom);
-            double top = mappingManager.p2v_y(godRect.top);
-
-            _rectD.left = left;
-            _rectD.top = top;
-            _rectD.right = right;
-            _rectD.bottom = bottom;
-            _LineChart.notifyOB_ViewportChanged(_rectD);
+            nofityViewPortChanged(godRect);
 
             return true;
         }
@@ -96,10 +140,28 @@ public class GodTouchListener implements View.OnTouchListener {
     }
 
 
+    private void nofityViewPortChanged(RectF godRect) {
+
+        // 计算出godRect对应的viewport
+        MappingManager mappingManager = _LineChart.get_MappingManager();
+        double left = mappingManager.p2v_x(godRect.left);
+        double right = mappingManager.p2v_x(godRect.right);
+        double bottom = mappingManager.p2v_y(godRect.bottom);
+        double top = mappingManager.p2v_y(godRect.top);
+
+        _rectD_ob.left = left;
+        _rectD_ob.top = top;
+        _rectD_ob.right = right;
+        _rectD_ob.bottom = bottom;
+        _LineChart.notifyOB_ViewportChanged(_rectD_ob);
+    }
+
+
     private void constrainRect(RectF godRect, RectF maxRect) {
         float w = godRect.width();
         float h = godRect.height();
 
+        // 1. 保持比例
         if (godRect.left < maxRect.left) {
             godRect.left = maxRect.left;
             godRect.right = godRect.left + w;
@@ -117,6 +179,19 @@ public class GodTouchListener implements View.OnTouchListener {
             godRect.top = godRect.bottom - h;
         }
 
+        // 2. 限定值的范围
+        if (godRect.left < maxRect.left) {
+            godRect.left = maxRect.left;
+        }
+        if (godRect.top < maxRect.top) {
+            godRect.top = maxRect.top;
+        }
+        if (godRect.right > maxRect.right) {
+            godRect.right = maxRect.right;
+        }
+        if (godRect.bottom > maxRect.bottom) {
+            godRect.bottom = maxRect.bottom;
+        }
     }
 
 }

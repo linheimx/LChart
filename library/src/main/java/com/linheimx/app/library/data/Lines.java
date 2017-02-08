@@ -1,5 +1,6 @@
 package com.linheimx.app.library.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +16,9 @@ public class Lines {
     protected double mXMax = -Double.MAX_VALUE;
     protected double mXMin = Double.MAX_VALUE;
 
+    public Lines() {
+    }
+
     public Lines(List<Line> lines) {
         setLines(lines);
     }
@@ -25,6 +29,15 @@ public class Lines {
 
     public void setLines(List<Line> lines) {
         this.lines = lines;
+        calMinMax(lines);
+    }
+
+    public void addLine(Line line) {
+        if (lines == null) {
+            lines = new ArrayList<>();
+        }
+
+        lines.add(line);
         calMinMax(lines);
     }
 

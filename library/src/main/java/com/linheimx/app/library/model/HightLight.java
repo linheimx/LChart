@@ -14,7 +14,7 @@ public class HightLight {
     public static final float D_HINT_TEXT_SIZE = 15;
 
     //////////////////////// high light ////////////////////////
-    int highLightColor = Color.YELLOW;
+    int highLightColor = Color.RED;
     float highLightWidth;
 
     //////////////////////// hint ////////////////////////

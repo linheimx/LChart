@@ -28,10 +28,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btn2(View v) {
-        startActivity(new Intent(MainActivity.this, LineChartPlusActivity.class));
+        startActivity(new Intent(MainActivity.this, MultiLineActivity.class));
     }
 
     public void btn3(View v) {
+        startActivity(new Intent(MainActivity.this, LineChartPlusActivity.class));
+    }
+
+    public void btn4(View v) {
         startActivity(new Intent(MainActivity.this, GodActivity.class));
     }
 

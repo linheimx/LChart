@@ -42,15 +42,20 @@ public class YAxisRender extends AxisRender {
         float left = _rectMain.left;
         float right = _rectMain.right;
 
+        _PathGrid.reset();
+
         for (int i = 0; i < _Axis.getLabelCount(); i++) {
             double value = values[i];
 
             SingleF_XY xy = _MappingManager.getPxByValue(0, value);
             y = xy.getY();
 
-            // grid line
-            canvas.drawLine(left, y, right, y, _PaintGridline);
+            _PathGrid.moveTo(left,y);
+            _PathGrid.lineTo(right,y);
         }
+
+        // grid line
+        canvas.drawPath(_PathGrid,_PaintGridline);
     }
 
 

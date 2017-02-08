@@ -2,7 +2,9 @@ package com.linheimx.app.library.render;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
 
 import com.linheimx.app.library.manager.MappingManager;
@@ -23,6 +25,8 @@ public abstract class AxisRender extends BaseRender {
     Paint _PaintLabel;
     Paint _PaintUnit;
 
+    Path _PathGrid;
+
     public AxisRender(RectF rectMain, MappingManager _MappingManager, Axis axis) {
         super(rectMain, _MappingManager);
 
@@ -33,6 +37,12 @@ public abstract class AxisRender extends BaseRender {
         _PaintLittle = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintGridline = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintUnit = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        // 虚线效果
+        _PaintGridline.setStyle(Paint.Style.STROKE);
+        _PaintGridline.setPathEffect(new DashPathEffect(new float[]{3, 2}, 0));
+
+        _PathGrid =new Path();
     }
 
     public void renderAxisLine(Canvas canvas) {

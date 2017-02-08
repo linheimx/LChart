@@ -21,7 +21,7 @@ public class Line {
     private double mXMax = -Double.MAX_VALUE;
     private double mXMin = Double.MAX_VALUE;
 
-    private int lineColor = Color.RED;
+    private int lineColor = Color.BLACK;
     private int lineWidth = 1;
     private int circleColor = Color.RED;
     private int circleR = 5;

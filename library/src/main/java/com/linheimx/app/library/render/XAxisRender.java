@@ -44,15 +44,20 @@ public class XAxisRender extends AxisRender {
         float top = _rectMain.top;
         float bottom = _rectMain.bottom;
 
+        _PathGrid.reset();
+
         for (int i = 0; i < _Axis.getLabelCount(); i++) {
             double value = values[i];
 
             SingleF_XY xy = _MappingManager.getPxByValue(value, 0);
             x = xy.getX();
 
-            // grid line
-            canvas.drawLine(x, bottom, x, top, _PaintGridline);
+            _PathGrid.moveTo(x,bottom);
+            _PathGrid.lineTo(x,top);
         }
+
+        // grid line
+        canvas.drawPath(_PathGrid,_PaintGridline);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.linheimx.app.library.charts;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewParent;
 
+import com.linheimx.app.library.R;
 import com.linheimx.app.library.model.HightLight;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
@@ -77,15 +79,14 @@ public class LineChart extends Chart {
         super(context, attrs, defStyleAttr);
     }
 
-    public float cx = 0, cy = 0;
-    Paint _Paint;
-
     @Override
-    protected void init(Context context) {
-        super.init(context);
+    protected void init(Context context, AttributeSet attributeSet) {
+        super.init(context, attributeSet);
 
-        // func
-        _ChartMode = ChartMode.Normal;
+        TypedArray typedArray = context.obtainStyledAttributes(attributeSet, R.styleable.LineChart);
+        boolean isGodMode = typedArray.getBoolean(R.styleable.LineChart_god_mode, false);
+        _ChartMode = isGodMode ? ChartMode.God : ChartMode.Normal;
+        typedArray.recycle();
 
         // init v
         _MainPlotRect = new RectF();
@@ -112,11 +113,6 @@ public class LineChart extends Chart {
         ////////////////////// other  ///////////////////////
         setXAxisUnit("mm/s");
         setYAxisUnit("hz");
-
-
-        //////
-        _Paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        _Paint.setColor(Color.RED);
     }
 
 
@@ -197,8 +193,6 @@ public class LineChart extends Chart {
         // render unit
         _XAxisRender.renderUnit(canvas);
         _YAxisRender.renderUnit(canvas);
-
-        canvas.drawCircle(cx, cy, 20, _Paint);
     }
 
     @Override

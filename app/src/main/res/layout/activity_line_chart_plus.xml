@@ -13,7 +13,6 @@
     <com.linheimx.app.library.charts.LineChartPlus
         android:id="@+id/chartPlus"
         android:layout_width="3500dp"
-        android:layout_height="400dp"
-        android:background="#a2a5a2"></com.linheimx.app.library.charts.LineChartPlus>
+        android:layout_height="400dp"></com.linheimx.app.library.charts.LineChartPlus>
 
 </RelativeLayout>

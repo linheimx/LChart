@@ -9,6 +9,7 @@ import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -38,7 +39,7 @@ public class HighLightRender extends BaseRender {
     double highValueX = Double.MIN_VALUE;
     double hightValueY = Double.MIN_VALUE;
 
-    int recordIndex = 0;
+    int recordIndex = -1;
     boolean isClick = false;
 
     public void highLight_ValueXY(double x, double y) {
@@ -79,52 +80,72 @@ public class HighLightRender extends BaseRender {
 
     private void drawHighLight_Hint(Canvas canvas) {
 
-        double disX = Float.MAX_VALUE;
-        double disY = Float.MAX_VALUE;
+        double closeX = Float.MAX_VALUE;
+        double closeY = Float.MAX_VALUE;
         Entry hitEntry = null;
 
-        for (Line line : _lines.getLines()) {
-            int index = recordIndex;
+        if (isClick) {
+            // 点击光标进来的
+            for (Line line : _lines.getLines()) {
+                int index = Line.getEntryIndex(line.getEntries(), highValueX, Line.Rounding.CLOSEST);
 
-            if (isClick) {
-                index = Line.getEntryIndex(line.getEntries(), highValueX, Line.Rounding.CLOSEST);
-                recordIndex = index;
-                isClick = false;
-            }
+                if (index < 0 || index >= line.getEntries().size()) {
+                    continue;
+                }
 
-            if (index < 0 || index >= line.getEntries().size()) {
-                continue;
-            }
+                Entry entry = line.getEntries().get(index);
 
-            Entry entry = line.getEntries().get(index);
+                // 到点击的距离
+                double dx = Math.abs(entry.getX() - highValueX);
+                double dy = Math.abs(entry.getY() - hightValueY);
 
-            double dx = Math.abs(entry.getX() - highValueX);
-
-            double dy = 0;
-            if (hightValueY != Float.MIN_VALUE) {
-                dy = Math.abs(entry.getY() - hightValueY);
-            }
-
-
-            // 先考虑 x
-            if (dx <= disX) {
-                disX = dx;
-
-                // 再考虑 y
-                if (hightValueY != Float.MIN_VALUE) {
-                    if (dy <= disY) {
+                // 先考虑 x
+                if (dx <= closeX) {
+                    closeX = dx;
+                    // 再考虑 y
+                    if (dy <= closeY) {
+                        closeY = dy;
                         hitEntry = entry;
+                        recordIndex = index;
                     }
-                } else {
-                    hitEntry = entry;
                 }
             }
+
+            isClick = false;
+        } else {
+            // 左右移动进来的
+            for (Line line : _lines.getLines()) {
+                int index = recordIndex;
+
+                if (index < 0 || index >= line.getEntries().size()) {
+                    continue;
+                }
+
+                Entry entry = line.getEntries().get(index);
+
+                // 到点击的距离
+                double dx = Math.abs(entry.getX() - highValueX);
+                double dy = Math.abs(entry.getY() - hightValueY);
+
+                // 先考虑 x
+                if (dx <= closeX) {
+                    closeX = dx;
+                    // 再考虑 y
+                    if (dy <= closeY) {
+                        closeY = dy;
+                        hitEntry = entry;
+                    }
+                }
+            }
+
+
         }
+
 
         if (hitEntry == null) {
             return;
         }
-        
+
         highValueX = hitEntry.getX();// real indexX
 
         SingleF_XY xy = _MappingManager.getPxByEntry(hitEntry);

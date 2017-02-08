@@ -22,7 +22,7 @@ public class LineChartPlusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_chart_plus);
 
-        getSupportActionBar().setTitle("带功能按钮的折线图");
+        getSupportActionBar().setTitle("折线图：带功能按钮");
 
         lineChartPlus = (LineChartPlus) findViewById(R.id.chartPlus);
 

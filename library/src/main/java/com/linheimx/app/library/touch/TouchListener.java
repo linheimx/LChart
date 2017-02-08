@@ -225,8 +225,6 @@ public class TouchListener implements View.OnTouchListener {
         }
 
         _MappingManager.zoom(scaleX, scaleY, cx, cy);
-        _LineChart.cx = cx;
-        _LineChart.cy = cy;
         _LineChart.postInvalidate();
     }
 
@@ -250,8 +248,6 @@ public class TouchListener implements View.OnTouchListener {
         }
 
         _MappingManager.zoom(level, startW, startH, cx, cy);
-        _LineChart.cx = cx;
-        _LineChart.cy = cy;
         _LineChart.postInvalidate();
     }
 

@@ -1,5 +1,6 @@
 package com.linheimx.app.lchart;
 
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,9 +12,8 @@ import com.linheimx.app.library.data.Lines;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class LineChartActivity extends AppCompatActivity {
+public class MultiLineActivity extends AppCompatActivity {
 
     Handler handler = new Handler();
     LineChart _lineChart;
@@ -21,24 +21,35 @@ public class LineChartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_line_chart);
+        setContentView(R.layout.activity_multi_line);
 
-        getSupportActionBar().setTitle("折线图：基本");
+        getSupportActionBar().setTitle("折线图：多条折线");
 
         _lineChart = (LineChart) findViewById(R.id.chart);
 
-        Line line = new Line();
-        List<Entry> list = new ArrayList<>();
-        list.add(new Entry(1, 5));
-        list.add(new Entry(2, 4));
-        list.add(new Entry(3, 2));
-        list.add(new Entry(4, 3));
-        list.add(new Entry(10, 8));
-        line.setEntries(list);
+        Line line1 = new Line();
+        List<Entry> list1 = new ArrayList<>();
+        list1.add(new Entry(1, 5));
+        list1.add(new Entry(2, 4));
+        list1.add(new Entry(3, 2));
+        list1.add(new Entry(4, 3));
+        list1.add(new Entry(10, 8));
+        line1.setEntries(list1);
 
-        List<Line> list2 = new ArrayList<>();
-        list2.add(line);
-        Lines lines = new Lines(list2);
+        Line line2 = new Line();
+        line2.setLineColor(Color.BLUE);
+
+        List<Entry> list2 = new ArrayList<>();
+        list2.add(new Entry(1, 10));
+        list2.add(new Entry(2.5, 4.8));
+        list2.add(new Entry(3.6, 2.7));
+        list2.add(new Entry(15, 8.7));
+        line2.setEntries(list2);
+
+
+        Lines lines = new Lines();
+        lines.addLine(line1);
+        lines.addLine(line2);
 
         _lineChart.setLines(lines);
     }

@@ -16,22 +16,20 @@ import com.linheimx.app.library.utils.Utils;
 public abstract class Chart extends View {
 
     public Chart(Context context) {
-        super(context);
-        init(context);
+        this(context, null, 0);
     }
 
     public Chart(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public Chart(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init(context, attrs);
     }
 
 
-    protected void init(Context context) {
+    protected void init(Context context, AttributeSet attrs) {
 
     }
 
