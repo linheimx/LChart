@@ -1,5 +1,8 @@
 package com.linheimx.app.library.data;
 
+import com.linheimx.app.library.adapter.DefaultHighLightValueAdapter;
+import com.linheimx.app.library.adapter.IValueAdapter;
+
 /**
  * Created by Administrator on 2016/11/13.
  */
@@ -13,6 +16,7 @@ public class Entry {
         this.x = x;
         this.y = y;
     }
+
 
     public double getX() {
         return x;
@@ -29,6 +33,8 @@ public class Entry {
     public void setY(float y) {
         this.y = y;
     }
+
+
 
     @Override
     public String toString() {

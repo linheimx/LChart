@@ -5,17 +5,20 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
+import com.linheimx.app.library.model.HightLight;
+import com.linheimx.app.library.model.XAxis;
+import com.linheimx.app.library.model.YAxis;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MultiLineActivity extends AppCompatActivity {
 
-    Handler handler = new Handler();
     LineChart _lineChart;
 
     @Override
@@ -27,15 +30,46 @@ public class MultiLineActivity extends AppCompatActivity {
 
         _lineChart = (LineChart) findViewById(R.id.chart);
 
-        Line line1 = new Line();
-        List<Entry> list1 = new ArrayList<>();
-        list1.add(new Entry(1, 5));
-        list1.add(new Entry(2, 4));
-        list1.add(new Entry(3, 2));
-        list1.add(new Entry(4, 3));
-        list1.add(new Entry(10, 8));
-        line1.setEntries(list1);
+      setChartData(_lineChart);
+    }
 
+    private void setChartData(LineChart lineChart){
+
+        // 高亮
+        HightLight hightLight = lineChart.get_HightLight();
+        hightLight.setEnable(true);// 启用高亮显示  默认为启用状态
+        hightLight.setxValueAdapter(new IValueAdapter() {
+            @Override
+            public String value2String(double value) {
+                return "X:" + value;
+            }
+        });
+        hightLight.setyValueAdapter(new IValueAdapter() {
+            @Override
+            public String value2String(double value) {
+                return "Y:" + value;
+            }
+        });
+
+        // x,y轴上的单位
+        XAxis xAxis=lineChart.get_XAxis();
+        xAxis.set_unit("s");
+
+        YAxis yAxis=lineChart.get_YAxis();
+        yAxis.set_unit("m");
+
+        // 数据
+        // line1
+        Line line = new Line();
+        List<Entry> list = new ArrayList<>();
+        list.add(new Entry(1, 5));
+        list.add(new Entry(2, 4));
+        list.add(new Entry(3, 2));
+        list.add(new Entry(4, 3));
+        list.add(new Entry(10, 8));
+        line.setEntries(list);
+
+        // line2
         Line line2 = new Line();
         line2.setLineColor(Color.BLUE);
 
@@ -46,35 +80,11 @@ public class MultiLineActivity extends AppCompatActivity {
         list2.add(new Entry(15, 8.7));
         line2.setEntries(list2);
 
-
         Lines lines = new Lines();
-        lines.addLine(line1);
+        lines.addLine(line);
         lines.addLine(line2);
 
-        _lineChart.setLines(lines);
-    }
-
-    void test() {
-        //        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                Line line = new Line();
-//                List<Entry> list = new ArrayList<>();
-//
-//                for (int i = 0; i < 1000; i++) {
-//                    list.add(new Entry(i, (float) Math.random()));
-//                }
-//                line.setEntries(list);
-//                line.setDrawCircle(false);
-//
-//                List<Line> list2 = new ArrayList<>();
-//                list2.add(line);
-//                Lines lines = new Lines(list2);
-//
-//                _lineChart.setLines(lines);
-//            }
-//        }, 5000);
+        lineChart.setLines(lines);
     }
 
 

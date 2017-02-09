@@ -10,7 +10,7 @@ import com.linheimx.app.library.utils.Utils;
 public class YAxis extends Axis {
 
     public static final float AREA_UNIT = 8;// unit 区域的高
-    public static final float AREA_LABEL = 22;// label 区域的高
+    public static final float AREA_LABEL = 25;// label 区域的高
 
 
     public YAxis() {

@@ -59,6 +59,10 @@ public class HighLightRender extends BaseRender {
 
     public void render(Canvas canvas) {
 
+        if (!_hightLight.isEnable()) {
+            return;
+        }
+
         if (_lines == null) {
             return;
         }
@@ -163,8 +167,8 @@ public class HighLightRender extends BaseRender {
         paintHint.setColor(_hightLight.getHintColor());
         paintHint.setTextSize(_hightLight.getHintTextSize());
 
-        String xStr = "X: " + hitEntry.getX();
-        String yStr = "Y: " + hitEntry.getY();
+        String xStr = _hightLight.getxValueAdapter().value2String(hitEntry.getX());
+        String yStr = _hightLight.getyValueAdapter().value2String(hitEntry.getY());
         float txtHeight = Utils.textHeight(paintHint);
         float txtWidth = Math.max(Utils.textWidth(paintHint, xStr), Utils.textWidth(paintHint, yStr));
 

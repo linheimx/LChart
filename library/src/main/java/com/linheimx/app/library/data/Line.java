@@ -3,6 +3,8 @@ package com.linheimx.app.library.data;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.linheimx.app.library.adapter.DefaultHighLightValueAdapter;
+import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.utils.LogUtil;
 
 import java.util.List;
@@ -29,10 +31,14 @@ public class Line {
     private boolean isDrawCircle = true;
 
     public Line() {
+        this(null);
     }
 
     public Line(List<Entry> entries) {
-        setEntries(entries);
+
+        if (entries != null) {
+            setEntries(entries);
+        }
     }
 
     private void calMinMax(List<Entry> entries) {

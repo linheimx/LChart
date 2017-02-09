@@ -23,25 +23,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="btn1"
-                android:text="折线图：基本" />
+                android:text="基本" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="btn2"
-                android:text="折线图：多条折线" />
+                android:text="多条折线" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="btn3"
-                android:text="折线图：带功能按钮" />
+                android:text="功能按钮" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="btn4"
-                android:text="折线图：上帝视角" />
+                android:text="上帝视角" />
 
         </LinearLayout>
     </ScrollView>

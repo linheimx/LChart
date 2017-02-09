@@ -3,8 +3,6 @@ package com.linheimx.app.library.charts;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -63,7 +61,13 @@ public class LineChart extends Chart {
 
     //////////////////////////// 区域 ///////////////////////////
     RectF _MainPlotRect;// 主要的绘图区域
-    float padding = 15;
+
+    float _paddingLeft =20;
+    float _paddingRight =5;
+    float _paddingTop =15;
+    float _paddingBottom =15;
+
+
     RectF _GodRect;//
 
 
@@ -109,10 +113,6 @@ public class LineChart extends Chart {
         // touch listener
         _TouchListener = new TouchListener(this);
         _GodTouchListener = new GodTouchListener(this);
-
-        ////////////////////// other  ///////////////////////
-        setXAxisUnit("mm/s");
-        setYAxisUnit("hz");
     }
 
 
@@ -175,12 +175,12 @@ public class LineChart extends Chart {
         // render high light
         _HighLightRender.render(canvas);
 
+        canvas.restore();
+
         // render god
         if (_ChartMode == ChartMode.God) {
             _GodRender.render(canvas);
         }
-
-        canvas.restore();
 
         // render Axis
         _XAxisRender.renderAxisLine(canvas);
@@ -242,12 +242,11 @@ public class LineChart extends Chart {
     }
 
     private void offsetPadding() {
-        float pad = Utils.dp2px(padding);
-        // other
-        _MainPlotRect.left += pad;
-        _MainPlotRect.top += pad;
-        _MainPlotRect.right -= pad;
-        _MainPlotRect.bottom -= pad;
+
+        _MainPlotRect.left += Utils.dp2px(_paddingLeft);
+        _MainPlotRect.top += Utils.dp2px(_paddingTop);
+        _MainPlotRect.right -= Utils.dp2px(_paddingRight);
+        _MainPlotRect.bottom -= Utils.dp2px(_paddingBottom);
     }
 
     private void offsetArea() {
@@ -267,6 +266,38 @@ public class LineChart extends Chart {
         double yMax = _lines.getmYMax();
 
         _MappingManager.prepareRelation(xMin, xMax, yMin, yMax);
+    }
+
+    public float get_paddingLeft() {
+        return _paddingLeft;
+    }
+
+    public void set_paddingLeft(float _paddingLeft) {
+        this._paddingLeft = _paddingLeft;
+    }
+
+    public float get_paddingRight() {
+        return _paddingRight;
+    }
+
+    public void set_paddingRight(float _paddingRight) {
+        this._paddingRight = _paddingRight;
+    }
+
+    public float get_paddingTop() {
+        return _paddingTop;
+    }
+
+    public void set_paddingTop(float _paddingTop) {
+        this._paddingTop = _paddingTop;
+    }
+
+    public float get_paddingBottom() {
+        return _paddingBottom;
+    }
+
+    public void set_paddingBottom(float _paddingBottom) {
+        this._paddingBottom = _paddingBottom;
     }
 
     public double getVisiableMinX() {
@@ -332,12 +363,20 @@ public class LineChart extends Chart {
         invalidate();
     }
 
-    public void setXAxisUnit(String unit) {
-        _XAxis.set_unit(unit);
+    public HightLight get_HightLight() {
+        return _HightLight;
     }
 
-    public void setYAxisUnit(String unit) {
-        _YAxis.set_unit(unit);
+    public void set_HightLight(HightLight _HightLight) {
+        this._HightLight = _HightLight;
+    }
+
+    public XAxis get_XAxis() {
+        return _XAxis;
+    }
+
+    public YAxis get_YAxis() {
+        return _YAxis;
     }
 
     public RectF get_GodRect() {
@@ -369,6 +408,20 @@ public class LineChart extends Chart {
 
     public void registObserver(LineChart lineChartOb) {
         this._ob_linechart = lineChartOb;
+
+        notifyDataChanged_FromOb(lineChartOb);
+    }
+
+    public void notifyDataChanged_FromOb(LineChart lineChartOb) {
+
+        // x,y轴上的单位
+        XAxis xAxis = lineChartOb.get_XAxis();
+        this.get_XAxis().set_unit(xAxis.get_unit());
+
+        YAxis yAxis = lineChartOb.get_YAxis();
+        this.get_YAxis().set_unit(yAxis.get_unit());
+
+        this.setLines(lineChartOb.getlines());
     }
 
     public void notifyOB_ViewportChanged(RectD _currentViewPort) {
@@ -380,6 +433,8 @@ public class LineChart extends Chart {
         _MappingManager.set_currentViewPort(_currentViewPort);
         return this;
     }
+
+
 
     public enum ChartMode {
         Normal, God

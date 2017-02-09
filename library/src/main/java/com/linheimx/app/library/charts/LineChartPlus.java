@@ -63,6 +63,13 @@ public class LineChartPlus extends FrameLayout {
         _lineChart.setLines(lines);
     }
 
+    public LineChart get_lineChart() {
+        return _lineChart;
+    }
+
+    public void set_lineChart(LineChart _lineChart) {
+        this._lineChart = _lineChart;
+    }
 
     public void btnLeft() {
         _lineChart.highLightLeft();

@@ -23,7 +23,7 @@ public class GodRender extends BaseRender {
         this._GodRect = godRect;
 
         _PaintRect = new Paint(Paint.ANTI_ALIAS_FLAG);
-        _PaintRect.setColor(Color.BLACK);
+        _PaintRect.setColor(Color.RED);
         _PaintRect.setStrokeWidth(Utils.dp2px(5));
         _PaintRect.setStyle(Paint.Style.STROKE);
     }
