@@ -25,6 +25,7 @@ public class LineRender extends BaseRender {
 
     Paint _PaintLine;
     Paint _PaintCircle;
+    Paint _PaintLegend;
 
 
     public LineRender(RectF rectMain, MappingManager _MappingManager, Lines _lines, LineChart lineChart) {
@@ -34,6 +35,7 @@ public class LineRender extends BaseRender {
 
         _PaintLine = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintCircle = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _PaintLegend = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     public void render(Canvas canvas) {
@@ -43,12 +45,19 @@ public class LineRender extends BaseRender {
         }
 
         canvas.save();
-        canvas.clipRect(_rectMain);
-        // render line
+        canvas.clipRect(_rectMain); // 限制绘制区域
+
+        // 绘制折线 和 折线上的圆点
         for (Line line : _lines.getLines()) {
             drawLine_Circle(canvas, line);
         }
+
         canvas.restore();
+
+        // 绘制每条线的 legend
+        for (int i = 0; i < _lines.getLines().size(); i++) {
+            drawLegend(canvas, _lines.getLines().get(i), i);
+        }
     }
 
     private float[] _LineBuffer = new float[4];
@@ -111,6 +120,33 @@ public class LineRender extends BaseRender {
         canvas.drawLines(_LineBuffer, 0, count, _PaintLine);
     }
 
+
+    RectF _RectFBuffer = new RectF();
+
+    private void drawLegend(Canvas canvas, Line line, int order) {
+
+        if (!line.isDrawLegend()) {
+            return;
+        }
+
+        _PaintLegend.setColor(line.getLineColor());
+        _PaintLegend.setTextSize(Utils.dp2px(10));
+
+        String name = line.getName();
+        float txtWidth = Utils.textWidth(_PaintLegend, name);
+
+        float step = 100;
+        float cubic = 20;
+
+        _RectFBuffer.left = order * step;
+        _RectFBuffer.top = 0;
+        _RectFBuffer.right = _RectFBuffer.left + cubic;
+        _RectFBuffer.bottom = _RectFBuffer.top + cubic;
+
+
+        canvas.drawRect(_RectFBuffer, _PaintLegend);
+        canvas.drawText(name, _RectFBuffer.right + 10, _RectFBuffer.bottom, _PaintLegend);
+    }
 
     public void onDataChanged(Lines lines) {
         _lines = lines;

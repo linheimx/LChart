@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -12,7 +13,58 @@
 
     <com.linheimx.app.library.charts.LineChart
         android:id="@+id/chart"
-        android:layout_width="3500dp"
-        android:layout_height="400dp"></com.linheimx.app.library.charts.LineChart>
+        android:layout_width="match_parent"
+        android:layout_height="300dp"></com.linheimx.app.library.charts.LineChart>
 
-</RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#33cccc"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_line_nums"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="折线的数目:"
+                android:textColor="@android:color/black" />
+
+            <SeekBar
+                android:id="@+id/sb_line_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="10dp"
+                android:layout_marginTop="26dp"
+                android:max="5" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="点击折线上的点，回调"
+                android:textColor="@android:color/black" />
+
+            <CheckBox
+                android:id="@+id/cb_cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:checked="true" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

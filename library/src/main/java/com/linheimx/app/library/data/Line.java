@@ -7,6 +7,7 @@ import com.linheimx.app.library.adapter.DefaultHighLightValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.utils.LogUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,10 @@ public class Line {
     private int circleR = 5;
 
     private boolean isDrawCircle = true;
+    private boolean isDrawLegend = false;
+    private String name = "line";
+
+    private CallBack_OnEntryClick onEntryClick;
 
     public Line() {
         this(null);
@@ -42,6 +47,12 @@ public class Line {
     }
 
     private void calMinMax(List<Entry> entries) {
+
+        mYMax = -Double.MAX_VALUE;
+        mYMin = Double.MAX_VALUE;
+        mXMax = -Double.MAX_VALUE;
+        mXMin = Double.MAX_VALUE;
+
         for (Entry entry : entries) {
 
             if (entry.getX() < mXMin) {
@@ -60,6 +71,27 @@ public class Line {
         }
     }
 
+    public void addEntry(Entry entry) {
+        if (entries == null) {
+            entries = new ArrayList<>();
+        }
+        entries.add(entry);
+
+        // 计算最大最小
+        if (entry.getX() < mXMin) {
+            mXMin = entry.getX();
+        }
+        if (entry.getX() > mXMax) {
+            mXMax = entry.getX();
+        }
+
+        if (entry.getY() < mYMin) {
+            mYMin = entry.getY();
+        }
+        if (entry.getY() > mYMax) {
+            mYMax = entry.getY();
+        }
+    }
 
     public List<Entry> getEntries() {
         return entries;
@@ -204,6 +236,22 @@ public class Line {
         isDrawCircle = drawCircle;
     }
 
+    public boolean isDrawLegend() {
+        return isDrawLegend;
+    }
+
+    public void setDrawLegend(boolean drawLegend) {
+        isDrawLegend = drawLegend;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getCircleR() {
         return circleR;
     }
@@ -220,10 +268,22 @@ public class Line {
         this.circleColor = circleColor;
     }
 
+    public CallBack_OnEntryClick getOnEntryClick() {
+        return onEntryClick;
+    }
+
+    public void setOnEntryClick(CallBack_OnEntryClick onEntryClick) {
+        this.onEntryClick = onEntryClick;
+    }
+
     public enum Rounding {
         UP,
         DOWN,
         CLOSEST,
+    }
+
+    public interface CallBack_OnEntryClick {
+        void onEntry(Line line, Entry entry);
     }
 
 }

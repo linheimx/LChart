@@ -22,6 +22,7 @@ import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.GodTouchListener;
 import com.linheimx.app.library.touch.TouchListener;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.RectD;
 import com.linheimx.app.library.utils.SingleD_XY;
 import com.linheimx.app.library.utils.Utils;
@@ -62,10 +63,10 @@ public class LineChart extends Chart {
     //////////////////////////// 区域 ///////////////////////////
     RectF _MainPlotRect;// 主要的绘图区域
 
-    float _paddingLeft =20;
-    float _paddingRight =5;
-    float _paddingTop =15;
-    float _paddingBottom =15;
+    float _paddingLeft = 20;
+    float _paddingRight = 5;
+    float _paddingTop = 15;
+    float _paddingBottom = 15;
 
 
     RectF _GodRect;//
@@ -155,16 +156,14 @@ public class LineChart extends Chart {
         super.onDraw(canvas);
 
         // 1. render no data
-        if (_lines == null || _lines.getLines().size() == 0) {
+        if (_lines == null || _lines.getLines() == null || _lines.getLines().size() == 0) {
             _NoDataRender.render(canvas);
+            return;
         }
 
         // 计算轴线上的数值
         _XAxis.calValues(getVisiableMinX(), getVisiableMaxX());
         _YAxis.calValues(getVisiableMinY(), getVisiableMaxY());
-
-        canvas.save();
-        canvas.clipRect(_MainPlotRect);
 
         // render grid line
         _XAxisRender.renderGridline(canvas);
@@ -175,7 +174,6 @@ public class LineChart extends Chart {
         // render high light
         _HighLightRender.render(canvas);
 
-        canvas.restore();
 
         // render god
         if (_ChartMode == ChartMode.God) {
@@ -206,11 +204,13 @@ public class LineChart extends Chart {
     /**
      * 通知数据改变
      */
-    private void notifyDataChanged() {
+    public void notifyDataChanged() {
 
         if (_lines == null) {
             return;
         }
+
+        _lines.calMinMax();
 
         limitMainPlotArea();
 
@@ -433,7 +433,6 @@ public class LineChart extends Chart {
         _MappingManager.set_currentViewPort(_currentViewPort);
         return this;
     }
-
 
 
     public enum ChartMode {

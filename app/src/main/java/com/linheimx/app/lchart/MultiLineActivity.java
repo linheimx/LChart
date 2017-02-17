@@ -1,9 +1,13 @@
 package com.linheimx.app.lchart;
 
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.charts.LineChart;
@@ -16,10 +20,23 @@ import com.linheimx.app.library.model.YAxis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MultiLineActivity extends AppCompatActivity {
 
+    private final static int LINE_NUM = 3;
+
     LineChart _lineChart;
+    SeekBar _SeekBar;
+    TextView _tvLineNum;
+
+    Line.CallBack_OnEntryClick onEntryClick = new Line.CallBack_OnEntryClick() {
+        @Override
+        public void onEntry(Line line, Entry entry) {
+            Toast.makeText(MultiLineActivity.this, line.getName() + "    \r\n" + entry.toString(), Toast.LENGTH_SHORT).show();
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +46,56 @@ public class MultiLineActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("折线图：多条折线");
 
         _lineChart = (LineChart) findViewById(R.id.chart);
+        _SeekBar = (SeekBar) findViewById(R.id.sb_line_more);
+        _tvLineNum = (TextView) findViewById(R.id.tv_line_nums);
+        CheckBox cb = (CheckBox) findViewById(R.id.cb_cb);
 
-      setChartData(_lineChart);
+        setChartData(_lineChart, LINE_NUM);
+
+        // 1. 折线的数目
+        _tvLineNum.setText("折线的数目:" + LINE_NUM);
+        _SeekBar.setProgress(LINE_NUM);
+
+        _SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                _tvLineNum.setText("折线的数目:" + progress);
+                setChartData(_lineChart, progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        // 2. 点击折线上的点 ，回调
+        cb.setChecked(true);
+        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Lines lines = _lineChart.getlines();
+                for (Line line : lines.getLines()) {
+                    if (isChecked) {
+                        line.setOnEntryClick(onEntryClick);
+                    } else {
+                        line.setOnEntryClick(null);
+                    }
+                }
+            }
+        });
     }
 
-    private void setChartData(LineChart lineChart){
+    private void setChartData(LineChart lineChart, int lineCount) {
 
         // 高亮
         HightLight hightLight = lineChart.get_HightLight();
-        hightLight.setEnable(true);// 启用高亮显示  默认为启用状态
+        hightLight.setEnable(true);// 启用高亮显示  默认为启用状态，每条折线图想要获取点击回调，highlight需要启用
         hightLight.setxValueAdapter(new IValueAdapter() {
             @Override
             public String value2String(double value) {
@@ -47,44 +105,54 @@ public class MultiLineActivity extends AppCompatActivity {
         hightLight.setyValueAdapter(new IValueAdapter() {
             @Override
             public String value2String(double value) {
-                return "Y:" + value;
+                return "Y:" + Math.round(value);
             }
         });
 
         // x,y轴上的单位
-        XAxis xAxis=lineChart.get_XAxis();
+        XAxis xAxis = lineChart.get_XAxis();
         xAxis.set_unit("s");
 
-        YAxis yAxis=lineChart.get_YAxis();
+        YAxis yAxis = lineChart.get_YAxis();
         yAxis.set_unit("m");
 
-        // 数据
-        // line1
-        Line line = new Line();
-        List<Entry> list = new ArrayList<>();
-        list.add(new Entry(1, 5));
-        list.add(new Entry(2, 4));
-        list.add(new Entry(3, 2));
-        list.add(new Entry(4, 3));
-        list.add(new Entry(10, 8));
-        line.setEntries(list);
-
-        // line2
-        Line line2 = new Line();
-        line2.setLineColor(Color.BLUE);
-
-        List<Entry> list2 = new ArrayList<>();
-        list2.add(new Entry(1, 10));
-        list2.add(new Entry(2.5, 4.8));
-        list2.add(new Entry(3.6, 2.7));
-        list2.add(new Entry(15, 8.7));
-        line2.setEntries(list2);
-
         Lines lines = new Lines();
-        lines.addLine(line);
-        lines.addLine(line2);
+
+        for (int i = 0; i < lineCount; i++) {
+
+            // 线的颜色
+            int color = Color.argb(255,
+                    (new Double(Math.random() * 256)).intValue(),
+                    (new Double(Math.random() * 256)).intValue(),
+                    (new Double(Math.random() * 256)).intValue());
+
+            Line line = createLine(i, color);
+            lines.addLine(line);
+        }
 
         lineChart.setLines(lines);
+    }
+
+
+    private Line createLine(int order, int color) {
+
+        final Line line = new Line();
+        List<Entry> list = new ArrayList<>();
+
+        Random random = new Random();
+        for (int i = 0; i < 10 + order; i++) {
+            double x = i;
+            double y = random.nextDouble() * 100;
+            list.add(new Entry(x, y));
+        }
+
+        line.setEntries(list);
+        line.setDrawLegend(true);
+        line.setName("line:" + order);
+        line.setLineColor(color);
+        line.setOnEntryClick(onEntryClick);
+
+        return line;
     }
 
 

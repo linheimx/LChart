@@ -37,6 +37,9 @@ public class XAxisRender extends AxisRender {
     public void renderGridline(Canvas canvas) {
         super.renderGridline(canvas);
 
+        canvas.save();
+        canvas.clipRect(_rectMain);// 限制绘制区域
+
         double[] values = _Axis.getLabelValues();
 
         float x = 0;
@@ -52,12 +55,14 @@ public class XAxisRender extends AxisRender {
             SingleF_XY xy = _MappingManager.getPxByValue(value, 0);
             x = xy.getX();
 
-            _PathGrid.moveTo(x,bottom);
-            _PathGrid.lineTo(x,top);
+            _PathGrid.moveTo(x, bottom);
+            _PathGrid.lineTo(x, top);
         }
 
         // grid line
-        canvas.drawPath(_PathGrid,_PaintGridline);
+        canvas.drawPath(_PathGrid, _PaintGridline);
+
+        canvas.restore();
     }
 
     @Override

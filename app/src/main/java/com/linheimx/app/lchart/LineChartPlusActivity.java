@@ -1,5 +1,6 @@
 package com.linheimx.app.lchart;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -33,7 +34,7 @@ public class LineChartPlusActivity extends AppCompatActivity {
     }
 
 
-    private void setChartData(LineChart lineChart){
+    private void setChartData(LineChart lineChart) {
 
         // 高亮
         HightLight hightLight = lineChart.get_HightLight();
@@ -47,20 +48,21 @@ public class LineChartPlusActivity extends AppCompatActivity {
         hightLight.setyValueAdapter(new IValueAdapter() {
             @Override
             public String value2String(double value) {
-                return "Y:" + value;
+                return "Y:" + Math.round(value * 100) / 100f;//保留两位小数
             }
         });
 
         // x,y轴上的单位
-        XAxis xAxis=lineChart.get_XAxis();
+        XAxis xAxis = lineChart.get_XAxis();
         xAxis.set_unit("s");
 
-        YAxis yAxis=lineChart.get_YAxis();
+        YAxis yAxis = lineChart.get_YAxis();
         yAxis.set_unit("m");
 
         // 数据
         Line line = new Line();
         line.setDrawCircle(false);//不画圆圈
+        line.setLineColor(Color.BLUE);
         List<Entry> list = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
             list.add(new Entry(i, (float) Math.random()));

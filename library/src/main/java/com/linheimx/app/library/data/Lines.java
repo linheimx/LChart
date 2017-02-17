@@ -43,6 +43,11 @@ public class Lines {
 
     private void calMinMax(List<Line> lines) {
 
+        mYMax = -Double.MAX_VALUE;
+        mYMin = Double.MAX_VALUE;
+        mXMax = -Double.MAX_VALUE;
+        mXMin = Double.MAX_VALUE;
+
         for (Line line : lines) {
             if (line.getmXMin() < mXMin) {
                 mXMin = line.getmXMin();
@@ -57,6 +62,13 @@ public class Lines {
             if (line.getmYMax() > mYMax) {
                 mYMax = line.getmYMax();
             }
+        }
+    }
+
+    public void calMinMax() {
+
+        if (lines != null) {
+            calMinMax(lines);
         }
     }
 

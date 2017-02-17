@@ -36,6 +36,9 @@ public class YAxisRender extends AxisRender {
     public void renderGridline(Canvas canvas) {
         super.renderGridline(canvas);
 
+        canvas.save();
+        canvas.clipRect(_rectMain);// 限制绘制区域
+
         double[] values = _Axis.getLabelValues();
         float y = 0;
 
@@ -56,6 +59,8 @@ public class YAxisRender extends AxisRender {
 
         // grid line
         canvas.drawPath(_PathGrid,_PaintGridline);
+
+        canvas.restore();
     }
 
 

@@ -25,6 +25,8 @@ public class HightLight {
     float hintTextSize;
 
     boolean enable = false;
+    boolean isDrawHighLine = true;
+    boolean isDrawHint = true;
 
     protected IValueAdapter xValueAdapter;// 高亮时，x应该如何显示？
     protected IValueAdapter yValueAdapter;// 高亮时，y应该如何显示？
@@ -82,6 +84,22 @@ public class HightLight {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public boolean isDrawHighLine() {
+        return isDrawHighLine;
+    }
+
+    public void setDrawHighLine(boolean drawHighLine) {
+        isDrawHighLine = drawHighLine;
+    }
+
+    public boolean isDrawHint() {
+        return isDrawHint;
+    }
+
+    public void setDrawHint(boolean drawHint) {
+        isDrawHint = drawHint;
     }
 
     public IValueAdapter getxValueAdapter() {

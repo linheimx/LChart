@@ -4,8 +4,8 @@ import android.graphics.RectF;
 
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.utils.RectD;
-import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.SingleD_XY;
+import com.linheimx.app.library.utils.SingleF_XY;
 
 /**
  * 数据源与绘出来的图之间的映射关系
@@ -28,10 +28,18 @@ public class MappingManager {
     RectD _maxViewPort;
     RectD _currentViewPort;
 
+
+    /**
+     * 数据视图的约束
+     */
+    float fatFactor = 1.3f;//肥胖因子
+    RectD _constrainViewPort;
+
     public MappingManager(RectF rectMain) {
         _contentRect = rectMain;
         _maxViewPort = new RectD();
         _currentViewPort = new RectD();
+        _constrainViewPort = new RectD();
     }
 
     public void prepareRelation(double xMin, double xMax, double yMin, double yMax) {
@@ -42,6 +50,8 @@ public class MappingManager {
         _maxViewPort.top = yMax;
 
         _currentViewPort.setRectD(_maxViewPort);
+
+        setFatFactor(fatFactor);
     }
 
     /**
@@ -115,6 +125,8 @@ public class MappingManager {
         _currentViewPort.bottom = bottom;
         _currentViewPort.right = _currentViewPort.left + newWidth;
         _currentViewPort.top = _currentViewPort.bottom + newHeight;
+
+        constrainViewPort(_currentViewPort);
     }
 
     public void zoom(float level, double startW, double startH, float cx, float cy) {
@@ -132,29 +144,61 @@ public class MappingManager {
         _currentViewPort.bottom = bottom;
         _currentViewPort.right = _currentViewPort.left + newWidth;
         _currentViewPort.top = _currentViewPort.bottom + newHeight;
+
+        constrainViewPort(_currentViewPort);
     }
 
+    /**
+     * 根据移动的像素偏离---》计算出数据视图的偏离
+     *
+     * @param dx
+     * @param dy
+     */
     public void translate(float dx, float dy) {
-        double ddx = _currentViewPort.width() * dx / _contentRect.width();
-        double ddy = _currentViewPort.height() * dy / _contentRect.height();
 
         double w = _currentViewPort.width();
         double h = _currentViewPort.height();
 
+        double ddx = w * dx / _contentRect.width();
+        double ddy = h * dy / _contentRect.height();
+
         _currentViewPort.left += -ddx;
         _currentViewPort.bottom += ddy;
+
+        // 约束 currentViewPort 的位置
+        constrainViewPort(_currentViewPort, w, h);
+
         _currentViewPort.right = _currentViewPort.left + w;
         _currentViewPort.top = _currentViewPort.bottom + h;
     }
 
+    /**
+     * 约束当前的viewport
+     * ---------------------
+     * 针对平移的方式
+     */
+    private void constrainViewPort(RectD currentViewPort, double currentWidth, double currentHeight) {
 
-    public RectD get_maxViewPort() {
-        return _maxViewPort;
+        currentViewPort.left = Math.max(_constrainViewPort.left, Math.min(_constrainViewPort.right - currentWidth, currentViewPort.left));
+        currentViewPort.bottom = Math.max(_constrainViewPort.bottom, Math.min(_constrainViewPort.top - currentHeight, currentViewPort.bottom));
     }
 
-    public void set_maxViewPort(RectD _maxViewPort) {
-        this._maxViewPort = _maxViewPort;
+    /**
+     * 约束当前的viewport
+     * ---------------------
+     * 针对缩放的方式
+     *
+     * @param currentViewPort
+     */
+    private void constrainViewPort(RectD currentViewPort) {
+
+        currentViewPort.left = Math.max(_constrainViewPort.left, currentViewPort.left);
+        currentViewPort.right = Math.min(_constrainViewPort.right, currentViewPort.right);
+
+        currentViewPort.bottom = Math.max(_constrainViewPort.bottom, currentViewPort.bottom);
+        currentViewPort.top = Math.min(_constrainViewPort.top, currentViewPort.top);
     }
+
 
     public RectD get_currentViewPort() {
         return _currentViewPort;
@@ -164,11 +208,26 @@ public class MappingManager {
         this._currentViewPort = _currentViewPort;
     }
 
-    public RectF get_contentRect() {
-        return _contentRect;
+
+    /**
+     * 设置约束视图的肥胖因子
+     * -------------------
+     * 和最大的数据视图做比较:
+     * 1. 约束视图 是 最大视图的 1.1 倍，那么这个肥胖因子就是 1.1
+     *
+     * @param fatFactor
+     */
+    public void setFatFactor(float fatFactor) {
+
+        double w = _maxViewPort.width();
+        double h = _maxViewPort.height();
+
+        fatFactor = fatFactor - 1;
+
+        _constrainViewPort.left = _maxViewPort.left - w * fatFactor;
+        _constrainViewPort.right = _maxViewPort.right + w * fatFactor;
+        _constrainViewPort.top = _maxViewPort.top + h * fatFactor;
+        _constrainViewPort.bottom = _maxViewPort.bottom - h * fatFactor;
     }
 
-    public void set_contentRect(RectF _contentRect) {
-        this._contentRect = _contentRect;
-    }
 }

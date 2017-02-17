@@ -51,7 +51,7 @@ public abstract class AxisRender extends BaseRender {
     }
 
     public void renderGridline(Canvas canvas) {
-        _PaintGridline.setColor(Color.GRAY);
+        _PaintGridline.setColor(Color.parseColor("#CCCCCC"));
         _PaintGridline.setStrokeWidth(Utils.dp2px(1));
     }
 

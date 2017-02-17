@@ -9,7 +9,6 @@ import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
-import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -18,6 +17,8 @@ import com.linheimx.app.library.utils.Utils;
  */
 
 public class HighLightRender extends BaseRender {
+
+    private final static double UN_CHOOSE = Double.MIN_VALUE;
 
     Lines _lines;
     HightLight _hightLight;
@@ -36,10 +37,11 @@ public class HighLightRender extends BaseRender {
     }
 
 
-    double highValueX = Double.MIN_VALUE;
-    double hightValueY = Double.MIN_VALUE;
+    double highValueX = UN_CHOOSE;
+    double hightValueY = UN_CHOOSE;
 
-    int recordIndex = -1;
+    int record_LineIndex = -1;// 记录哪条线
+    int record_EntryIndex = -1;// 记录哪条entry
     boolean isClick = false;
 
     public void highLight_ValueXY(double x, double y) {
@@ -49,11 +51,11 @@ public class HighLightRender extends BaseRender {
     }
 
     public void highLightLeft() {
-        recordIndex--;
+        record_EntryIndex--;
     }
 
     public void highLightRight() {
-        recordIndex++;
+        record_EntryIndex++;
     }
 
 
@@ -71,33 +73,36 @@ public class HighLightRender extends BaseRender {
             return;
         }
 
-        if (highValueX == Double.MIN_VALUE || hightValueY == Double.MIN_VALUE) {
+        if (highValueX == UN_CHOOSE || hightValueY == UN_CHOOSE) {
             return;
         }
 
         canvas.save();
-        canvas.clipRect(_rectMain);
+        canvas.clipRect(_rectMain); // 限制绘制区域
+
         drawHighLight_Hint(canvas);
+
         canvas.restore();
     }
 
 
     private void drawHighLight_Hint(Canvas canvas) {
 
-        double closeX = Float.MAX_VALUE;
-        double closeY = Float.MAX_VALUE;
+        double closeX = Double.MAX_VALUE;
+        double closeY = Double.MAX_VALUE;
         Entry hitEntry = null;
 
         if (isClick) {
             // 点击光标进来的
-            for (Line line : _lines.getLines()) {
-                int index = Line.getEntryIndex(line.getEntries(), highValueX, Line.Rounding.CLOSEST);
+            for (int i = 0; i < _lines.getLines().size(); i++) {
+                Line line = _lines.getLines().get(i);
+                int indexEntry = Line.getEntryIndex(line.getEntries(), highValueX, Line.Rounding.CLOSEST);
 
-                if (index < 0 || index >= line.getEntries().size()) {
+                if (indexEntry < 0 || indexEntry >= line.getEntries().size()) {
                     continue;
                 }
 
-                Entry entry = line.getEntries().get(index);
+                Entry entry = line.getEntries().get(indexEntry);
 
                 // 到点击的距离
                 double dx = Math.abs(entry.getX() - highValueX);
@@ -110,39 +115,19 @@ public class HighLightRender extends BaseRender {
                     if (dy <= closeY) {
                         closeY = dy;
                         hitEntry = entry;
-                        recordIndex = index;
+                        record_EntryIndex = indexEntry;
+                        record_LineIndex = i;
                     }
                 }
             }
-
-            isClick = false;
         } else {
             // 左右移动进来的
-            for (Line line : _lines.getLines()) {
-                int index = recordIndex;
-
-                if (index < 0 || index >= line.getEntries().size()) {
-                    continue;
-                }
-
-                Entry entry = line.getEntries().get(index);
-
-                // 到点击的距离
-                double dx = Math.abs(entry.getX() - highValueX);
-                double dy = Math.abs(entry.getY() - hightValueY);
-
-                // 先考虑 x
-                if (dx <= closeX) {
-                    closeX = dx;
-                    // 再考虑 y
-                    if (dy <= closeY) {
-                        closeY = dy;
-                        hitEntry = entry;
-                    }
-                }
+            try {
+                Line line = _lines.getLines().get(record_LineIndex);
+                hitEntry = line.getEntries().get(record_EntryIndex);
+            } catch (Exception e) {
+                hitEntry = null;
             }
-
-
         }
 
 
@@ -155,28 +140,45 @@ public class HighLightRender extends BaseRender {
         SingleF_XY xy = _MappingManager.getPxByEntry(hitEntry);
 
 
-        // draw high light
-        paintHighLight.setStrokeWidth(_hightLight.getHighLightWidth());
-        paintHighLight.setColor(_hightLight.getHighLightColor());
+        // draw high line
+        if (_hightLight.isDrawHighLine()) {
+            paintHighLight.setStrokeWidth(_hightLight.getHighLightWidth());
+            paintHighLight.setColor(_hightLight.getHighLightColor());
 
-        canvas.drawLine(_rectMain.left, xy.getY(), _rectMain.right, xy.getY(), paintHighLight);
-        canvas.drawLine(xy.getX(), _rectMain.top, xy.getX(), _rectMain.bottom, paintHighLight);
-
+            canvas.drawLine(_rectMain.left, xy.getY(), _rectMain.right, xy.getY(), paintHighLight);
+            canvas.drawLine(xy.getX(), _rectMain.top, xy.getX(), _rectMain.bottom, paintHighLight);
+        }
 
         // draw hint
-        paintHint.setColor(_hightLight.getHintColor());
-        paintHint.setTextSize(_hightLight.getHintTextSize());
+        if (_hightLight.isDrawHint()) {
+            paintHint.setColor(_hightLight.getHintColor());
+            paintHint.setTextSize(_hightLight.getHintTextSize());
 
-        String xStr = _hightLight.getxValueAdapter().value2String(hitEntry.getX());
-        String yStr = _hightLight.getyValueAdapter().value2String(hitEntry.getY());
-        float txtHeight = Utils.textHeight(paintHint);
-        float txtWidth = Math.max(Utils.textWidth(paintHint, xStr), Utils.textWidth(paintHint, yStr));
+            String xStr = _hightLight.getxValueAdapter().value2String(hitEntry.getX());
+            String yStr = _hightLight.getyValueAdapter().value2String(hitEntry.getY());
+            float txtHeight = Utils.textHeight(paintHint);
+            float txtWidth = Math.max(Utils.textWidth(paintHint, xStr), Utils.textWidth(paintHint, yStr));
 
-        float x = _rectMain.right - txtWidth - 10;
-        float y = _rectMain.top + Utils.dp2px(20);
+            float x = _rectMain.right - txtWidth - 10;
+            float y = _rectMain.top + Utils.dp2px(20);
 
-        canvas.drawText(xStr, x, y, paintHint);
-        canvas.drawText(yStr, x, y + txtHeight, paintHint);
+            canvas.drawText(xStr, x, y, paintHint);
+            canvas.drawText(yStr, x, y + txtHeight, paintHint);
+        }
+
+        // callback
+        if (isClick) {
+            isClick = false;
+
+            Line line = _lines.getLines().get(record_LineIndex);
+            hitEntry = line.getEntries().get(record_EntryIndex);
+
+            Line.CallBack_OnEntryClick cb = line.getOnEntryClick();
+            if (cb != null) {
+                cb.onEntry(line, hitEntry);
+            }
+        }
+
     }
 
     public void onDataChanged(Lines lines) {
