@@ -39,5 +39,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, GodActivity.class));
     }
 
+    public void btn5(View v) {
+        startActivity(new Intent(MainActivity.this, WarnLinesActivity.class));
+    }
 
 }

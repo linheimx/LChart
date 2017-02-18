@@ -6,8 +6,11 @@ import android.graphics.RectF;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.model.Axis;
+import com.linheimx.app.library.model.WarnLine;
 import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Utils;
+
+import java.util.List;
 
 /**
  * Created by LJIAN on 2016/11/14.
@@ -53,12 +56,12 @@ public class YAxisRender extends AxisRender {
             SingleF_XY xy = _MappingManager.getPxByValue(0, value);
             y = xy.getY();
 
-            _PathGrid.moveTo(left,y);
-            _PathGrid.lineTo(right,y);
+            _PathGrid.moveTo(left, y);
+            _PathGrid.lineTo(right, y);
         }
 
         // grid line
-        canvas.drawPath(_PathGrid,_PaintGridline);
+        canvas.drawPath(_PathGrid, _PaintGridline);
 
         canvas.restore();
     }
@@ -115,4 +118,44 @@ public class YAxisRender extends AxisRender {
         canvas.restore();
     }
 
+    @Override
+    public void renderWarnLine(Canvas canvas) {
+        super.renderWarnLine(canvas);
+
+        canvas.save();
+        canvas.clipRect(_rectMain);
+
+        List<WarnLine> warnLines = _Axis.getListWarnLins();
+
+        for (WarnLine warnLine : warnLines) {
+            if (warnLine.isEnable()) {
+                double value = warnLine.getValue();
+
+                SingleF_XY xy = _MappingManager.getPxByValue(0, value);
+                float y = xy.getY();
+
+                if (y < _rectMain.top || y > _rectMain.bottom) {
+                    continue;
+                }
+
+                _PaintWarnText.setColor(warnLine.getWarnColor());
+                _PaintWarnText.setStrokeWidth(warnLine.getWarnLineWidth());
+                _PaintWarnText.setTextSize(warnLine.getTxtSize());
+
+                _PaintWarnPath.setColor(warnLine.getWarnColor());
+                _PaintWarnPath.setStrokeWidth(warnLine.getWarnLineWidth());
+
+                _PathWarn.reset();
+                _PathWarn.moveTo(_rectMain.left, y);
+                _PathWarn.lineTo(_rectMain.right, y);
+
+                canvas.drawPath(_PathWarn, _PaintWarnPath);
+
+                float txtHeight = Utils.textHeight(_PaintWarnText);
+                canvas.drawText(value + "", _rectMain.left + 10, y - txtHeight, _PaintWarnText);
+            }
+        }
+
+        canvas.restore();
+    }
 }

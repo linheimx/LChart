@@ -43,6 +43,12 @@
                 android:onClick="btn4"
                 android:text="上帝视角" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="btn5"
+                android:text="预警线" />
+
         </LinearLayout>
     </ScrollView>
 

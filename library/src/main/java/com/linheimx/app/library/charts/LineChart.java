@@ -180,6 +180,10 @@ public class LineChart extends Chart {
             _GodRender.render(canvas);
         }
 
+        // render warn line
+        _XAxisRender.renderWarnLine(canvas);
+        _YAxisRender.renderWarnLine(canvas);
+
         // render Axis
         _XAxisRender.renderAxisLine(canvas);
         _YAxisRender.renderAxisLine(canvas);
@@ -206,13 +210,12 @@ public class LineChart extends Chart {
      */
     public void notifyDataChanged() {
 
+        limitMainPlotArea();
+
         if (_lines == null) {
             return;
         }
-
         _lines.calMinMax();
-
-        limitMainPlotArea();
 
         prepareMap();
 

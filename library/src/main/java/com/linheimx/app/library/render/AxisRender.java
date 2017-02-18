@@ -24,8 +24,11 @@ public abstract class AxisRender extends BaseRender {
     Paint _PaintLittle;
     Paint _PaintLabel;
     Paint _PaintUnit;
+    Paint _PaintWarnText;
+    Paint _PaintWarnPath;
 
     Path _PathGrid;
+    Path _PathWarn;
 
     public AxisRender(RectF rectMain, MappingManager _MappingManager, Axis axis) {
         super(rectMain, _MappingManager);
@@ -37,12 +40,18 @@ public abstract class AxisRender extends BaseRender {
         _PaintLittle = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintGridline = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintUnit = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _PaintWarnText = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _PaintWarnPath = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         // 虚线效果
         _PaintGridline.setStyle(Paint.Style.STROKE);
         _PaintGridline.setPathEffect(new DashPathEffect(new float[]{3, 2}, 0));
 
-        _PathGrid =new Path();
+        _PaintWarnPath.setStyle(Paint.Style.STROKE);
+        _PaintWarnPath.setPathEffect(new DashPathEffect(new float[]{3, 2}, 0));
+
+        _PathGrid = new Path();
+        _PathWarn = new Path();
     }
 
     public void renderAxisLine(Canvas canvas) {
@@ -67,6 +76,11 @@ public abstract class AxisRender extends BaseRender {
     public void renderUnit(Canvas canvas) {
         _PaintUnit.setColor(_Axis.getUnitColor());
         _PaintUnit.setTextSize(_Axis.getUnitTxtSize());
+    }
+
+    public void renderWarnLine(Canvas canvas) {
+
+
     }
 
 }

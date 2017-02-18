@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="高亮显示"
+                android:text="点击图谱，高亮显示"
                 android:textColor="@android:color/black" />
 
             <CheckBox
@@ -60,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:checked="true" />
-
 
         </LinearLayout>
 

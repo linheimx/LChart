@@ -6,6 +6,8 @@ import com.linheimx.app.library.adapter.DefaultValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.utils.Utils;
 
+import java.util.List;
+
 /**
  * 轴线相关
  * -----------------------
@@ -44,6 +46,9 @@ public abstract class Axis {
     int axisColor = Color.BLACK;
     float axisWidth;
     float leg;// 轴线上的小腿（多出来的小不点：叫他小腿吧)
+
+    /////////////////////////////////  预警线相关  ////////////////////////////////
+    List<WarnLine> listWarnLins;
 
 
     boolean enable = true;// axis is enable?
@@ -298,5 +303,13 @@ public abstract class Axis {
 
     public void setLabelValues(double[] labelValues) {
         this.labelValues = labelValues;
+    }
+
+    public List<WarnLine> getListWarnLins() {
+        return listWarnLins;
+    }
+
+    public void setListWarnLins(List<WarnLine> listWarnLins) {
+        this.listWarnLins = listWarnLins;
     }
 }

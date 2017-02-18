@@ -7,8 +7,11 @@ import android.graphics.RectF;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.model.Axis;
+import com.linheimx.app.library.model.WarnLine;
 import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Utils;
+
+import java.util.List;
 
 /**
  * Created by LJIAN on 2016/11/14.
@@ -112,6 +115,50 @@ public class XAxisRender extends AxisRender {
         float labelY = bottom + _Axis.offsetBottom();
 
         canvas.drawText(unit, labelX, labelY, _PaintUnit);
+    }
+
+
+    @Override
+    public void renderWarnLine(Canvas canvas) {
+        super.renderWarnLine(canvas);
+
+        canvas.save();
+        canvas.clipRect(_rectMain);
+
+        List<WarnLine> warnLines = _Axis.getListWarnLins();
+
+        for (WarnLine warnLine : warnLines) {
+            if (warnLine.isEnable()) {
+                double value = warnLine.getValue();
+
+                SingleF_XY xy = _MappingManager.getPxByValue(value, 0);
+                float x = xy.getX();
+
+                if (x < _rectMain.left || x > _rectMain.right) {
+                    continue;
+                }
+
+                _PaintWarnText.setColor(warnLine.getWarnColor());
+                _PaintWarnText.setStrokeWidth(warnLine.getWarnLineWidth());
+                _PaintWarnText.setTextSize(warnLine.getTxtSize());
+
+                _PaintWarnPath.setColor(warnLine.getWarnColor());
+                _PaintWarnPath.setStrokeWidth(warnLine.getWarnLineWidth());
+
+                _PathWarn.reset();
+                _PathWarn.moveTo(x, _rectMain.bottom);
+                _PathWarn.lineTo(x, _rectMain.top);
+
+                canvas.drawPath(_PathWarn, _PaintWarnPath);
+
+                float txtHeight = Utils.textHeight(_PaintWarnText);
+                float txtWidth = Utils.textWidth(_PaintWarnText, "" + value);
+
+                canvas.drawText(value + "", x - txtWidth * 1.5f, _rectMain.bottom - txtHeight * 1.5f, _PaintWarnText);
+            }
+        }
+
+        canvas.restore();
     }
 
 }
