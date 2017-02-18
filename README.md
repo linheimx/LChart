@@ -10,4 +10,6 @@ an android chart library
 6. 支持添加预警线
 
 ## 效果展示
-![basic](https://github.com/linheimx/LChart/blob/master/art/l_basic.png)
+![basic](https://github.com/linheimx/LChart/blob/master/art/l_basic.png)![basic](https://github.com/linheimx/LChart/blob/master/art/l_multi.png)
+![basic](https://github.com/linheimx/LChart/blob/master/art/l_god.png)![basic](https://github.com/linheimx/LChart/blob/master/art/l_warn.png)
+![basic](https://github.com/linheimx/LChart/blob/master/art/l_func.png)
