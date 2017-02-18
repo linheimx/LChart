@@ -122,10 +122,13 @@ public class YAxisRender extends AxisRender {
     public void renderWarnLine(Canvas canvas) {
         super.renderWarnLine(canvas);
 
+        List<WarnLine> warnLines = _Axis.getListWarnLins();
+        if (warnLines == null) {
+            return;
+        }
+
         canvas.save();
         canvas.clipRect(_rectMain);
-
-        List<WarnLine> warnLines = _Axis.getListWarnLins();
 
         for (WarnLine warnLine : warnLines) {
             if (warnLine.isEnable()) {
