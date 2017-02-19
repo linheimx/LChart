@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.charts.LineChart;
-import com.linheimx.app.library.charts.LineChartPlus;
+import com.linheimx.app.plus.LineChartPlus;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;

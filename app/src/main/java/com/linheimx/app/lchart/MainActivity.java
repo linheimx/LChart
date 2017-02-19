@@ -1,19 +1,9 @@
 package com.linheimx.app.lchart;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
-import com.linheimx.app.library.charts.LineChart;
-import com.linheimx.app.library.charts.LineChartPlus;
-import com.linheimx.app.library.data.Entry;
-import com.linheimx.app.library.data.Line;
-import com.linheimx.app.library.data.Lines;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 

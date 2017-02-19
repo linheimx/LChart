@@ -10,9 +10,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.linheimx.app.lchart.LineChartPlusActivity">
 
-    <com.linheimx.app.library.charts.LineChartPlus
+    <com.linheimx.app.plus.LineChartPlus
         android:id="@+id/chartPlus"
         android:layout_width="3500dp"
-        android:layout_height="400dp"></com.linheimx.app.library.charts.LineChartPlus>
+        android:layout_height="400dp">
+    </com.linheimx.app.plus.LineChartPlus>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.linheimx.app.library.charts;
+package com.linheimx.app.plus;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,10 +8,13 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.linheimx.app.library.R;
+import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.utils.LogUtil;
 
 /**
+ * 包装一下 lineChart
+ *
  * Created by LJIAN on 2017/1/9.
  */
 
