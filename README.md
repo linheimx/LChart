@@ -10,6 +10,6 @@
 6. 支持添加预警线
 
 ## 效果展示
-![basic](https://github.com/linheimx/LChart/blob/master/art/l_basic.png)![warn](https://github.com/linheimx/LChart/blob/master/art/l_warn.png)
-![multi](https://github.com/linheimx/LChart/blob/master/art/l_multi.png)![func](https://github.com/linheimx/LChart/blob/master/art/l_func.png)
+![basic](https://github.com/linheimx/LChart/blob/master/art/l_basic.png)  ![warn](https://github.com/linheimx/LChart/blob/master/art/l_warn.png)
+![multi](https://github.com/linheimx/LChart/blob/master/art/l_multi.png)  ![func](https://github.com/linheimx/LChart/blob/master/art/l_func.png)
 ![god](https://github.com/linheimx/LChart/blob/master/art/l_god.png)
