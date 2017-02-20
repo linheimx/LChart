@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import com.linheimx.app.library.R;
+import com.linheimx.app.lchart.R;
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.utils.LogUtil;
