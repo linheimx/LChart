@@ -49,6 +49,12 @@
                 android:onClick="btn5"
                 android:text="预警线" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="btn6"
+                android:text="实时趋势" />
+
         </LinearLayout>
     </ScrollView>
 

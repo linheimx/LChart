@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/l"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -19,7 +19,8 @@
         <activity android:name=".LineChartPlusActivity" />
         <activity android:name=".GodActivity" />
         <activity android:name=".MultiLineActivity" />
-        <activity android:name=".WarnLinesActivity"></activity>
+        <activity android:name=".WarnLinesActivity" />
+        <activity android:name=".RealTimeActivity"></activity>
     </application>
 
 </manifest>

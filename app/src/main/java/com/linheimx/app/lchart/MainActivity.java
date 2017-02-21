@@ -33,4 +33,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, WarnLinesActivity.class));
     }
 
+    public void btn6(View v) {
+        startActivity(new Intent(MainActivity.this, RealTimeActivity.class));
+    }
+
 }

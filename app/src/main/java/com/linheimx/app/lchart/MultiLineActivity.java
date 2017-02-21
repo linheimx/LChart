@@ -148,7 +148,7 @@ public class MultiLineActivity extends AppCompatActivity {
 
         line.setEntries(list);
         line.setDrawLegend(true);
-        line.setName("line:" + order);
+        line.setName("_line:" + order);
         line.setLineColor(color);
         line.setOnEntryClick(onEntryClick);
 

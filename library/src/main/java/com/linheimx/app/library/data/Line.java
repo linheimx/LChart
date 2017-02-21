@@ -19,9 +19,9 @@ public class Line {
     private List<Entry> entries;
 
 
-    private double mYMax = -Double.MAX_VALUE;
+    private double mYMax = Double.MIN_VALUE;
     private double mYMin = Double.MAX_VALUE;
-    private double mXMax = -Double.MAX_VALUE;
+    private double mXMax = Double.MIN_VALUE;
     private double mXMin = Double.MAX_VALUE;
 
     private int lineColor = Color.BLACK;

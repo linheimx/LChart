@@ -73,7 +73,7 @@ public class LineRender extends BaseRender {
         List<Entry> list = line.getEntries();
 
         // check
-        if (list.size() <= 1) {
+        if (list == null || list.size() <= 1) {
             return;
         }
 

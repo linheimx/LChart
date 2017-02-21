@@ -1,4 +1,5 @@
 # LChart
+![l](https://github.com/linheimx/LChart/blob/master/art/l.png)
 这是一个折线图，它提供了几个非常实用的功能，并且非常简单，易于使用。
 
 ## 功能特色
@@ -12,4 +13,4 @@
 ## 效果展示
 ![basic](https://github.com/linheimx/LChart/blob/master/art/l_basic.png)  ![warn](https://github.com/linheimx/LChart/blob/master/art/l_warn.png)
 ![multi](https://github.com/linheimx/LChart/blob/master/art/l_multi.png)  ![func](https://github.com/linheimx/LChart/blob/master/art/l_func.png)
-![god](https://github.com/linheimx/LChart/blob/master/art/l_god.png)
+![god](https://github.com/linheimx/LChart/blob/master/art/l_god.png)  ![god](https://github.com/linheimx/LChart/blob/master/art/l_realtime.png)

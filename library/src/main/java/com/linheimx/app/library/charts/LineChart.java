@@ -327,6 +327,13 @@ public class LineChart extends Chart {
         return xy.getY();
     }
 
+    public RectD get_currentViewPort() {
+        return _MappingManager.get_currentViewPort();
+    }
+
+    public void set_currentViewPort(RectD currentViewPort) {
+        _MappingManager.set_currentViewPort(currentViewPort);
+    }
 
     public void setLines(Lines lines) {
         _lines = lines;
