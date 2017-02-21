@@ -22,7 +22,7 @@
 
 ## 基本使用
 
-1. 设置x,y轴
+step1: 设置x,y轴
 ```
         // x,y轴
         XAxis xAxis = lineChart.get_XAxis();
@@ -33,7 +33,7 @@
         yAxis.set_unit("单位：m");
         yAxis.set_ValueAdapter(new DefaultValueAdapter(3));// 默认精度到小数点后2位,现在修改为3位精度
 ```
-2. 为一条数据线添加数据
+step2: 为一条数据线添加数据
 ```
         // 数据
         Line line = new Line();
@@ -45,7 +45,7 @@
         list.add(new Entry(10, 8));
         line.setEntries(list);
 ```
-3.   将数据放到 lineChart上
+step3:   将数据放到 lineChart上
 ```
         Lines lines = new Lines();
         lines.addLine(line);
