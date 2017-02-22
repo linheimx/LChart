@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+
 android {
     compileSdkVersion 24
     buildToolsVersion '24.0.2'
