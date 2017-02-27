@@ -20,7 +20,8 @@
         <activity android:name=".GodActivity" />
         <activity android:name=".MultiLineActivity" />
         <activity android:name=".WarnLinesActivity" />
-        <activity android:name=".RealTimeActivity"></activity>
+        <activity android:name=".RealTimeActivity" />
+        <activity android:name=".TimeActivity"></activity>
     </application>
 
 </manifest>

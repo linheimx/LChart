@@ -34,8 +34,6 @@ public class NoDataRender extends BaseRender {
         float x = _rectMain.centerX();
         float y = _rectMain.centerY();
 
-        LogUtil.e("----> x y"+_rectMain.toString());
-
         float halfW = Utils.textWidth(_Paint, txt) / 2;
         float halfH = Utils.textHeightAsc(_Paint) / 2;
 
