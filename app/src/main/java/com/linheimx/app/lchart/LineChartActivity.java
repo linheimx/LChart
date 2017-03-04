@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.linheimx.app.library.adapter.DefaultValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
@@ -14,7 +13,7 @@ import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
-import com.linheimx.app.library.model.HightLight;
+import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.model.XAxis;
 import com.linheimx.app.library.model.YAxis;
 
@@ -65,8 +64,8 @@ public class LineChartActivity extends AppCompatActivity {
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                HightLight hightLight = _lineChart.get_HightLight();
-                hightLight.setEnable(isChecked);// 启用高亮显示  默认为启用状态
+                HighLight highLight = _lineChart.get_HighLight();
+                highLight.setEnable(isChecked);// 启用高亮显示  默认为启用状态
                 _lineChart.invalidate();
             }
         });
@@ -76,15 +75,15 @@ public class LineChartActivity extends AppCompatActivity {
     private void setChartData(LineChart lineChart) {
 
         // 高亮
-        HightLight hightLight = lineChart.get_HightLight();
-        hightLight.setEnable(true);// 启用高亮显示  默认为启用状态
-        hightLight.setxValueAdapter(new IValueAdapter() {
+        HighLight highLight = lineChart.get_HighLight();
+        highLight.setEnable(true);// 启用高亮显示  默认为启用状态
+        highLight.setxValueAdapter(new IValueAdapter() {
             @Override
             public String value2String(double value) {
                 return "X:" + value;
             }
         });
-        hightLight.setyValueAdapter(new IValueAdapter() {
+        highLight.setyValueAdapter(new IValueAdapter() {
             @Override
             public String value2String(double value) {
                 return "Y:" + value;

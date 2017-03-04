@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 import android.view.ViewParent;
 
 import com.linheimx.app.library.R;
-import com.linheimx.app.library.model.HightLight;
+import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.model.XAxis;
@@ -22,7 +22,6 @@ import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.GodTouchListener;
 import com.linheimx.app.library.touch.TouchListener;
-import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.RectD;
 import com.linheimx.app.library.utils.SingleD_XY;
 import com.linheimx.app.library.utils.Utils;
@@ -45,7 +44,7 @@ public class LineChart extends Chart {
     ///////////////////////////////// parts ////////////////////////////////
     XAxis _XAxis;
     YAxis _YAxis;
-    HightLight _HightLight;
+    HighLight _HighLight;
 
     //////////////////////////////////  render  /////////////////////////////
     NoDataRender _NoDataRender;
@@ -101,14 +100,14 @@ public class LineChart extends Chart {
         // models
         _XAxis = new XAxis();
         _YAxis = new YAxis();
-        _HightLight = new HightLight();
+        _HighLight = new HighLight();
 
         // render
         _NoDataRender = new NoDataRender(_MainPlotRect, _MappingManager);
         _XAxisRender = new XAxisRender(_MainPlotRect, _MappingManager, _XAxis);
         _YAxisRender = new YAxisRender(_MainPlotRect, _MappingManager, _YAxis);
         _LineRender = new LineRender(_MainPlotRect, _MappingManager, _lines, this);
-        _HighLightRender = new HighLightRender(_MainPlotRect, _MappingManager, _lines, _HightLight);
+        _HighLightRender = new HighLightRender(_MainPlotRect, _MappingManager, _lines, _HighLight);
         _GodRender = new GodRender(_MainPlotRect, _MappingManager, _GodRect);
 
         // touch listener
@@ -373,12 +372,12 @@ public class LineChart extends Chart {
         invalidate();
     }
 
-    public HightLight get_HightLight() {
-        return _HightLight;
+    public HighLight get_HighLight() {
+        return _HighLight;
     }
 
-    public void set_HightLight(HightLight _HightLight) {
-        this._HightLight = _HightLight;
+    public void set_HighLight(HighLight _HighLight) {
+        this._HighLight = _HighLight;
     }
 
     public XAxis get_XAxis() {

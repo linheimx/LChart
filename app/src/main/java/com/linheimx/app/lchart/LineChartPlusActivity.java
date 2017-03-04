@@ -10,7 +10,7 @@ import com.linheimx.app.plus.LineChartPlus;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
-import com.linheimx.app.library.model.HightLight;
+import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.model.XAxis;
 import com.linheimx.app.library.model.YAxis;
 
@@ -37,15 +37,15 @@ public class LineChartPlusActivity extends AppCompatActivity {
     private void setChartData(LineChart lineChart) {
 
         // 高亮
-        HightLight hightLight = lineChart.get_HightLight();
-        hightLight.setEnable(true);// 启用高亮显示  默认为启用状态
-        hightLight.setxValueAdapter(new IValueAdapter() {
+        HighLight highLight = lineChart.get_HighLight();
+        highLight.setEnable(true);// 启用高亮显示  默认为启用状态
+        highLight.setxValueAdapter(new IValueAdapter() {
             @Override
             public String value2String(double value) {
                 return "X:" + value;
             }
         });
-        hightLight.setyValueAdapter(new IValueAdapter() {
+        highLight.setyValueAdapter(new IValueAdapter() {
             @Override
             public String value2String(double value) {
                 return "Y:" + Math.round(value * 100) / 100f;//保留两位小数

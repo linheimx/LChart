@@ -5,12 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.linheimx.app.library.adapter.DefaultValueAdapter;
-import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
-import com.linheimx.app.library.model.HightLight;
+import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.model.WarnLine;
 import com.linheimx.app.library.model.XAxis;
 import com.linheimx.app.library.model.YAxis;
@@ -37,8 +36,8 @@ public class WarnLinesActivity extends AppCompatActivity {
     private void setChartData(LineChart lineChart) {
 
         // 高亮
-        HightLight hightLight = lineChart.get_HightLight();
-        hightLight.setEnable(false);// 启用高亮显示  默认为启用状态
+        HighLight highLight = lineChart.get_HighLight();
+        highLight.setEnable(false);// 启用高亮显示  默认为启用状态
 
         // x,y轴上的单位
         XAxis xAxis = lineChart.get_XAxis();

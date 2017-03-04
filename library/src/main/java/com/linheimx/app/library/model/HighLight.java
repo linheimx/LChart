@@ -3,7 +3,6 @@ package com.linheimx.app.library.model;
 import android.graphics.Color;
 
 import com.linheimx.app.library.adapter.DefaultHighLightValueAdapter;
-import com.linheimx.app.library.adapter.DefaultValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.utils.Utils;
 
@@ -11,7 +10,7 @@ import com.linheimx.app.library.utils.Utils;
  * Created by LJIAN on 2016/12/15.
  */
 
-public class HightLight {
+public class HighLight {
 
     public static final float D_HIGHLIGHT_WIDTH = 1;
     public static final float D_HINT_TEXT_SIZE = 15;
@@ -32,7 +31,7 @@ public class HightLight {
     protected IValueAdapter yValueAdapter;// 高亮时，y应该如何显示？
 
 
-    public HightLight() {
+    public HighLight() {
 
         highLightWidth = Utils.dp2px(D_HIGHLIGHT_WIDTH);
         hintTextSize = Utils.dp2px(D_HINT_TEXT_SIZE);
@@ -41,7 +40,7 @@ public class HightLight {
         yValueAdapter = new DefaultHighLightValueAdapter();
     }
 
-    public HightLight(IValueAdapter xValueAdapter, IValueAdapter yValueAdapter) {
+    public HighLight(IValueAdapter xValueAdapter, IValueAdapter yValueAdapter) {
         this.xValueAdapter = xValueAdapter;
         this.yValueAdapter = yValueAdapter;
     }
@@ -106,7 +105,7 @@ public class HightLight {
         return xValueAdapter;
     }
 
-    public HightLight setxValueAdapter(IValueAdapter xValueAdapter) {
+    public HighLight setxValueAdapter(IValueAdapter xValueAdapter) {
         this.xValueAdapter = xValueAdapter;
         return this;
     }
@@ -115,7 +114,7 @@ public class HightLight {
         return yValueAdapter;
     }
 
-    public HightLight setyValueAdapter(IValueAdapter yValueAdapter) {
+    public HighLight setyValueAdapter(IValueAdapter yValueAdapter) {
         this.yValueAdapter = yValueAdapter;
         return this;
     }

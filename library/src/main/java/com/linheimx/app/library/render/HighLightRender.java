@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.linheimx.app.library.model.HightLight;
+import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
@@ -21,16 +21,16 @@ public class HighLightRender extends BaseRender {
     private final static double UN_CHOOSE = Double.MIN_VALUE;
 
     Lines _lines;
-    HightLight _hightLight;
+    HighLight _highLight;
 
     Paint paintHighLight;
     Paint paintHint;
 
-    public HighLightRender(RectF rectMain, MappingManager _MappingManager, Lines lines, HightLight hightLight) {
+    public HighLightRender(RectF rectMain, MappingManager _MappingManager, Lines lines, HighLight highLight) {
         super(rectMain, _MappingManager);
 
         this._lines = lines;
-        this._hightLight = hightLight;
+        this._highLight = highLight;
 
         paintHighLight = new Paint(Paint.ANTI_ALIAS_FLAG);
         paintHint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -61,7 +61,7 @@ public class HighLightRender extends BaseRender {
 
     public void render(Canvas canvas) {
 
-        if (!_hightLight.isEnable()) {
+        if (!_highLight.isEnable()) {
             return;
         }
 
@@ -141,21 +141,21 @@ public class HighLightRender extends BaseRender {
 
 
         // draw high line
-        if (_hightLight.isDrawHighLine()) {
-            paintHighLight.setStrokeWidth(_hightLight.getHighLightWidth());
-            paintHighLight.setColor(_hightLight.getHighLightColor());
+        if (_highLight.isDrawHighLine()) {
+            paintHighLight.setStrokeWidth(_highLight.getHighLightWidth());
+            paintHighLight.setColor(_highLight.getHighLightColor());
 
             canvas.drawLine(_rectMain.left, xy.getY(), _rectMain.right, xy.getY(), paintHighLight);
             canvas.drawLine(xy.getX(), _rectMain.top, xy.getX(), _rectMain.bottom, paintHighLight);
         }
 
         // draw hint
-        if (_hightLight.isDrawHint()) {
-            paintHint.setColor(_hightLight.getHintColor());
-            paintHint.setTextSize(_hightLight.getHintTextSize());
+        if (_highLight.isDrawHint()) {
+            paintHint.setColor(_highLight.getHintColor());
+            paintHint.setTextSize(_highLight.getHintTextSize());
 
-            String xStr = _hightLight.getxValueAdapter().value2String(hitEntry.getX());
-            String yStr = _hightLight.getyValueAdapter().value2String(hitEntry.getY());
+            String xStr = _highLight.getxValueAdapter().value2String(hitEntry.getX());
+            String yStr = _highLight.getyValueAdapter().value2String(hitEntry.getY());
             float txtHeight = Utils.textHeight(paintHint);
             float txtWidth = Math.max(Utils.textWidth(paintHint, xStr), Utils.textWidth(paintHint, yStr));
 
