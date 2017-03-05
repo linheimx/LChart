@@ -57,4 +57,4 @@ lineChart.setLines(lines);
 ## 项目分析
 博客地址：http://www.jianshu.com/p/d03ff80ad508
 
-欢迎反馈问题，我会尽力帮你解决 : )
+欢迎反馈问题，我会尽力来解决的，希望我们会做的更好 : )
