@@ -85,16 +85,40 @@ public class MappingManager {
         return value;
     }
 
+    /**
+     *  x方向
+     *  ---------------
+     *  数值转换成像素
+     *
+     * @param xValue
+     * @return
+     */
     public float v2p_x(double xValue) {
         double px = _contentRect.left + _contentRect.width() * (xValue - _currentViewPort.left) / _currentViewPort.width();
         return (float) px;
     }
 
+    /**
+     * y方向
+     * ----------------
+     * 数值转换成像素
+     *
+     * @param yValue
+     * @return
+     */
     public float v2p_y(double yValue) {
         double py = _contentRect.top + _contentRect.height() - _contentRect.height() * (yValue - _currentViewPort.bottom) / _currentViewPort.height();
         return (float) py;
     }
 
+    /**
+     * x方向
+     * ---------------
+     * 像素转换成数值
+     *
+     * @param xPix
+     * @return
+     */
     public double p2v_x(float xPix) {
         double value = xPix - _contentRect.left;
         value = value / _contentRect.width() * _currentViewPort.width();
@@ -102,6 +126,14 @@ public class MappingManager {
         return value;
     }
 
+    /**
+     * y方向
+     * --------------
+     * 像素转换成数值
+     *
+     * @param yPix
+     * @return
+     */
     public double p2v_y(float yPix) {
         double value = yPix - (_contentRect.top + _contentRect.height());
         value = value / -_contentRect.height() * _currentViewPort.height();

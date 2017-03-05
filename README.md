@@ -1,5 +1,5 @@
 # LChart
-![l_wall](https://github.com/linheimx/LChart/blob/master/art/l_wall.png)
+![l_logo](https://github.com/linheimx/LChart/blob/master/art/l_logo.png)
 
 ## 简介
 这是一个折线图，它提供了几个非常实用的功能，并且非常简单，易于使用。
