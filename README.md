@@ -14,9 +14,18 @@
 
 
 ## 效果展示
-![basic](https://github.com/linheimx/LChart/blob/master/art/l_basic.png)  ![warn](https://github.com/linheimx/LChart/blob/master/art/l_warn.png)
-![multi](https://github.com/linheimx/LChart/blob/master/art/l_multi.png)  ![func](https://github.com/linheimx/LChart/blob/master/art/l_func.png)
-![god](https://github.com/linheimx/LChart/blob/master/art/l_god.png)  ![realtime](https://github.com/linheimx/LChart/blob/master/art/l_realtime.png)
+<table align="center">
+    <tr>
+        <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_basic.png"/></td>
+        <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_warn.png"/></td>
+        <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_multi.png"/></td>
+    </tr>
+    <tr>
+            <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_func.png"/></td>
+            <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_god.png"/></td>
+            <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_realtime.png"/></td>
+    </tr>
+</table>
 
 
 ## 基本使用
