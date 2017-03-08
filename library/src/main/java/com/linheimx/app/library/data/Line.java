@@ -6,6 +6,7 @@ import android.util.Log;
 import com.linheimx.app.library.adapter.DefaultHighLightValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.utils.LogUtil;
+import com.linheimx.app.library.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class Line {
     private int lineColor = Color.BLACK;
     private int lineWidth = 1;
     private int circleColor = Color.RED;
-    private int circleR = 5;
+    private int circleR = 4;
 
     private boolean isDrawCircle = true;
     private boolean isDrawLegend = false;
@@ -40,6 +41,8 @@ public class Line {
     }
 
     public Line(List<Entry> entries) {
+
+        circleR = (int)Utils.dp2px(circleR);
 
         if (entries != null) {
             setEntries(entries);
@@ -195,22 +198,37 @@ public class Line {
     }
 
 
-    public double getmXMax() {
-        return mXMax;
-    }
-
-    public double getmXMin() {
-        return mXMin;
-    }
-
     public double getmYMax() {
         return mYMax;
+    }
+
+    public void setmYMax(double mYMax) {
+        this.mYMax = mYMax;
     }
 
     public double getmYMin() {
         return mYMin;
     }
 
+    public void setmYMin(double mYMin) {
+        this.mYMin = mYMin;
+    }
+
+    public double getmXMax() {
+        return mXMax;
+    }
+
+    public void setmXMax(double mXMax) {
+        this.mXMax = mXMax;
+    }
+
+    public double getmXMin() {
+        return mXMin;
+    }
+
+    public void setmXMin(double mXMin) {
+        this.mXMin = mXMin;
+    }
 
     public int getLineColor() {
         return lineColor;

@@ -13,7 +13,7 @@ import com.linheimx.app.library.utils.Utils;
 import java.util.List;
 
 /**
- * Created by LJIAN on 2016/11/14.
+ * Created by lijian on 2016/11/14.
  */
 
 public class YAxisRender extends AxisRender {

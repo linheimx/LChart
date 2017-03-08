@@ -5,7 +5,7 @@ import android.graphics.RectF;
 import com.linheimx.app.library.manager.MappingManager;
 
 /**
- * Created by LJIAN on 2016/11/14.
+ * Created by lijian on 2016/11/14.
  */
 
 public abstract class BaseRender {

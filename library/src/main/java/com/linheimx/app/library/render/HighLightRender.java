@@ -13,7 +13,7 @@ import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Utils;
 
 /**
- * Created by LJIAN on 2016/12/15.
+ * Created by lijian on 2016/12/15.
  */
 
 public class HighLightRender extends BaseRender {

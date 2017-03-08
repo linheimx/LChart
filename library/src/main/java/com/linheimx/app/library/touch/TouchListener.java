@@ -11,7 +11,7 @@ import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.utils.RectD;
 
 /**
- * Created by Administrator on 2016/11/20.
+ * Created by lijian on 2016/11/20.
  */
 
 public class TouchListener implements View.OnTouchListener {

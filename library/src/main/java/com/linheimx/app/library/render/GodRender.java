@@ -9,7 +9,7 @@ import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.utils.Utils;
 
 /**
- * Created by x1c on 2017/1/30.
+ * Created by lijian on 2017/1/30.
  */
 
 public class GodRender extends BaseRender {

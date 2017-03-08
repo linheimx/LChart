@@ -12,7 +12,7 @@ import com.linheimx.app.library.model.Axis;
 import com.linheimx.app.library.utils.Utils;
 
 /**
- * Created by LJIAN on 2016/11/14.
+ * Created by lijian on 2016/11/14.
  */
 
 public abstract class AxisRender extends BaseRender {

@@ -77,15 +77,31 @@ public class Lines {
         return mYMax;
     }
 
+    public void setmYMax(double mYMax) {
+        this.mYMax = mYMax;
+    }
+
     public double getmYMin() {
         return mYMin;
+    }
+
+    public void setmYMin(double mYMin) {
+        this.mYMin = mYMin;
     }
 
     public double getmXMax() {
         return mXMax;
     }
 
+    public void setmXMax(double mXMax) {
+        this.mXMax = mXMax;
+    }
+
     public double getmXMin() {
         return mXMin;
+    }
+
+    public void setmXMin(double mXMin) {
+        this.mXMin = mXMin;
     }
 }

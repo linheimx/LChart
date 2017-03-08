@@ -4,7 +4,7 @@ import com.linheimx.app.library.adapter.DefaultHighLightValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
 
 /**
- * Created by Administrator on 2016/11/13.
+ * Created by lijian on 2016/11/13.
  */
 
 public class Entry {

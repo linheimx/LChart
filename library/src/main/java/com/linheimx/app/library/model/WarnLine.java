@@ -5,7 +5,7 @@ import android.graphics.Color;
 import com.linheimx.app.library.utils.Utils;
 
 /**
- * Created by x1c on 2017/2/18.
+ * Created by lijian on 2017/2/18.
  */
 
 public class WarnLine {

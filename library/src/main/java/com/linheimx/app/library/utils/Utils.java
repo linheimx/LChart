@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Paint;
 
 /**
- * Created by Administrator on 2016/11/13.
+ * Created by lijian on 2016/11/13.
  */
 
 public class Utils {

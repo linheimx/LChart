@@ -3,7 +3,7 @@ package com.linheimx.app.library.model;
 import com.linheimx.app.library.utils.Utils;
 
 /**
- * Created by Administrator on 2016/12/5.
+ * Created by lijian on 2016/12/5.
  */
 
 public class XAxis extends Axis {

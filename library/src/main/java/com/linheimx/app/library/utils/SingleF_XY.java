@@ -6,7 +6,7 @@ package com.linheimx.app.library.utils;
  * 尽量少的分配内存
  * <p>
  * <p>
- * Created by LJIAN on 2016/11/14.
+ * Created by lijian on 2016/11/14.
  */
 
 public class SingleF_XY {

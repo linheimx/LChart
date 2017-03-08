@@ -15,7 +15,7 @@ import com.linheimx.app.library.utils.Utils;
 import java.util.List;
 
 /**
- * Created by LJIAN on 2016/11/17.
+ * Created by lijian on 2016/11/17.
  */
 
 public class LineRender extends BaseRender {
@@ -106,13 +106,13 @@ public class LineRender extends BaseRender {
 
             if (line.isDrawCircle()) {
                 SingleF_XY xy = _MappingManager.getPxByEntry(start);
-                canvas.drawCircle(xy.getX(), xy.getY(), Utils.dp2px(line.getCircleR()), _PaintCircle);
+                canvas.drawCircle(xy.getX(), xy.getY(), line.getCircleR(), _PaintCircle);
 
                 // 把最后点一个绘制出来
                 if (i == maxIndex - 1) {
                     Entry last = list.get(maxIndex);
                     xy = _MappingManager.getPxByEntry(last);
-                    canvas.drawCircle(xy.getX(), xy.getY(), Utils.dp2px(line.getCircleR()), _PaintCircle);
+                    canvas.drawCircle(xy.getX(), xy.getY(), line.getCircleR(), _PaintCircle);
                 }
             }
         }

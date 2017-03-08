@@ -10,7 +10,7 @@ import com.linheimx.app.library.touch.TouchListener;
 import com.linheimx.app.library.utils.Utils;
 
 /**
- * Created by Administrator on 2016/11/13.
+ * Created by lijian on 2016/11/13.
  */
 
 public abstract class Chart extends View {

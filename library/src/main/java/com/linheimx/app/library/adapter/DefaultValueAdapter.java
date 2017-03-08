@@ -3,7 +3,7 @@ package com.linheimx.app.library.adapter;
 import java.text.DecimalFormat;
 
 /**
- * Created by Administrator on 2016/11/13.
+ * Created by lijian on 2016/11/13.
  */
 
 public class DefaultValueAdapter implements IValueAdapter {

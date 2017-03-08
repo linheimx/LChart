@@ -12,7 +12,7 @@ import com.linheimx.app.library.utils.SingleF_XY;
  * -------------------
  * 人与照片直接的映射关系
  * <p>
- * Created by Administrator on 2016/11/13.
+ * Created by lijian on 2016/11/13.
  */
 
 public class MappingManager {

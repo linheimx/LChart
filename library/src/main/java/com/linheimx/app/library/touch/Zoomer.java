@@ -5,7 +5,7 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
 /**
- * Created by x1c on 2017/1/26.
+ * Created by lijian on 2017/1/26.
  */
 
 public class Zoomer {

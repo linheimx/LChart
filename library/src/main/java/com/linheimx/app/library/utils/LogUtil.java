@@ -3,7 +3,7 @@ package com.linheimx.app.library.utils;
 import android.util.Log;
 
 /**
- * Created by LJIAN on 2016/9/21.
+ * Created by lijian on 2016/9/21.
  */
 
 public class LogUtil {

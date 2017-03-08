@@ -27,7 +27,7 @@ import com.linheimx.app.library.utils.SingleD_XY;
 import com.linheimx.app.library.utils.Utils;
 
 /**
- * Created by Administrator on 2016/11/13.
+ * Created by lijian on 2016/11/13.
  */
 
 public class LineChart extends Chart {
@@ -275,6 +275,15 @@ public class LineChart extends Chart {
 
         _MappingManager.prepareRelation(xMin, xMax, yMin, yMax);
     }
+
+    /**
+     * 清空数据
+     */
+    public void clearData() {
+        _lines = null;
+        invalidate();
+    }
+
 
     public float get_paddingLeft() {
         return _paddingLeft;
