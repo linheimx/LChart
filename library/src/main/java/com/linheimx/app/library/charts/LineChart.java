@@ -203,6 +203,12 @@ public class LineChart extends Chart {
         notifyDataChanged();
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        _lines = null;
+    }
 
     /**
      * 通知数据改变
