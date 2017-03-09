@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="btn4"
-                android:text="上帝视角" />
+                android:text="预览模式" />
 
             <Button
                 android:layout_width="match_parent"

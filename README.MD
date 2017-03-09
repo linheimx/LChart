@@ -21,9 +21,9 @@
         <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_multi.png"/></td>
     </tr>
     <tr>
-            <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_func.png"/></td>
-            <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_god.png"/></td>
-            <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_realtime.png"/></td>
+        <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_func.png"/></td>
+        <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_preview.png"/></td>
+        <td><img src="https://github.com/linheimx/LChart/blob/master/art/l_realtime.png"/></td>
     </tr>
 </table>
 

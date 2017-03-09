@@ -17,7 +17,7 @@
         </activity>
         <activity android:name=".LineChartActivity" />
         <activity android:name=".LineChartPlusActivity" />
-        <activity android:name=".GodActivity" />
+        <activity android:name=".PreviewActivity" />
         <activity android:name=".MultiLineActivity" />
         <activity android:name=".WarnLinesActivity" />
         <activity android:name=".RealTimeActivity" />

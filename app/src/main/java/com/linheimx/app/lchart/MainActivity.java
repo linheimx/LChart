@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btn4(View v) {
-        startActivity(new Intent(MainActivity.this, GodActivity.class));
+        startActivity(new Intent(MainActivity.this, PreviewActivity.class));
     }
 
     public void btn5(View v) {
