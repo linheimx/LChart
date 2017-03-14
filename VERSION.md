@@ -7,3 +7,5 @@ release resource when chart detached from window
 ## 1.0.3
 lines can set data's max and min
 draw circle R use your set value
+## 1.0.4
+line can set isEnable for draw
