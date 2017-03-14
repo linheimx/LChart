@@ -30,6 +30,7 @@ public class Line {
     private int circleColor = Color.RED;
     private int circleR = 4;
 
+    private boolean isEnable = true;
     private boolean isDrawCircle = true;
     private boolean isDrawLegend = false;
     private String name = "line";
@@ -42,7 +43,7 @@ public class Line {
 
     public Line(List<Entry> entries) {
 
-        circleR = (int)Utils.dp2px(circleR);
+        circleR = (int) Utils.dp2px(circleR);
 
         if (entries != null) {
             setEntries(entries);
@@ -244,6 +245,14 @@ public class Line {
 
     public void setLineWidth(int lineWidth) {
         this.lineWidth = lineWidth;
+    }
+
+    public boolean isEnable() {
+        return isEnable;
+    }
+
+    public void setEnable(boolean enable) {
+        isEnable = enable;
     }
 
     public boolean isDrawCircle() {
