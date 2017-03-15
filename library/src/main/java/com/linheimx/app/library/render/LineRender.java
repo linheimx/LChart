@@ -50,7 +50,7 @@ public class LineRender extends BaseRender {
         // 绘制折线 和 折线上的圆点
         for (Line line : _lines.getLines()) {
             if (!line.isEnable()) {
-                return;
+                continue;
             }
             drawLine_Circle(canvas, line);
         }
@@ -61,7 +61,7 @@ public class LineRender extends BaseRender {
         for (int i = 0; i < _lines.getLines().size(); i++) {
             Line line = _lines.getLines().get(i);
             if (!line.isEnable()) {
-                return;
+                continue;
             }
             drawLegend(canvas, line, i);
         }

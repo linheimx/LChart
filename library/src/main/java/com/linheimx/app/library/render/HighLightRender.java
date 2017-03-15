@@ -96,6 +96,9 @@ public class HighLightRender extends BaseRender {
             // 点击光标进来的
             for (int i = 0; i < _lines.getLines().size(); i++) {
                 Line line = _lines.getLines().get(i);
+                if (!line.isEnable()) {
+                    continue;
+                }
                 int indexEntry = Line.getEntryIndex(line.getEntries(), highValueX, Line.Rounding.CLOSEST);
 
                 if (indexEntry < 0 || indexEntry >= line.getEntries().size()) {
@@ -124,7 +127,9 @@ public class HighLightRender extends BaseRender {
             // 左右移动进来的
             try {
                 Line line = _lines.getLines().get(record_LineIndex);
-                hitEntry = line.getEntries().get(record_EntryIndex);
+                if (line.isEnable()) {
+                    hitEntry = line.getEntries().get(record_EntryIndex);
+                }
             } catch (Exception e) {
                 hitEntry = null;
             }
