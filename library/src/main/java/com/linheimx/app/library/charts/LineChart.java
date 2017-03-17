@@ -136,11 +136,6 @@ public class LineChart extends Chart {
             return false;
         }
 
-        ViewParent parent = getParent();
-        if (parent != null) {
-            parent.requestDisallowInterceptTouchEvent(true);
-        }
-
         if (_ChartMode == ChartMode.Normal) {
             return _TouchListener.onTouch(this, event);
         } else if (_ChartMode == ChartMode.God) {

@@ -37,4 +37,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, RealTimeActivity.class));
     }
 
+    public void btn7(View v) {
+        startActivity(new Intent(MainActivity.this, TouchProcessActivity.class));
+    }
+
 }

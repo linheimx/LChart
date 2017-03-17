@@ -5,6 +5,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewParent;
 
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.manager.MappingManager;
@@ -28,6 +29,11 @@ public class GodTouchListener implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
+        ViewParent parent = v.getParent();
+        if (parent != null) {
+            parent.requestDisallowInterceptTouchEvent(true);
+        }
 
         boolean hit = _GestureDetector.onTouchEvent(event);
         hit |= _ScaleGestureDetector.onTouchEvent(event);

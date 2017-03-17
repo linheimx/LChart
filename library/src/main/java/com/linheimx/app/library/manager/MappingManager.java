@@ -231,6 +231,21 @@ public class MappingManager {
         currentViewPort.top = Math.min(_constrainViewPort.top, currentViewPort.top);
     }
 
+    public RectD get_constrainViewPort() {
+        return _constrainViewPort;
+    }
+
+    public void set_constrainViewPort(RectD _constrainViewPort) {
+        this._constrainViewPort = _constrainViewPort;
+    }
+
+    public RectD get_maxViewPort() {
+        return _maxViewPort;
+    }
+
+    public void set_maxViewPort(RectD _maxViewPort) {
+        this._maxViewPort = _maxViewPort;
+    }
 
     public RectD get_currentViewPort() {
         return _currentViewPort;

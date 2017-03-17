@@ -21,7 +21,8 @@
         <activity android:name=".MultiLineActivity" />
         <activity android:name=".WarnLinesActivity" />
         <activity android:name=".RealTimeActivity" />
-        <activity android:name=".TimeActivity"></activity>
+        <activity android:name=".TimeActivity" />
+        <activity android:name=".TouchProcessActivity"></activity>
     </application>
 
 </manifest>

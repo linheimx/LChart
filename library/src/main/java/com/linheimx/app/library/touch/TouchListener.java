@@ -4,6 +4,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.Scroller;
 
 import com.linheimx.app.library.charts.LineChart;
@@ -15,6 +16,8 @@ import com.linheimx.app.library.utils.RectD;
  */
 
 public class TouchListener implements View.OnTouchListener {
+
+    ViewParent viewParent;
 
     GestureDetector _GestureDetector;
     Zoomer _Zoomer;
@@ -46,6 +49,8 @@ public class TouchListener implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
+        viewParent = v.getParent();
 
         // 速度跟踪
         if (_VelocityTracker == null) {
@@ -151,7 +156,16 @@ public class TouchListener implements View.OnTouchListener {
         }
     }
 
-    private void stopAll(){
+
+    /**
+     * lchart 需要触摸事件
+     */
+    private void iNeedTouch(boolean need) {
+        viewParent.requestDisallowInterceptTouchEvent(need);
+    }
+
+
+    private void stopAll() {
         _Scroller.forceFinished(true);
         _Zoomer.stop();
     }
@@ -162,6 +176,8 @@ public class TouchListener implements View.OnTouchListener {
      * @param event
      */
     private void doPinch(MotionEvent event) {
+
+        iNeedTouch(true);
 
         float absDist = getABSDist(event);
         float scale = _disXY / absDist;
@@ -179,6 +195,17 @@ public class TouchListener implements View.OnTouchListener {
      * @param dy
      */
     private void doDrag(float dx, float dy) {
+
+        RectD current = _MappingManager.get_currentViewPort();
+        RectD maxx = _MappingManager.get_constrainViewPort();
+
+        boolean need = current.right < maxx.right;
+        need &= current.bottom > maxx.bottom;
+        need &= current.top < maxx.top;
+        need &= current.left > maxx.left;
+
+        iNeedTouch(need);
+
         _MappingManager.translate(dx, dy);
         _LineChart.postInvalidate();
     }

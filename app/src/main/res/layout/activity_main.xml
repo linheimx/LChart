@@ -55,6 +55,12 @@
                 android:onClick="btn6"
                 android:text="实时趋势" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="btn7"
+                android:text="滑动冲突" />
+
         </LinearLayout>
     </ScrollView>
 
