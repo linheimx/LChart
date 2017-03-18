@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.linheimx.app.lchart.fragment.LineChartFragment;
+import com.linheimx.app.lchart.fragment.ScrollView_Fragment;
+import com.linheimx.app.lchart.fragment.ViewPager_Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,43 +24,26 @@ public class TouchProcessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_touch_process);
 
-        getSupportActionBar().setTitle("滑动冲突");
+        getSupportActionBar().setTitle("滑动冲突的处理");
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-        viewPager.setOffscreenPageLimit(2);
-        viewPager.setAdapter(new Adapter(getSupportFragmentManager()));
-        tabLayout.setupWithViewPager(viewPager);
     }
 
 
-    class Adapter extends FragmentStatePagerAdapter {
+    public void btn_vp(View view) {
 
-        List<Fragment> list;
-
-        public Adapter(FragmentManager fm) {
-            super(fm);
-
-            list = new ArrayList<>();
-            list.add(new LineChartFragment());
-            list.add(new LineChartFragment());
-            list.add(new LineChartFragment());
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "chart " + position;
-        }
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.content, new ViewPager_Fragment())
+                .commit();
     }
+
+    public void btn_sv(View view) {
+
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.content, new ScrollView_Fragment())
+                .commit();
+    }
+
 }

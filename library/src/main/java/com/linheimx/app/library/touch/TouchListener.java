@@ -1,5 +1,6 @@
 package com.linheimx.app.library.touch;
 
+import android.support.annotation.Nullable;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -9,6 +10,7 @@ import android.widget.Scroller;
 
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.manager.MappingManager;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.RectD;
 
 /**
@@ -97,7 +99,12 @@ public class TouchListener implements View.OnTouchListener {
                 float dy = y - _lastY;
 
                 if (_TouchMode == TouchMode.DRAG) {
-                    doDrag(dx, dy);
+                    _VelocityTracker.computeCurrentVelocity(1000);
+                    float vx = _VelocityTracker.getXVelocity();// 得到当前手指在这一点移动的速度
+                    float vy = _VelocityTracker.getYVelocity();// 速度分为了x和y轴两个方向的速度
+                    int direction = judgeDir(vx, vy);
+
+                    doDrag(dx, dy, direction);
                 } else if (_TouchMode == TouchMode.PINCH_ZOOM) {
                     doPinch(event);
                 } else if (_TouchMode == TouchMode.NONE) {
@@ -143,7 +150,7 @@ public class TouchListener implements View.OnTouchListener {
             float dx = currX - _lastScrollX;
             float dy = currY - _lastScrollY;
 
-            doDrag(dx, dy);
+            doDrag(dx, dy, -1);
 
             _lastScrollX = currX;
             _lastScrollY = currY;
@@ -151,23 +158,62 @@ public class TouchListener implements View.OnTouchListener {
 
         // 考虑缩放
         if (_Zoomer.computeZoom()) {
+
             float currentLevel = _Zoomer.getCurrentZoom();
             zoom(currentLevel, _zoom_w, _zoom_h, _zoom_cx, _zoom_cy);
         }
     }
 
 
+    boolean hitStart = false;
+    int hitCount = 0;
+
     /**
      * lchart 需要触摸事件
      */
     private void iNeedTouch(boolean need) {
-        viewParent.requestDisallowInterceptTouchEvent(need);
+
+        if (need) {
+            viewParent.requestDisallowInterceptTouchEvent(true);
+            hitStart = false;
+        } else {
+            hitCount++;
+
+            if (!hitStart) {
+                hitCount = 0;
+                hitStart = true;
+            } else {
+
+                if (hitCount > 3) {
+                    hitStart = false;
+                    viewParent.requestDisallowInterceptTouchEvent(false);
+                } else {
+                    viewParent.requestDisallowInterceptTouchEvent(true);
+                }
+            }
+        }
+
     }
 
 
     private void stopAll() {
         _Scroller.forceFinished(true);
         _Zoomer.stop();
+    }
+
+
+    private int judgeDir(float vx, float vy) {
+
+        float x = Math.abs(vx);
+        float y = Math.abs(vy);
+
+        if (x > y) {
+            // 方向是水平
+            return 1;
+        } else {
+            // 方向是垂直
+            return 2;
+        }
     }
 
     /**
@@ -194,17 +240,31 @@ public class TouchListener implements View.OnTouchListener {
      * @param dx
      * @param dy
      */
-    private void doDrag(float dx, float dy) {
+    private void doDrag(float dx, float dy, int direction) {
 
-        RectD current = _MappingManager.get_currentViewPort();
-        RectD maxx = _MappingManager.get_constrainViewPort();
+        if (direction != -1) {
 
-        boolean need = current.right < maxx.right;
-        need &= current.bottom > maxx.bottom;
-        need &= current.top < maxx.top;
-        need &= current.left > maxx.left;
+            LogUtil.e("------> or:" + direction);
 
-        iNeedTouch(need);
+            RectD current = _MappingManager.get_currentViewPort();
+            RectD maxx = _MappingManager.get_constrainViewPort();
+
+
+            boolean need = false;
+
+            if (direction == 1) {
+                // hor
+                need = current.right < maxx.right;
+                need &= current.left > maxx.left;
+
+            } else {
+                // ver
+                need = current.bottom > maxx.bottom;
+                need &= current.top < maxx.top;
+            }
+
+            iNeedTouch(need);
+        }
 
         _MappingManager.translate(dx, dy);
         _LineChart.postInvalidate();

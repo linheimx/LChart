@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.linheimx.app.lchart.TouchProcessActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="以下是个ScrollView"
+        android:textSize="20sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <fragment
+                android:id="@+id/f1"
+                class="com.linheimx.app.lchart.fragment.LineChartFragment"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"></fragment>
+
+            <fragment
+                android:id="@+id/f2"
+                class="com.linheimx.app.lchart.fragment.LineChartFragment"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"></fragment>
+
+            <fragment
+                android:id="@+id/f3"
+                class="com.linheimx.app.lchart.fragment.LineChartFragment"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"></fragment>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
