@@ -10,4 +10,6 @@ draw circle R use your set value
 ## 1.0.4
 line can set isEnable for draw
 ## 1.0.5
-fix bug: units and labels not draw while mutli lines not enable for draw 
+fix bug: units and labels not draw while mutli lines not enable for draw
+## 1.0.6
+add scroll conflict process
