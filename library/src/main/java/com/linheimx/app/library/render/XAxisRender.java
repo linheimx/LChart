@@ -40,17 +40,11 @@ public class XAxisRender extends AxisRender {
     public void renderGridline(Canvas canvas) {
         super.renderGridline(canvas);
 
-        double[] values = _Axis.getLabelValues();
-        int labelCount = _Axis.getLabelCount();
-
-        if (labelCount != values.length) {
-            return;
-        }
-
         canvas.save();
         canvas.clipRect(_rectMain);// 限制绘制区域
 
-
+        double[] values = _Axis.getLabelValues();
+        int labelCount = _Axis.getLabelCount();
         float x = 0;
 
         float top = _rectMain.top;
@@ -59,6 +53,10 @@ public class XAxisRender extends AxisRender {
         _PathGrid.reset();
 
         for (int i = 0; i < labelCount; i++) {
+            if (values.length < (i + 1)) {
+                break;
+            }
+
             double value = values[i];
 
             SingleF_XY xy = _MappingManager.getPxByValue(value, 0);
@@ -81,10 +79,6 @@ public class XAxisRender extends AxisRender {
         double[] values = _Axis.getLabelValues();
         int labelCount = _Axis.getLabelCount();
 
-        if (labelCount != values.length) {
-            return;
-        }
-
         IValueAdapter adapter = _Axis.get_ValueAdapter();
         float indicator = _Axis.getLeg();
 
@@ -93,6 +87,10 @@ public class XAxisRender extends AxisRender {
         float bottom = _rectMain.bottom;
 
         for (int i = 0; i < labelCount; i++) {
+            if (values.length < (i + 1)) {
+                break;
+            }
+
             double value = values[i];
             String label = adapter.value2String(value);
 
