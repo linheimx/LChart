@@ -15,3 +15,5 @@ fix bug: units and labels not draw while mutli lines not enable for draw
 add scroll conflict process
 ## 1.0.7
 add check when draw axis render
+## 1.0.8
+fix axis render bug

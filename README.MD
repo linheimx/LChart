@@ -32,7 +32,7 @@
 ## 基本使用
 添加依赖
 ```
-compile 'com.linheimx.library:lchart:1.0.7'
+compile 'com.linheimx.library:lchart:1.0.8'
 ```
 给LineChart添加数据
 
