@@ -39,10 +39,16 @@ public class YAxisRender extends AxisRender {
     public void renderGridline(Canvas canvas) {
         super.renderGridline(canvas);
 
+        double[] values = _Axis.getLabelValues();
+        int labelCount = _Axis.getLabelCount();
+
+        if (labelCount != values.length) {
+            return;
+        }
+
         canvas.save();
         canvas.clipRect(_rectMain);// 限制绘制区域
 
-        double[] values = _Axis.getLabelValues();
         float y = 0;
 
         float left = _rectMain.left;
@@ -50,7 +56,7 @@ public class YAxisRender extends AxisRender {
 
         _PathGrid.reset();
 
-        for (int i = 0; i < _Axis.getLabelCount(); i++) {
+        for (int i = 0; i < labelCount; i++) {
             double value = values[i];
 
             SingleF_XY xy = _MappingManager.getPxByValue(0, value);
@@ -71,8 +77,14 @@ public class YAxisRender extends AxisRender {
     public void renderLabels(Canvas canvas) {
         super.renderLabels(canvas);
 
-        IValueAdapter adapter = _Axis.get_ValueAdapter();
         double[] values = _Axis.getLabelValues();
+        int labelCount = _Axis.getLabelCount();
+
+        if (labelCount != values.length) {
+            return;
+        }
+
+        IValueAdapter adapter = _Axis.get_ValueAdapter();
 
         float indicator = _Axis.getLeg();
         float y = 0;
@@ -81,7 +93,7 @@ public class YAxisRender extends AxisRender {
 
         int txtHeight = Utils.textHeightAsc(_PaintLabel);
 
-        for (int i = 0; i < _Axis.getLabelCount(); i++) {
+        for (int i = 0; i < labelCount; i++) {
             double value = values[i];
             String label = adapter.value2String(value);
 
