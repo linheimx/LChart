@@ -13,3 +13,5 @@ line can set isEnable for draw
 fix bug: units and labels not draw while mutli lines not enable for draw
 ## 1.0.6
 add scroll conflict process
+## 1.0.7
+add check when draw axis render

@@ -57,11 +57,21 @@ public abstract class AxisRender extends BaseRender {
     public void renderAxisLine(Canvas canvas) {
         _PaintAxis.setColor(_Axis.getAxisColor());
         _PaintAxis.setStrokeWidth(_Axis.getAxisWidth());
+
+        // check
+        if (!check()) {
+            return;
+        }
     }
 
     public void renderGridline(Canvas canvas) {
         _PaintGridline.setColor(Color.parseColor("#CCCCCC"));
         _PaintGridline.setStrokeWidth(Utils.dp2px(1));
+
+        // check
+        if (!check()) {
+            return;
+        }
     }
 
     public void renderLabels(Canvas canvas) {
@@ -71,6 +81,11 @@ public abstract class AxisRender extends BaseRender {
         // little
         _PaintLittle.setColor(_Axis.getAxisColor());
         _PaintLittle.setStrokeWidth(_Axis.getAxisWidth());
+
+        // check
+        if (!check()) {
+            return;
+        }
     }
 
     public void renderUnit(Canvas canvas) {
@@ -81,6 +96,14 @@ public abstract class AxisRender extends BaseRender {
     public void renderWarnLine(Canvas canvas) {
 
 
+    }
+
+    private boolean check() {
+        double[] values = _Axis.getLabelValues();
+        if (values == null || values.length == 0) {
+            return false;
+        }
+        return true;
     }
 
 }

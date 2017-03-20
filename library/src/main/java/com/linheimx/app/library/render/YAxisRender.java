@@ -92,6 +92,10 @@ public class YAxisRender extends AxisRender {
                 continue;
             }
 
+            if (label == null) {
+                continue;
+            }
+
             // indicator
             canvas.drawLine(left, y, left - indicator, y, _PaintLittle);
 

@@ -92,6 +92,10 @@ public class XAxisRender extends AxisRender {
                 continue;
             }
 
+            if (label == null) {
+                continue;
+            }
+
             // indicator
             canvas.drawLine(x, bottom, x, bottom + indicator, _PaintLittle);
 
