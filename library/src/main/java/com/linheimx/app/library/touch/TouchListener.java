@@ -244,11 +244,8 @@ public class TouchListener implements View.OnTouchListener {
 
         if (direction != -1) {
 
-            LogUtil.e("------> or:" + direction);
-
             RectD current = _MappingManager.get_currentViewPort();
             RectD maxx = _MappingManager.get_constrainViewPort();
-
 
             boolean need = false;
 
