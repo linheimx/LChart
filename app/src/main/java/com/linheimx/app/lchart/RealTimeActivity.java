@@ -131,7 +131,7 @@ public class RealTimeActivity extends AppCompatActivity {
 
                 addData();
             }
-        }, 20);
+        }, 10);
     }
 
 

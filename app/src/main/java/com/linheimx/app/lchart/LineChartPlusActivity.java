@@ -64,7 +64,7 @@ public class LineChartPlusActivity extends AppCompatActivity {
         line.setDrawCircle(false);//不画圆圈
         line.setLineColor(Color.BLUE);
         List<Entry> list = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 3000; i++) {
             list.add(new Entry(i, (float) Math.random()));
         }
         line.setEntries(list);

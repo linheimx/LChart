@@ -30,7 +30,8 @@ public abstract class Chart extends View {
 
 
     protected void init(Context context, AttributeSet attrs) {
-
+        // 采用硬件加速
+        setLayerType(View.LAYER_TYPE_HARDWARE, null);
     }
 
     @Override
