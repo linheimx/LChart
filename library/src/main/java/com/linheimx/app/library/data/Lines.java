@@ -63,6 +63,19 @@ public class Lines {
                 mYMax = line.getmYMax();
             }
         }
+
+        // 考虑到只有一个点的问题
+        if (mXMax == mXMin) {
+            double half = Math.abs(mXMax) / 2;
+            mXMax += half;
+            mXMin -= half;
+        }
+
+        if (mYMax == mYMin) {
+            double half = Math.abs(mYMax) / 2;
+            mYMax += half;
+            mYMin -= half;
+        }
     }
 
     public void calMinMax() {

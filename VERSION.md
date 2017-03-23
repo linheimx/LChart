@@ -17,3 +17,5 @@ add scroll conflict process
 add check when draw axis render
 ## 1.0.8
 fix axis render bug
+## 1.0.9
+fix one point not show bug

@@ -9,6 +9,7 @@ import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -80,10 +81,17 @@ public class LineRender extends BaseRender {
         List<Entry> list = line.getEntries();
 
         // check
-        if (list == null || list.size() <= 1) {
+        if (list == null || list.size() == 0) {
             return;
         }
 
+        // 考虑只有一个点的情况
+        if (list.size() == 1) {
+            Entry hit = list.get(0);
+            SingleF_XY xy = _MappingManager.getPxByEntry(hit);
+            canvas.drawCircle(xy.getX(), xy.getY(), line.getCircleR(), _PaintCircle);
+            return;
+        }
 
         double xMin_Visiable = lineChart.getVisiableMinX();
         double xMax_Visiable = lineChart.getVisiableMaxX();
