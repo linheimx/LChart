@@ -41,4 +41,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, TouchProcessActivity.class));
     }
 
+    public void btn8(View v) {
+        startActivity(new Intent(MainActivity.this, ScrollLoadActivity.class));
+    }
+
 }

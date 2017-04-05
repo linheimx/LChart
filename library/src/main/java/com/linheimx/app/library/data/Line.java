@@ -75,6 +75,33 @@ public class Line {
         }
     }
 
+    /**
+     * 在数组的前面添加数据
+     *
+     * @param entry
+     */
+    public void addEntryInHead(Entry entry) {
+        if (entries == null) {
+            entries = new ArrayList<>();
+        }
+        entries.add(0, entry);
+
+        // 计算最大最小
+        if (entry.getX() < mXMin) {
+            mXMin = entry.getX();
+        }
+        if (entry.getX() > mXMax) {
+            mXMax = entry.getX();
+        }
+
+        if (entry.getY() < mYMin) {
+            mYMin = entry.getY();
+        }
+        if (entry.getY() > mYMax) {
+            mYMax = entry.getY();
+        }
+    }
+
     public void addEntry(Entry entry) {
         if (entries == null) {
             entries = new ArrayList<>();

@@ -9,6 +9,7 @@ import android.view.ViewParent;
 import android.widget.Scroller;
 
 import com.linheimx.app.library.charts.LineChart;
+import com.linheimx.app.library.listener.IDragListener;
 import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.RectD;
@@ -127,6 +128,11 @@ public class TouchListener implements View.OnTouchListener {
                     if (vx > 20 || vy > 20) {
                         doFling(event.getX(), event.getY(), vx, vy);
                     }
+
+                    IDragListener listener = _LineChart.get_dragListener();
+                    if (listener != null) {
+                        listener.onDrag(_LineChart.getVisiableMinX(), _LineChart.getVisiableMaxX());
+                    }
                 }
                 _TouchMode = TouchMode.NONE;
                 break;
@@ -223,6 +229,10 @@ public class TouchListener implements View.OnTouchListener {
      */
     private void doPinch(MotionEvent event) {
 
+        if (!_LineChart.isScaleable()) {
+            return;
+        }
+
         iNeedTouch(true);
 
         float absDist = getABSDist(event);
@@ -241,6 +251,10 @@ public class TouchListener implements View.OnTouchListener {
      * @param dy
      */
     private void doDrag(float dx, float dy, int direction) {
+
+        if (!_LineChart.isDragable()) {
+            return;
+        }
 
         if (direction != -1) {
 
@@ -273,6 +287,10 @@ public class TouchListener implements View.OnTouchListener {
      */
     private void doFling(float x, float y, int velocityX, int velocityY) {
 
+        if (!_LineChart.isDragable()) {
+            return;
+        }
+
         _Scroller.forceFinished(true);
 
         _lastScrollX = x;
@@ -301,6 +319,10 @@ public class TouchListener implements View.OnTouchListener {
      */
     private void zoom(float scaleX, float scaleY, float cx, float cy) {
 
+        if (!_LineChart.isScaleable()) {
+            return;
+        }
+
         if (!canX_zoom) {
             scaleX = 1;
         }
@@ -323,6 +345,10 @@ public class TouchListener implements View.OnTouchListener {
      * @param cy
      */
     private void zoom(float level, double startW, double startH, float cx, float cy) {
+
+        if (!_LineChart.isScaleable()) {
+            return;
+        }
 
         if (!canX_zoom) {
             startW = _MappingManager.get_currentViewPort().width();

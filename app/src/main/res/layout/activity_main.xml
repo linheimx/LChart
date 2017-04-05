@@ -61,6 +61,12 @@
                 android:onClick="btn7"
                 android:text="滑动冲突的处理" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="btn8"
+                android:text="滑动加载" />
+
         </LinearLayout>
     </ScrollView>
 

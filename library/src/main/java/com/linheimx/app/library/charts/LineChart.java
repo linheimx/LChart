@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.ViewParent;
 
 import com.linheimx.app.library.R;
+import com.linheimx.app.library.listener.IDragListener;
 import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
@@ -36,9 +37,14 @@ public class LineChart extends Chart {
 
     Lines _lines;
 
+    ////////////////////////////  listener  ///////////////////////////
+    IDragListener _dragListener;
+
     ////////////////////////// function //////////////////////////
     boolean isHighLightEnabled = true;
     boolean isTouchEnabled = true;
+    boolean isDragable = true;
+    boolean isScaleable = true;
     ChartMode _ChartMode;
 
     ///////////////////////////////// parts ////////////////////////////////
@@ -279,6 +285,29 @@ public class LineChart extends Chart {
         invalidate();
     }
 
+    public boolean isDragable() {
+        return isDragable;
+    }
+
+    public void setDragable(boolean dragable) {
+        isDragable = dragable;
+    }
+
+    public boolean isScaleable() {
+        return isScaleable;
+    }
+
+    public void setScaleable(boolean scaleable) {
+        isScaleable = scaleable;
+    }
+
+    public IDragListener get_dragListener() {
+        return _dragListener;
+    }
+
+    public void set_dragListener(IDragListener _dragListener) {
+        this._dragListener = _dragListener;
+    }
 
     public float get_paddingLeft() {
         return _paddingLeft;

@@ -22,7 +22,8 @@
         <activity android:name=".WarnLinesActivity" />
         <activity android:name=".RealTimeActivity" />
         <activity android:name=".TimeActivity" />
-        <activity android:name=".TouchProcessActivity"></activity>
+        <activity android:name=".TouchProcessActivity" />
+        <activity android:name=".ScrollLoadActivity" />
     </application>
 
 </manifest>
