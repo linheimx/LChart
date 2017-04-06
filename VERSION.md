@@ -19,3 +19,5 @@ add check when draw axis render
 fix axis render bug
 ## 1.0.9
 fix one point not show bug
+## 1.1.0
+update labels cal way in axis
