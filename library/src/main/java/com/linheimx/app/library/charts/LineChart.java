@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.ViewParent;
 
 import com.linheimx.app.library.R;
+import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.listener.IDragListener;
 import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.data.Lines;
@@ -162,8 +163,9 @@ public class LineChart extends Chart {
         }
 
         // 计算轴线上的数值
-        _XAxis.calValues(getVisiableMinX(), getVisiableMaxX());
-        _YAxis.calValues(getVisiableMinY(), getVisiableMaxY());
+        Line line = _lines.getLines().get(0);
+        _XAxis.calValues(getVisiableMinX(), getVisiableMaxX(), line);
+        _YAxis.calValues(getVisiableMinY(), getVisiableMaxY(), line);
 
         // render grid line
         _XAxisRender.renderGridline(canvas);

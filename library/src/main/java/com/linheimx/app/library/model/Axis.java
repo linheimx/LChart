@@ -4,6 +4,7 @@ import android.graphics.Color;
 
 import com.linheimx.app.library.adapter.DefaultValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
+import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.utils.Utils;
 
 import java.util.List;
@@ -30,10 +31,10 @@ public abstract class Axis {
     double[] labelValues = new double[]{};
     int labelCount = 6;
     int _labelCountAdvice = D_LABEL_COUNT;
-    boolean isPerfectLabel = true;
     float labelArea;
     int labelColor = Color.BLUE;
     float labelTextSize;
+    CalWay calWay = CalWay.perfect;
 
     ///////////////////////////////  unit 相关  ////////////////////////////
     boolean _enableUnit = true;
@@ -70,7 +71,7 @@ public abstract class Axis {
      * -----------------------------
      * 注意：可见区域！
      */
-    public void calValues(double min, double max) {
+    public void calValues(double min, double max, Line line) {
 
         double range;
         range = max - min;
@@ -79,7 +80,8 @@ public abstract class Axis {
             return;
         }
 
-        if (isPerfectLabel) {
+        if (calWay == CalWay.perfect) {
+            // 漂亮：展现的更合理
 
             double rawInterval = range / (_labelCountAdvice - 1);
             // 1.以最大数值为量程
@@ -126,7 +128,9 @@ public abstract class Axis {
 //                labelValues[n - 1] = max;
 //            }
 
-        } else {
+        } else if (calWay == CalWay.justAvg) {
+            // 平均：达到共产主义
+
             if (labelValues.length < labelCount) {
                 labelValues = new double[labelCount];
             }
@@ -140,6 +144,28 @@ public abstract class Axis {
                 labelValues[i] = v;
             }
             labelValues[labelCount - 1] = max;
+        } else if (calWay == CalWay.every) {
+            // 每个：将可视范围内，这条线上的每个数据在x轴上的label都绘制出来
+
+            if (line != null && line.getEntries().size() != 0) {
+                int minIndex = Line.getEntryIndex(line.getEntries(), min, Line.Rounding.DOWN);
+                int maxIndex = Line.getEntryIndex(line.getEntries(), max, Line.Rounding.UP);
+
+                labelCount = (maxIndex - minIndex) + 1;
+                if (labelValues.length < labelCount) {
+                    labelValues = new double[labelCount];
+                }
+
+                int count = 0;
+                for (int i = minIndex; i <= maxIndex; i++) {
+                    if (this instanceof XAxis) {
+                        labelValues[count++] = line.getEntries().get(i).getX();
+                    } else {
+                        labelValues[count++] = line.getEntries().get(i).getY();
+                    }
+                }
+            }
+
         }
     }
 
@@ -265,14 +291,6 @@ public abstract class Axis {
         this.leg = leg;
     }
 
-    public boolean isPerfectLabel() {
-        return isPerfectLabel;
-    }
-
-    public void setPerfectLabel(boolean perfectLabel) {
-        isPerfectLabel = perfectLabel;
-    }
-
     public float getLabelTextSize() {
         return labelTextSize;
     }
@@ -311,5 +329,36 @@ public abstract class Axis {
 
     public void setListWarnLins(List<WarnLine> listWarnLins) {
         this.listWarnLins = listWarnLins;
+    }
+
+    public CalWay getCalWay() {
+        return calWay;
+    }
+
+    /**
+     * 轴线上一堆label的计算方式
+     *
+     * @param calWay
+     */
+    public void setCalWay(CalWay calWay) {
+        this.calWay = calWay;
+    }
+
+    /**
+     * 轴线上的一堆数据的计算方式
+     */
+    public enum CalWay {
+        /**
+         * 漂亮：展现的更合理
+         */
+        perfect,
+        /**
+         * 平均：达到共产主义
+         */
+        justAvg,
+        /**
+         * 每个：将可视范围内，这条线上的每个数据在x轴上的label都绘制出来
+         */
+        every
     }
 }

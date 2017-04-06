@@ -13,6 +13,7 @@ import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
+import com.linheimx.app.library.model.Axis;
 import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.model.XAxis;
 import com.linheimx.app.library.model.YAxis;
@@ -92,6 +93,7 @@ public class LineChartActivity extends AppCompatActivity {
 
         // x,y轴上的单位
         XAxis xAxis = lineChart.get_XAxis();
+//        xAxis.setCalWay(Axis.CalWay.every); // 轴线上label的计算方式
         xAxis.set_unit("单位：s");
         xAxis.set_ValueAdapter(new DefaultValueAdapter(1));
 
