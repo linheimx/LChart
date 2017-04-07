@@ -24,6 +24,7 @@ import com.linheimx.app.library.render.XAxisRender;
 import com.linheimx.app.library.render.YAxisRender;
 import com.linheimx.app.library.touch.GodTouchListener;
 import com.linheimx.app.library.touch.TouchListener;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.RectD;
 import com.linheimx.app.library.utils.SingleD_XY;
 import com.linheimx.app.library.utils.Utils;
@@ -287,6 +288,22 @@ public class LineChart extends Chart {
         invalidate();
     }
 
+    public boolean isCanX_zoom() {
+        return _TouchListener.isCanX_zoom();
+    }
+
+    public void setCanX_zoom(boolean canX_zoom) {
+        _TouchListener.setCanX_zoom(canX_zoom);
+    }
+
+    public boolean isCanY_zoom() {
+        return _TouchListener.isCanY_zoom();
+    }
+
+    public void setCanY_zoom(boolean canY_zoom) {
+        _TouchListener.setCanY_zoom(canY_zoom);
+    }
+
     public boolean isDragable() {
         return isDragable;
     }
@@ -375,6 +392,11 @@ public class LineChart extends Chart {
         _MappingManager.set_currentViewPort(currentViewPort);
     }
 
+    /**
+     * 设置数据源
+     *
+     * @param lines
+     */
     public void setLines(Lines lines) {
         _lines = lines;
 
@@ -386,10 +408,35 @@ public class LineChart extends Chart {
         return _lines;
     }
 
+    /**
+     * 获取映射管家
+     *
+     * @return
+     */
     public MappingManager get_MappingManager() {
         return _MappingManager;
     }
 
+    /**
+     * 设置 x轴，y轴的范围
+     *
+     * @param yMin
+     * @param yMax
+     * @param xMin
+     * @param xMax
+     */
+    public void setMaxMin(double yMin, double yMax, double xMin, double xMax) {
+        if (_lines != null) {
+            _lines.setCustomMaxMin(true);
+            _lines.setmYMin(yMin);
+            _lines.setmYMax(yMax);
+            _lines.setmXMin(xMin);
+            _lines.setmXMax(xMax);
+            postInvalidate();
+        } else {
+            LogUtil.e("setMaxMin: 请在lines设置后，调用此方法！");
+        }
+    }
 
     ////////////////////////////////  便捷的方法  //////////////////////////////////
 

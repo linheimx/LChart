@@ -377,6 +377,21 @@ public class TouchListener implements View.OnTouchListener {
         return y;
     }
 
+    public boolean isCanX_zoom() {
+        return canX_zoom;
+    }
+
+    public void setCanX_zoom(boolean canX_zoom) {
+        this.canX_zoom = canX_zoom;
+    }
+
+    public boolean isCanY_zoom() {
+        return canY_zoom;
+    }
+
+    public void setCanY_zoom(boolean canY_zoom) {
+        this.canY_zoom = canY_zoom;
+    }
 
     class GestureListener extends GestureDetector.SimpleOnGestureListener {
 

@@ -86,9 +86,9 @@ public class MappingManager {
     }
 
     /**
-     *  x方向
-     *  ---------------
-     *  数值转换成像素
+     * x方向
+     * ---------------
+     * 数值转换成像素
      *
      * @param xValue
      * @return
@@ -255,6 +255,9 @@ public class MappingManager {
         this._currentViewPort = _currentViewPort;
     }
 
+    public float getFatFactor() {
+        return fatFactor;
+    }
 
     /**
      * 设置约束视图的肥胖因子
@@ -265,6 +268,12 @@ public class MappingManager {
      * @param fatFactor
      */
     public void setFatFactor(float fatFactor) {
+
+        if (fatFactor < 1) {
+            throw new RuntimeException("肥胖因子必须大于1！");
+        }
+
+        this.fatFactor = fatFactor;
 
         double w = _maxViewPort.width();
         double h = _maxViewPort.height();

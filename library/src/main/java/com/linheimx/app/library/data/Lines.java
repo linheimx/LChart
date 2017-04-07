@@ -2,6 +2,7 @@ package com.linheimx.app.library.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.DeflaterOutputStream;
 
 /**
  * Created by Administrator on 2016/11/13.
@@ -9,12 +10,18 @@ import java.util.List;
 
 public class Lines {
 
-    private List<Line> lines;
+    private List<Line> lines = new ArrayList<>();
 
-    protected double mYMax = -Double.MAX_VALUE;
-    protected double mYMin = Double.MAX_VALUE;
-    protected double mXMax = -Double.MAX_VALUE;
-    protected double mXMin = Double.MAX_VALUE;
+    /************************  x,y的范围  **********************/
+    private double mYMax;
+    private double mYMin;
+    private double mXMax;
+    private double mXMin;
+
+    /**
+     * 是否使用 设置的最小最大值
+     */
+    private boolean isCustomMaxMin = false;
 
     public Lines() {
     }
@@ -33,15 +40,15 @@ public class Lines {
     }
 
     public void addLine(Line line) {
-        if (lines == null) {
-            lines = new ArrayList<>();
-        }
-
         lines.add(line);
         calMinMax(lines);
     }
 
     private void calMinMax(List<Line> lines) {
+
+        if (isCustomMaxMin) {
+            return;
+        }
 
         mYMax = Double.MIN_VALUE;
         mYMin = Double.MAX_VALUE;
@@ -116,5 +123,13 @@ public class Lines {
 
     public void setmXMin(double mXMin) {
         this.mXMin = mXMin;
+    }
+
+    public boolean isCustomMaxMin() {
+        return isCustomMaxMin;
+    }
+
+    public void setCustomMaxMin(boolean customMaxMin) {
+        isCustomMaxMin = customMaxMin;
     }
 }

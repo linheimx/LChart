@@ -75,6 +75,9 @@ public class LineChartActivity extends AppCompatActivity {
 
     private void setChartData(LineChart lineChart) {
 
+//        lineChart.get_MappingManager().setFatFactor(1f);//设置 可见视图与原始数据视图的比例
+//        lineChart.setCanY_zoom(false);//设置只能y方向是否能缩放！
+
         // 高亮
         HighLight highLight = lineChart.get_HighLight();
         highLight.setEnable(true);// 启用高亮显示  默认为启用状态
@@ -114,8 +117,8 @@ public class LineChartActivity extends AppCompatActivity {
         Lines lines = new Lines();
         lines.addLine(line);
 
-
         lineChart.setLines(lines);
+//        lineChart.setMaxMin(2,20,1,10);//手动设置，x和y方向上的数据范围
     }
 
 

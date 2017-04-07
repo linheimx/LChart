@@ -21,3 +21,5 @@ fix axis render bug
 fix one point not show bug
 ## 1.1.0
 update labels cal way in axis
+## 1.1.1
+can set viewport's factor and set lines's max min
