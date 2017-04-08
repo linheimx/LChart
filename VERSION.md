@@ -23,3 +23,5 @@ fix one point not show bug
 update labels cal way in axis
 ## 1.1.1
 can set viewport's factor and set lines's max min
+## 1.1.2
+can set legend's width and text size

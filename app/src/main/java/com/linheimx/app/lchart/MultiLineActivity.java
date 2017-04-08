@@ -17,6 +17,7 @@ import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.model.XAxis;
 import com.linheimx.app.library.model.YAxis;
+import com.linheimx.app.library.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,7 +148,9 @@ public class MultiLineActivity extends AppCompatActivity {
         }
 
         line.setEntries(list);
-        line.setDrawLegend(true);
+        line.setDrawLegend(true);//设置启用绘制图例
+        line.setLegendWidth((int)Utils.dp2px(60));//设置图例的宽
+        line.setLegendTextSize((int)Utils.dp2px(9));//设置图例上的字体大小
         line.setName("_line:" + order);
         line.setLineColor(color);
         line.setOnEntryClick(onEntryClick);

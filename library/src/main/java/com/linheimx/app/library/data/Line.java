@@ -33,6 +33,8 @@ public class Line {
     private boolean isEnable = true;
     private boolean isDrawCircle = true;
     private boolean isDrawLegend = false;
+    private int legendWidth = 50;
+    private int legendTextSize = 8;
     private String name = "line";
 
     private CallBack_OnEntryClick onEntryClick;
@@ -44,6 +46,8 @@ public class Line {
     public Line(List<Entry> entries) {
 
         circleR = (int) Utils.dp2px(circleR);
+        legendWidth = (int) Utils.dp2px(legendWidth);
+        legendTextSize = (int) Utils.dp2px(legendTextSize);
 
         if (entries != null) {
             setEntries(entries);
@@ -288,6 +292,22 @@ public class Line {
 
     public void setDrawCircle(boolean drawCircle) {
         isDrawCircle = drawCircle;
+    }
+
+    public int getLegendTextSize() {
+        return legendTextSize;
+    }
+
+    public void setLegendTextSize(int legendTextSize) {
+        this.legendTextSize = legendTextSize;
+    }
+
+    public int getLegendWidth() {
+        return legendWidth;
+    }
+
+    public void setLegendWidth(int legendWidth) {
+        this.legendWidth = legendWidth;
     }
 
     public boolean isDrawLegend() {

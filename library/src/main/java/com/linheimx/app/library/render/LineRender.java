@@ -145,15 +145,13 @@ public class LineRender extends BaseRender {
         }
 
         _PaintLegend.setColor(line.getLineColor());
-        _PaintLegend.setTextSize(Utils.dp2px(10));
+        _PaintLegend.setTextSize(line.getLegendTextSize());
 
         String name = line.getName();
-        float txtWidth = Utils.textWidth(_PaintLegend, name);
 
-        float step = 100;
         float cubic = 20;
 
-        _RectFBuffer.left = order * step;
+        _RectFBuffer.left = order * line.getLegendWidth();
         _RectFBuffer.top = 0;
         _RectFBuffer.right = _RectFBuffer.left + cubic;
         _RectFBuffer.bottom = _RectFBuffer.top + cubic;
