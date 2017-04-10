@@ -7,7 +7,7 @@ tasks.withType(JavaCompile) {
 ext {
     PUBLISH_GROUP_ID = 'com.linheimx.library'
     PUBLISH_ARTIFACT_ID = 'lchart'
-    PUBLISH_VERSION = '1.1.2'
+    PUBLISH_VERSION = '1.1.3'
 }
 
 android {

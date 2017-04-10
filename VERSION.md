@@ -25,3 +25,5 @@ update labels cal way in axis
 can set viewport's factor and set lines's max min
 ## 1.1.2
 can set legend's width and text size
+## 1.1.3
+can set legend's height
