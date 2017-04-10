@@ -70,9 +70,9 @@ public class LineChart extends Chart {
     //////////////////////////// 区域 ///////////////////////////
     RectF _MainPlotRect;// 主要的绘图区域
 
-    float _paddingLeft = 20;
+    float _paddingLeft = 40;
     float _paddingRight = 5;
-    float _paddingTop = 15;
+    float _paddingTop = 17;
     float _paddingBottom = 15;
 
 
@@ -121,6 +121,12 @@ public class LineChart extends Chart {
         // touch listener
         _TouchListener = new TouchListener(this);
         _GodTouchListener = new GodTouchListener(this);
+
+        // other
+        _paddingLeft = Utils.dp2px(_paddingLeft);
+        _paddingRight = Utils.dp2px(_paddingRight);
+        _paddingTop = Utils.dp2px(_paddingTop);
+        _paddingBottom = Utils.dp2px(_paddingBottom);
     }
 
 
@@ -255,10 +261,24 @@ public class LineChart extends Chart {
 
     private void offsetPadding() {
 
-        _MainPlotRect.left += Utils.dp2px(_paddingLeft);
-        _MainPlotRect.top += Utils.dp2px(_paddingTop);
-        _MainPlotRect.right -= Utils.dp2px(_paddingRight);
-        _MainPlotRect.bottom -= Utils.dp2px(_paddingBottom);
+        // 考虑图例
+        if (_lines != null) {
+            int h = 0;
+            for (Line line : _lines.getLines()) {
+                if (line.getLegendHeight() > h) {
+                    h = line.getLegendHeight();
+                }
+            }
+
+            if (h > 0) {
+                _paddingTop = h;
+            }
+        }
+
+        _MainPlotRect.left += _paddingLeft;
+        _MainPlotRect.top += _paddingTop;
+        _MainPlotRect.right -= _paddingRight;
+        _MainPlotRect.bottom -= _paddingBottom;
     }
 
     private void offsetArea() {

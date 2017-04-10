@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Line {
 
-    private List<Entry> entries;
+    private List<Entry> entries = new ArrayList<>();
 
 
     private double mYMax = Double.MIN_VALUE;
@@ -34,6 +34,7 @@ public class Line {
     private boolean isDrawCircle = true;
     private boolean isDrawLegend = false;
     private int legendWidth = 50;
+    private int legendHeight = 17;
     private int legendTextSize = 8;
     private String name = "line";
 
@@ -48,6 +49,7 @@ public class Line {
         circleR = (int) Utils.dp2px(circleR);
         legendWidth = (int) Utils.dp2px(legendWidth);
         legendTextSize = (int) Utils.dp2px(legendTextSize);
+        legendHeight = (int) Utils.dp2px(legendHeight);
 
         if (entries != null) {
             setEntries(entries);
@@ -292,6 +294,14 @@ public class Line {
 
     public void setDrawCircle(boolean drawCircle) {
         isDrawCircle = drawCircle;
+    }
+
+    public int getLegendHeight() {
+        return legendHeight;
+    }
+
+    public void setLegendHeight(int legendHeight) {
+        this.legendHeight = legendHeight;
     }
 
     public int getLegendTextSize() {

@@ -148,11 +148,11 @@ public class LineRender extends BaseRender {
         _PaintLegend.setTextSize(line.getLegendTextSize());
 
         String name = line.getName();
-
+        float txtH = Utils.textHeight(_PaintLegend);
         float cubic = 20;
 
         _RectFBuffer.left = order * line.getLegendWidth();
-        _RectFBuffer.top = 0;
+        _RectFBuffer.top = line.getLegendHeight() - cubic - txtH / 2;
         _RectFBuffer.right = _RectFBuffer.left + cubic;
         _RectFBuffer.bottom = _RectFBuffer.top + cubic;
 

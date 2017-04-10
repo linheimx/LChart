@@ -150,7 +150,8 @@ public class MultiLineActivity extends AppCompatActivity {
         line.setEntries(list);
         line.setDrawLegend(true);//设置启用绘制图例
         line.setLegendWidth((int)Utils.dp2px(60));//设置图例的宽
-        line.setLegendTextSize((int)Utils.dp2px(9));//设置图例上的字体大小
+//        line.setLegendHeight((int)Utils.dp2px(60));//设置图例的高
+//        line.setLegendTextSize((int)Utils.dp2px(19));//设置图例上的字体大小
         line.setName("_line:" + order);
         line.setLineColor(color);
         line.setOnEntryClick(onEntryClick);
