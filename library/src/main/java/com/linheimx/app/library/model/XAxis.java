@@ -15,7 +15,7 @@ public class XAxis extends Axis {
     public XAxis() {
         super();
 
-        labelArea = Utils.dp2px(AREA_LABEL);
-        unitArea = Utils.dp2px(AREA_UNIT);
+        labelDimen = Utils.dp2px(AREA_LABEL);
+        unitDimen = Utils.dp2px(AREA_UNIT);
     }
 }

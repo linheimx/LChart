@@ -7,6 +7,7 @@ import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.manager.MappingManager;
 import com.linheimx.app.library.model.Axis;
 import com.linheimx.app.library.model.WarnLine;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -76,7 +77,6 @@ public class YAxisRender extends AxisRender {
     public void renderLabels(Canvas canvas) {
         super.renderLabels(canvas);
 
-
         IValueAdapter adapter = _Axis.get_ValueAdapter();
 
         double[] values = _Axis.getLabelValues();
@@ -110,7 +110,7 @@ public class YAxisRender extends AxisRender {
             canvas.drawLine(left, y, left - indicator, y, _PaintLittle);
 
             // label
-            float labelX = left - _Axis.getLabelArea();
+            float labelX = left - _Axis.getLabelDimen() - _Axis.getLeg() * 1.5f;
             float labelY = y + txtHeight / 2;
             canvas.drawText(label, labelX, labelY, _PaintLabel);
         }
@@ -118,14 +118,10 @@ public class YAxisRender extends AxisRender {
 
     @Override
     public void renderUnit(Canvas canvas) {
-        // unit
-        _PaintUnit.setColor(_Axis.getUnitColor());
-        _PaintUnit.setTextSize(_Axis.getUnitTxtSize());
+        super.renderUnit(canvas);
 
-        float left = _rectMain.left;
-        float px = left - _Axis.getLabelArea() - _Axis.getUnitArea();
-        float py = _rectMain.centerY() + _Axis.getUnitArea() / 2;
-
+        float px = _Axis.getUnitDimen();
+        float py = _rectMain.centerY() + _Axis.getUnitDimen() / 2;
         canvas.save();
         canvas.rotate(-90, px, py);
         canvas.drawText(_Axis.get_unit(), px, py, _PaintUnit);

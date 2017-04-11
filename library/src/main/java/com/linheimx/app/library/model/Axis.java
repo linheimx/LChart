@@ -5,6 +5,7 @@ import android.graphics.Color;
 import com.linheimx.app.library.adapter.DefaultValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.data.Line;
+import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Utils;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public abstract class Axis {
     public static final float D_AXIS_WIDTH = 2;// d 代表default
     public static final float D_LEG_WIDTH = 5;
     public static final float D_LABEL_TXT = 7;
-    public static final float D_UNIT_TXT = 14;
+    public static final float D_UNIT_TXT = 12;
 
     public static final int D_LABEL_COUNT = 6;// 建议label的数量
 
@@ -31,7 +32,7 @@ public abstract class Axis {
     double[] labelValues = new double[]{};
     int labelCount = 6;
     int _labelCountAdvice = D_LABEL_COUNT;
-    float labelArea;
+    float labelDimen;
     int labelColor = Color.BLUE;
     float labelTextSize;
     CalWay calWay = CalWay.perfect;
@@ -39,7 +40,7 @@ public abstract class Axis {
     ///////////////////////////////  unit 相关  ////////////////////////////
     boolean _enableUnit = true;
     String _unit = "";
-    float unitArea;
+    float unitDimen;
     float unitTxtSize;
     int unitColor = Color.RED;
 
@@ -130,6 +131,7 @@ public abstract class Axis {
 
         } else if (calWay == CalWay.justAvg) {
             // 平均：达到共产主义
+            labelCount = _labelCountAdvice;
 
             if (labelValues.length < labelCount) {
                 labelValues = new double[labelCount];
@@ -175,14 +177,15 @@ public abstract class Axis {
      * @return
      */
     public float offsetLeft(float labelWidth, float unitHeight) {
-        labelArea = labelWidth;
-        unitArea = unitHeight;
+        labelDimen = labelWidth;
+        unitDimen = unitHeight;
+        LogUtil.e("--->unit height:" + unitHeight);
 
-        float sum;
-        sum = labelArea;
+        float sum = labelDimen;
         if (_enableUnit) {
-            sum += unitArea;
+            sum += unitDimen;
         }
+        sum += leg;
         return sum;
     }
 
@@ -192,32 +195,33 @@ public abstract class Axis {
      * @return
      */
     public float offsetBottom(float labelHeight, float unitHeight) {
-        labelArea = labelHeight;
-        unitArea = unitHeight;
+        labelDimen = labelHeight;
+        unitDimen = unitHeight;
 
         float sum;
-        sum = labelArea;
+        sum = labelDimen;
         if (_enableUnit) {
-            sum += unitArea;
+            sum += unitDimen;
         }
+        sum += leg;
         return sum;
     }
 
 
-    public float getLabelArea() {
-        return labelArea;
+    public float getLabelDimen() {
+        return labelDimen;
     }
 
-    public void setLabelArea(float labelArea) {
-        this.labelArea = labelArea;
+    public void setLabelDimen(float labelDimen) {
+        this.labelDimen = labelDimen;
     }
 
-    public float getUnitArea() {
-        return unitArea;
+    public float getUnitDimen() {
+        return unitDimen;
     }
 
-    public void setUnitArea(float unitArea) {
-        this.unitArea = unitArea;
+    public void setUnitDimen(float unitDimen) {
+        this.unitDimen = unitDimen;
     }
 
 

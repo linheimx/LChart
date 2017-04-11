@@ -32,6 +32,8 @@ import com.linheimx.app.library.utils.RectD;
 import com.linheimx.app.library.utils.SingleD_XY;
 import com.linheimx.app.library.utils.Utils;
 
+import java.util.List;
+
 /**
  * Created by lijian on 2016/11/13.
  */
@@ -291,26 +293,43 @@ public class LineChart extends Chart {
         Paint paintLabel = _YAxisRender.get_PaintLabel();
         Paint paintUnit = _YAxisRender.get_PaintUnit();
 
-        String yLabel = "QQQQQ";
-        String xLabel = "QQQQQ";
+        /*******************************  取一堆label中的head middle tail 中的最大值  ***********************************/
+        float labelDimen = _YAxis.getLabelDimen();
+
         if (_lines != null && _lines.getLines().size() > 0) {
             Line line = _lines.getLines().get(0);
 
             if (line.getEntries().size() > 0) {
-                Entry head = line.getEntries().get(0);
+                List<Entry> entryList = line.getEntries();
 
-                IValueAdapter xAdapter = _XAxis.get_ValueAdapter();
-                xLabel = xAdapter.value2String(head.getX());
+                Entry head = entryList.get(0);
+                Entry tail = entryList.get(entryList.size() - 1);
+                Entry middle = entryList.get((0 + entryList.size() - 1) / 2);
 
                 IValueAdapter yAdapter = _YAxis.get_ValueAdapter();
-                yLabel = yAdapter.value2String(head.getY());
+                String s1 = yAdapter.value2String(head.getY());
+                float w1 = Utils.textWidth(paintLabel, s1);
+                if (labelDimen < w1) {
+                    labelDimen = w1;
+                }
+
+                String s2 = yAdapter.value2String(middle.getY());
+                float w2 = Utils.textWidth(paintLabel, s2);
+                if (labelDimen < w2) {
+                    labelDimen = w2;
+                }
+
+                String s3 = yAdapter.value2String(tail.getY());
+                float w3 = Utils.textWidth(paintLabel, s3);
+                if (labelDimen < w3) {
+                    labelDimen = w3;
+                }
             }
 
         }
 
-
         // 考虑y label和unit
-        _MainPlotRect.left += _XAxis.offsetLeft(Utils.textWidth(paintLabel, yLabel), Utils.textHeight(paintUnit));
+        _MainPlotRect.left += _YAxis.offsetLeft(labelDimen, Utils.textHeight(paintUnit));
         // 考虑x label和unit
         _MainPlotRect.bottom -= _XAxis.offsetBottom(Utils.textHeight(paintLabel), Utils.textHeight(paintUnit));
     }
