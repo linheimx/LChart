@@ -27,3 +27,5 @@ can set viewport's factor and set lines's max min
 can set legend's width and text size
 ## 1.1.3
 can set legend's height
+## 1.1.4
+auto cal unit and label in axis
