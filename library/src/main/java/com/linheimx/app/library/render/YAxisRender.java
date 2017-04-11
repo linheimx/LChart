@@ -110,7 +110,7 @@ public class YAxisRender extends AxisRender {
             canvas.drawLine(left, y, left - indicator, y, _PaintLittle);
 
             // label
-            float labelX = left - _Axis.getArea_Label();
+            float labelX = left - _Axis.getLabelArea();
             float labelY = y + txtHeight / 2;
             canvas.drawText(label, labelX, labelY, _PaintLabel);
         }
@@ -123,8 +123,8 @@ public class YAxisRender extends AxisRender {
         _PaintUnit.setTextSize(_Axis.getUnitTxtSize());
 
         float left = _rectMain.left;
-        float px = left - _Axis.getArea_Label() - _Axis.getArea_Unit();
-        float py = _rectMain.centerY() + _Axis.getArea_Unit() / 2;
+        float px = left - _Axis.getLabelArea() - _Axis.getUnitArea();
+        float py = _rectMain.centerY() + _Axis.getUnitArea() / 2;
 
         canvas.save();
         canvas.rotate(-90, px, py);

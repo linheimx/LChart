@@ -174,14 +174,16 @@ public abstract class Axis {
      *
      * @return
      */
-    public float offsetLeft() {
-        float dimen;
-        dimen = getArea_Label();
+    public float offsetLeft(float labelWidth, float unitHeight) {
+        labelArea = labelWidth;
+        unitArea = unitHeight;
 
+        float sum;
+        sum = labelArea;
         if (_enableUnit) {
-            dimen += getArea_Unit();
+            sum += unitArea;
         }
-        return dimen;
+        return sum;
     }
 
     /**
@@ -189,24 +191,35 @@ public abstract class Axis {
      *
      * @return
      */
-    public float offsetBottom() {
-        float dimen;
-        dimen = getArea_Label();
+    public float offsetBottom(float labelHeight, float unitHeight) {
+        labelArea = labelHeight;
+        unitArea = unitHeight;
 
+        float sum;
+        sum = labelArea;
         if (_enableUnit) {
-            dimen += getArea_Unit();
+            sum += unitArea;
         }
-        return dimen;
+        return sum;
     }
 
 
-    public float getArea_Label() {
+    public float getLabelArea() {
         return labelArea;
     }
 
-    public float getArea_Unit() {
+    public void setLabelArea(float labelArea) {
+        this.labelArea = labelArea;
+    }
+
+    public float getUnitArea() {
         return unitArea;
     }
+
+    public void setUnitArea(float unitArea) {
+        this.unitArea = unitArea;
+    }
+
 
     ///////////////////////////////  get set  //////////////////////////////////////
 

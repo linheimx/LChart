@@ -111,7 +111,7 @@ public class XAxisRender extends AxisRender {
 
             // label
             float labelX = x - Utils.textWidth(_PaintLabel, label) / 2;
-            float labelY = bottom + _Axis.getArea_Label();
+            float labelY = bottom + _Axis.getLabelArea();
             canvas.drawText(label, labelX, labelY, _PaintLabel);
         }
     }
@@ -126,7 +126,7 @@ public class XAxisRender extends AxisRender {
 
         float bottom = _rectMain.bottom;
         float labelX = _rectMain.centerX() - Utils.textWidth(paintUnit, unit) / 2;
-        float labelY = bottom + _Axis.offsetBottom();
+        float labelY = bottom + _Axis.getLabelArea() + _Axis.getUnitArea();
 
         canvas.drawText(unit, labelX, labelY, _PaintUnit);
     }

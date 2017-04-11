@@ -3,12 +3,15 @@ package com.linheimx.app.library.charts;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewParent;
 
 import com.linheimx.app.library.R;
+import com.linheimx.app.library.adapter.IValueAdapter;
+import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.listener.IDragListener;
 import com.linheimx.app.library.model.HighLight;
@@ -282,8 +285,34 @@ public class LineChart extends Chart {
     }
 
     private void offsetArea() {
-        _MainPlotRect.bottom -= _XAxis.offsetBottom();
-        _MainPlotRect.left += _XAxis.offsetLeft();
+
+        _YAxisRender.paint_label();
+        _YAxisRender.paint_unit();
+        Paint paintLabel = _YAxisRender.get_PaintLabel();
+        Paint paintUnit = _YAxisRender.get_PaintUnit();
+
+        String yLabel = "QQQQQ";
+        String xLabel = "QQQQQ";
+        if (_lines != null && _lines.getLines().size() > 0) {
+            Line line = _lines.getLines().get(0);
+
+            if (line.getEntries().size() > 0) {
+                Entry head = line.getEntries().get(0);
+
+                IValueAdapter xAdapter = _XAxis.get_ValueAdapter();
+                xLabel = xAdapter.value2String(head.getX());
+
+                IValueAdapter yAdapter = _YAxis.get_ValueAdapter();
+                yLabel = yAdapter.value2String(head.getY());
+            }
+
+        }
+
+
+        // 考虑y label和unit
+        _MainPlotRect.left += _XAxis.offsetLeft(Utils.textWidth(paintLabel, yLabel), Utils.textHeight(paintUnit));
+        // 考虑x label和unit
+        _MainPlotRect.bottom -= _XAxis.offsetBottom(Utils.textHeight(paintLabel), Utils.textHeight(paintUnit));
     }
 
 

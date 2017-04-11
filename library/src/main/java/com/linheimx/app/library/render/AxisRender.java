@@ -66,20 +66,113 @@ public abstract class AxisRender extends BaseRender {
 
     public void renderLabels(Canvas canvas) {
         // label
-        _PaintLabel.setColor(_Axis.getLabelColor());
-        _PaintLabel.setTextSize(_Axis.getLabelTextSize());
+        paint_label();
         // little
-        _PaintLittle.setColor(_Axis.getAxisColor());
-        _PaintLittle.setStrokeWidth(_Axis.getAxisWidth());
+        paint_little();
     }
 
     public void renderUnit(Canvas canvas) {
-        _PaintUnit.setColor(_Axis.getUnitColor());
-        _PaintUnit.setTextSize(_Axis.getUnitTxtSize());
+        paint_unit();
     }
 
     public void renderWarnLine(Canvas canvas) {
 
 
+    }
+
+
+    private void i1_______________________________________________() {
+
+    }
+
+    public void paint_label() {
+        _PaintLabel.setColor(_Axis.getLabelColor());
+        _PaintLabel.setTextSize(_Axis.getLabelTextSize());
+    }
+
+    public void paint_little() {
+        _PaintLittle.setColor(_Axis.getAxisColor());
+        _PaintLittle.setStrokeWidth(_Axis.getAxisWidth());
+    }
+
+    public void paint_unit() {
+        _PaintUnit.setColor(_Axis.getUnitColor());
+        _PaintUnit.setTextSize(_Axis.getUnitTxtSize());
+    }
+
+    private void i2_______________________________________________() {
+
+    }
+
+    public Paint get_PaintAxis() {
+        return _PaintAxis;
+    }
+
+    public void set_PaintAxis(Paint _PaintAxis) {
+        this._PaintAxis = _PaintAxis;
+    }
+
+    public Paint get_PaintGridline() {
+        return _PaintGridline;
+    }
+
+    public void set_PaintGridline(Paint _PaintGridline) {
+        this._PaintGridline = _PaintGridline;
+    }
+
+    public Paint get_PaintLittle() {
+        return _PaintLittle;
+    }
+
+    public void set_PaintLittle(Paint _PaintLittle) {
+        this._PaintLittle = _PaintLittle;
+    }
+
+    public Paint get_PaintLabel() {
+        return _PaintLabel;
+    }
+
+    public void set_PaintLabel(Paint _PaintLabel) {
+        this._PaintLabel = _PaintLabel;
+    }
+
+    public Paint get_PaintUnit() {
+        return _PaintUnit;
+    }
+
+    public void set_PaintUnit(Paint _PaintUnit) {
+        this._PaintUnit = _PaintUnit;
+    }
+
+    public Paint get_PaintWarnText() {
+        return _PaintWarnText;
+    }
+
+    public void set_PaintWarnText(Paint _PaintWarnText) {
+        this._PaintWarnText = _PaintWarnText;
+    }
+
+    public Paint get_PaintWarnPath() {
+        return _PaintWarnPath;
+    }
+
+    public void set_PaintWarnPath(Paint _PaintWarnPath) {
+        this._PaintWarnPath = _PaintWarnPath;
+    }
+
+    public Path get_PathGrid() {
+        return _PathGrid;
+    }
+
+    public void set_PathGrid(Path _PathGrid) {
+        this._PathGrid = _PathGrid;
+    }
+
+    public Path get_PathWarn() {
+        return _PathWarn;
+    }
+
+    public void set_PathWarn(Path _PathWarn) {
+        this._PathWarn = _PathWarn;
     }
 }

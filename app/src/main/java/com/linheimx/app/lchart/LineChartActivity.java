@@ -102,7 +102,12 @@ public class LineChartActivity extends AppCompatActivity {
 
         YAxis yAxis = lineChart.get_YAxis();
         yAxis.set_unit("单位：m");
-        yAxis.set_ValueAdapter(new DefaultValueAdapter(3));// 默认精度到小数点后2位,现在修改为3位精度
+        yAxis.set_ValueAdapter(new IValueAdapter() {
+            @Override
+            public String value2String(double value) {
+                return value+"mmmmmmmmmm";
+            }
+        });// 默认精度到小数点后2位,现在修改为3位精度
 
         // 数据
         Line line = new Line();
