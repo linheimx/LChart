@@ -22,7 +22,7 @@ public class Entry {
         return x;
     }
 
-    public void setX(float x) {
+    public void setX(double x) {
         this.x = x;
     }
 
@@ -30,10 +30,9 @@ public class Entry {
         return y;
     }
 
-    public void setY(float y) {
+    public void setY(double y) {
         this.y = y;
     }
-
 
 
     @Override

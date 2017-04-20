@@ -45,4 +45,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, ScrollLoadActivity.class));
     }
 
+    public void btn9(View v) {
+        startActivity(new Intent(MainActivity.this, AnimateActivity.class));
+    }
 }

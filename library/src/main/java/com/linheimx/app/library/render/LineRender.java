@@ -114,20 +114,29 @@ public class LineRender extends BaseRender {
             Entry start = list.get(i);
             Entry end = list.get(i + 1);
 
+//            _LineBuffer[count++] = _MappingManager.v2p_x(start.getX());
+//            _LineBuffer[count++] = _MappingManager.v2p_y(start.getY());
+//            _LineBuffer[count++] = _MappingManager.v2p_x(end.getX());
+//            _LineBuffer[count++] = _MappingManager.v2p_y(end.getY());
+
+            /////////////////////////////////////////////  考虑动画效果  //////////////////////////////////////////
             _LineBuffer[count++] = _MappingManager.v2p_x(start.getX());
-            _LineBuffer[count++] = _MappingManager.v2p_y(start.getY());
+            _LineBuffer[count++] = getAnimateY(_MappingManager.v2p_y(start.getY()));
             _LineBuffer[count++] = _MappingManager.v2p_x(end.getX());
-            _LineBuffer[count++] = _MappingManager.v2p_y(end.getY());
+            _LineBuffer[count++] = getAnimateY(_MappingManager.v2p_y(end.getY()));
 
             if (line.isDrawCircle()) {
                 SingleF_XY xy = _MappingManager.getPxByEntry(start);
-                canvas.drawCircle(xy.getX(), xy.getY(), line.getCircleR(), _PaintCircle);
+                canvas.drawCircle(xy.getX(), getAnimateY(xy.getY()), line.getCircleR(), _PaintCircle);
 
                 // 把最后点一个绘制出来
                 if (i == maxIndex - 1) {
                     Entry last = list.get(maxIndex);
                     xy = _MappingManager.getPxByEntry(last);
-                    canvas.drawCircle(xy.getX(), xy.getY(), line.getCircleR(), _PaintCircle);
+//                    canvas.drawCircle(xy.getX(), xy.getY(), line.getCircleR(), _PaintCircle);
+
+                    /////////////////////////////////////////////  考虑动画效果  //////////////////////////////////////////
+                    canvas.drawCircle(xy.getX(), getAnimateY(xy.getY()), line.getCircleR(), _PaintCircle);
                 }
             }
         }
@@ -163,5 +172,9 @@ public class LineRender extends BaseRender {
 
     public void onDataChanged(Lines lines) {
         _lines = lines;
+    }
+
+    private float getAnimateY(float src) {
+        return lineChart.get_MainPlotRect().bottom - (lineChart.get_MainPlotRect().bottom - src) * lineChart._hitValueY;
     }
 }

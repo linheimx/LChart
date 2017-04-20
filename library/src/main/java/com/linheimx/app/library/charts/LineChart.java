@@ -1,10 +1,13 @@
 package com.linheimx.app.library.charts;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.annotation.UiThread;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -348,11 +351,59 @@ public class LineChart extends Chart {
     }
 
     /**
+     * 设置数据源
+     *
+     * @param lines
+     */
+    public void setLines(Lines lines) {
+        _lines = lines;
+
+        notifyDataChanged();
+        postInvalidate();
+    }
+
+    public Lines getlines() {
+        return _lines;
+    }
+
+    /**
      * 清空数据
      */
     public void clearData() {
         _lines = null;
         invalidate();
+    }
+
+
+    private void A______________________________________________() {
+
+    }
+
+    public float _hitValueY = 1;
+
+    /**
+     * Y方向进行动画
+     */
+    @UiThread
+    public void animateY() {
+        ValueAnimator animator = ObjectAnimator.ofFloat(0f, 1f);
+        animator.setDuration(1000);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                _hitValueY = (float) animation.getAnimatedValue();
+                LogUtil.e("---> v:" + _hitValueY);
+
+                invalidate();
+            }
+        });
+        animator.start();
+        invalidate();
+    }
+
+
+    private void a______________________________________________() {
+
     }
 
     public boolean isCanX_zoom() {
@@ -395,6 +446,10 @@ public class LineChart extends Chart {
         this._dragListener = _dragListener;
     }
 
+    private void b______________________________________________() {
+
+    }
+
     public float get_paddingLeft() {
         return _paddingLeft;
     }
@@ -425,6 +480,10 @@ public class LineChart extends Chart {
 
     public void set_paddingBottom(float _paddingBottom) {
         this._paddingBottom = _paddingBottom;
+    }
+
+    private void c______________________________________________() {
+
     }
 
     public double getVisiableMinX() {
@@ -460,31 +519,6 @@ public class LineChart extends Chart {
     }
 
     /**
-     * 设置数据源
-     *
-     * @param lines
-     */
-    public void setLines(Lines lines) {
-        _lines = lines;
-
-        notifyDataChanged();
-        postInvalidate();
-    }
-
-    public Lines getlines() {
-        return _lines;
-    }
-
-    /**
-     * 获取映射管家
-     *
-     * @return
-     */
-    public MappingManager get_MappingManager() {
-        return _MappingManager;
-    }
-
-    /**
      * 设置y轴的范围
      *
      * @param yMin
@@ -504,12 +538,10 @@ public class LineChart extends Chart {
     /**
      * 设置轴线的范围
      *
-     * @param yMin
-     * @param yMax
      * @param xMin
      * @param xMax
      */
-    public void setXAix_MaxMin(double yMin, double yMax, double xMin, double xMax) {
+    public void setXAix_MaxMin(double xMin, double xMax) {
         if (_lines != null) {
             _lines.setXCustomMaxMin(true);
             _lines.setmXMin(xMin);
@@ -519,6 +551,20 @@ public class LineChart extends Chart {
             LogUtil.e("setAxisMaxMin: 请在lines设置后，调用此方法！");
         }
     }
+
+    private void d______________________________________________() {
+
+    }
+
+    /**
+     * 获取映射管家
+     *
+     * @return
+     */
+    public MappingManager get_MappingManager() {
+        return _MappingManager;
+    }
+
 
     ////////////////////////////////  便捷的方法  //////////////////////////////////
 

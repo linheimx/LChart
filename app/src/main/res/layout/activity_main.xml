@@ -67,6 +67,12 @@
                 android:onClick="btn8"
                 android:text="滑动加载" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="btn9"
+                android:text="动画效果" />
+
         </LinearLayout>
     </ScrollView>
 
