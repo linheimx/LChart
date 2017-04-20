@@ -179,7 +179,6 @@ public abstract class Axis {
     public float offsetLeft(float labelWidth, float unitHeight) {
         labelDimen = labelWidth;
         unitDimen = unitHeight;
-        LogUtil.e("--->unit height:" + unitHeight);
 
         float sum = labelDimen;
         if (_enableUnit) {

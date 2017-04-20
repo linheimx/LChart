@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.ViewParent;
 
 import com.linheimx.app.library.R;
 import com.linheimx.app.library.adapter.IValueAdapter;
@@ -486,23 +485,38 @@ public class LineChart extends Chart {
     }
 
     /**
-     * 设置 x轴，y轴的范围
+     * 设置y轴的范围
+     *
+     * @param yMin
+     * @param yMax
+     */
+    public void setYMax_Min(double yMin, double yMax) {
+        if (_lines != null) {
+            _lines.setYCustomMaxMin(true);
+            _lines.setmYMin(yMin);
+            _lines.setmYMax(yMax);
+            postInvalidate();
+        } else {
+            LogUtil.e("setAxisMaxMin: 请在lines设置后，调用此方法！");
+        }
+    }
+
+    /**
+     * 设置轴线的范围
      *
      * @param yMin
      * @param yMax
      * @param xMin
      * @param xMax
      */
-    public void setMaxMin(double yMin, double yMax, double xMin, double xMax) {
+    public void setXAix_MaxMin(double yMin, double yMax, double xMin, double xMax) {
         if (_lines != null) {
-            _lines.setCustomMaxMin(true);
-            _lines.setmYMin(yMin);
-            _lines.setmYMax(yMax);
+            _lines.setXCustomMaxMin(true);
             _lines.setmXMin(xMin);
             _lines.setmXMax(xMax);
             postInvalidate();
         } else {
-            LogUtil.e("setMaxMin: 请在lines设置后，调用此方法！");
+            LogUtil.e("setAxisMaxMin: 请在lines设置后，调用此方法！");
         }
     }
 

@@ -2,7 +2,6 @@ package com.linheimx.app.library.data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.DeflaterOutputStream;
 
 /**
  * Created by Administrator on 2016/11/13.
@@ -21,7 +20,11 @@ public class Lines {
     /**
      * 是否使用 设置的最小最大值
      */
-    private boolean isCustomMaxMin = false;
+    private boolean isYCustomMaxMin = false;
+    /**
+     * 是否使用 设置的最小最大值
+     */
+    private boolean isXCustomMaxMin = false;
 
     public Lines() {
     }
@@ -46,28 +49,34 @@ public class Lines {
 
     private void calMinMax(List<Line> lines) {
 
-        if (isCustomMaxMin) {
-            return;
+        if (!isXCustomMaxMin) {
+            mXMax = Double.MIN_VALUE;
+            mXMin = Double.MAX_VALUE;
         }
 
-        mYMax = Double.MIN_VALUE;
-        mYMin = Double.MAX_VALUE;
-        mXMax = Double.MIN_VALUE;
-        mXMin = Double.MAX_VALUE;
+        if (!isYCustomMaxMin) {
+            mYMax = Double.MIN_VALUE;
+            mYMin = Double.MAX_VALUE;
+        }
 
         for (Line line : lines) {
-            if (line.getmXMin() < mXMin) {
-                mXMin = line.getmXMin();
-            }
-            if (line.getmXMax() > mXMax) {
-                mXMax = line.getmXMax();
+
+            if (!isXCustomMaxMin) {
+                if (line.getmXMin() < mXMin) {
+                    mXMin = line.getmXMin();
+                }
+                if (line.getmXMax() > mXMax) {
+                    mXMax = line.getmXMax();
+                }
             }
 
-            if (line.getmYMin() < mYMin) {
-                mYMin = line.getmYMin();
-            }
-            if (line.getmYMax() > mYMax) {
-                mYMax = line.getmYMax();
+            if (!isYCustomMaxMin) {
+                if (line.getmYMin() < mYMin) {
+                    mYMin = line.getmYMin();
+                }
+                if (line.getmYMax() > mYMax) {
+                    mYMax = line.getmYMax();
+                }
             }
         }
 
@@ -125,11 +134,19 @@ public class Lines {
         this.mXMin = mXMin;
     }
 
-    public boolean isCustomMaxMin() {
-        return isCustomMaxMin;
+    public boolean isYCustomMaxMin() {
+        return isYCustomMaxMin;
     }
 
-    public void setCustomMaxMin(boolean customMaxMin) {
-        isCustomMaxMin = customMaxMin;
+    public void setYCustomMaxMin(boolean customMaxMin) {
+        isYCustomMaxMin = customMaxMin;
+    }
+
+    public boolean isXCustomMaxMin() {
+        return isXCustomMaxMin;
+    }
+
+    public void setXCustomMaxMin(boolean XCustomMaxMin) {
+        isXCustomMaxMin = XCustomMaxMin;
     }
 }
