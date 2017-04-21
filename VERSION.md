@@ -29,3 +29,5 @@ can set legend's width and text size
 can set legend's height
 ## 1.1.4
 auto cal unit and label in axis
+## 1.2.0
+add animator
