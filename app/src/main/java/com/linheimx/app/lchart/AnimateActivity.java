@@ -1,5 +1,6 @@
 package com.linheimx.app.lchart;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -68,12 +69,12 @@ public class AnimateActivity extends AppCompatActivity {
 
         // 数据
         Line line = new Line();
+        line.setLineColor(Color.MAGENTA);
+        line.setDrawCircle(false);
         List<Entry> list = new ArrayList<>();
-        list.add(new Entry(1, 5));
-        list.add(new Entry(2, 4));
-        list.add(new Entry(3, 2));
-        list.add(new Entry(4, 3));
-        list.add(new Entry(10, 8));
+        for (int i = 0; i < 100; i++) {
+            list.add(new Entry(i, (float) Math.random()));
+        }
         line.setEntries(list);
 
         Lines lines = new Lines();
@@ -86,6 +87,14 @@ public class AnimateActivity extends AppCompatActivity {
 
     public void animateY(View view) {
         _lineChart.animateY();
+    }
+
+    public void animateX(View view) {
+        _lineChart.animateX();
+    }
+
+    public void animateXY(View view) {
+        _lineChart.animateXY();
     }
 
 }

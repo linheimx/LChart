@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.linheimx.app.library.animate.LAnimator;
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
@@ -28,11 +29,13 @@ public class LineRender extends BaseRender {
     Paint _PaintCircle;
     Paint _PaintLegend;
 
+    LAnimator _LAnimator;
 
     public LineRender(RectF rectMain, MappingManager _MappingManager, Lines _lines, LineChart lineChart) {
         super(rectMain, _MappingManager);
         this._lines = _lines;
         this.lineChart = lineChart;
+        this._LAnimator = lineChart.get_LAnimator();
 
         _PaintLine = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintCircle = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -94,7 +97,8 @@ public class LineRender extends BaseRender {
         }
 
         double xMin_Visiable = lineChart.getVisiableMinX();
-        double xMax_Visiable = lineChart.getVisiableMaxX();
+//        double xMax_Visiable = lineChart.getVisiableMaxX();
+        double xMax_Visiable = (lineChart.getVisiableMaxX() - xMin_Visiable) * _LAnimator.get_hitValueX();// 考虑动画
 
         int minIndex = Line.getEntryIndex(list, xMin_Visiable, Line.Rounding.DOWN);
         int maxIndex = Line.getEntryIndex(list, xMax_Visiable, Line.Rounding.UP);
@@ -175,6 +179,6 @@ public class LineRender extends BaseRender {
     }
 
     private float getAnimateY(float src) {
-        return lineChart.get_MainPlotRect().bottom - (lineChart.get_MainPlotRect().bottom - src) * lineChart._hitValueY;
+        return lineChart.get_MainPlotRect().bottom - (lineChart.get_MainPlotRect().bottom - src) * _LAnimator.get_hitValueY();
     }
 }

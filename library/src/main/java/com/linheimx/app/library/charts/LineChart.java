@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 
 import com.linheimx.app.library.R;
 import com.linheimx.app.library.adapter.IValueAdapter;
+import com.linheimx.app.library.animate.LAnimator;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.listener.IDragListener;
@@ -82,8 +83,10 @@ public class LineChart extends Chart {
     float _paddingTop = 17;
     float _paddingBottom = 15;
 
-
     RectF _GodRect;//
+
+    //////////////////////////////  animator  ////////////////////////////
+    LAnimator _LAnimator;
 
 
     public LineChart(Context context) {
@@ -106,6 +109,9 @@ public class LineChart extends Chart {
         boolean isGodMode = typedArray.getBoolean(R.styleable.LineChart_god_mode, false);
         _ChartMode = isGodMode ? ChartMode.God : ChartMode.Normal;
         typedArray.recycle();
+
+        // animator
+        _LAnimator = new LAnimator(this);
 
         // init v
         _MainPlotRect = new RectF();
@@ -379,28 +385,42 @@ public class LineChart extends Chart {
 
     }
 
-    public float _hitValueY = 1;
-
     /**
      * Y方向进行动画
      */
     @UiThread
     public void animateY() {
-        ValueAnimator animator = ObjectAnimator.ofFloat(0f, 1f);
-        animator.setDuration(1000);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                _hitValueY = (float) animation.getAnimatedValue();
-                LogUtil.e("---> v:" + _hitValueY);
-
-                invalidate();
-            }
-        });
-        animator.start();
-        invalidate();
+        _LAnimator.animateY();
     }
 
+    /**
+     * X方向进行动画
+     */
+    @UiThread
+    public void animateX() {
+        _LAnimator.animateX();
+    }
+
+    /**
+     * X,Y方向进行动画
+     */
+    @UiThread
+    public void animateXY() {
+        _LAnimator.animateXY();
+    }
+
+    public LAnimator get_LAnimator() {
+        return _LAnimator;
+    }
+
+    public void set_LAnimator(LAnimator _LAnimator) {
+        this._LAnimator = _LAnimator;
+    }
+
+
+    private void B_________________________________________________() {
+
+    }
 
     private void a______________________________________________() {
 
