@@ -1,8 +1,9 @@
 package com.linheimx.app.lchart;
 
 
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
@@ -13,7 +14,6 @@ import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
-import com.linheimx.app.library.model.Axis;
 import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.model.XAxis;
 import com.linheimx.app.library.model.YAxis;
@@ -36,6 +36,7 @@ public class LineChartActivity extends AppCompatActivity {
         _lineChart = (LineChart) findViewById(R.id.chart);
         SeekBar sb1 = (SeekBar) findViewById(R.id.sb_entry_more);
         CheckBox cb = (CheckBox) findViewById(R.id.cb_high);
+        CheckBox cb_fill = (CheckBox) findViewById(R.id.cb_fill);
 
         setChartData(_lineChart);
 
@@ -68,6 +69,18 @@ public class LineChartActivity extends AppCompatActivity {
                 HighLight highLight = _lineChart.get_HighLight();
                 highLight.setEnable(isChecked);// 启用高亮显示  默认为启用状态
                 _lineChart.invalidate();
+            }
+        });
+
+        cb_fill.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Lines lines = _lineChart.getlines();
+                if (lines != null && lines.getLines().size() > 0) {
+                    Line line = lines.getLines().get(0);
+                    line.setFilled(isChecked);
+                    _lineChart.invalidate();
+                }
             }
         });
     }
@@ -107,6 +120,7 @@ public class LineChartActivity extends AppCompatActivity {
 
         // 数据
         Line line = new Line();
+        line.setLineColor(Color.RED);
         List<Entry> list = new ArrayList<>();
         list.add(new Entry(1, 5));
         list.add(new Entry(2, 4));

@@ -1,11 +1,7 @@
 package com.linheimx.app.library.data;
 
 import android.graphics.Color;
-import android.util.Log;
 
-import com.linheimx.app.library.adapter.DefaultHighLightValueAdapter;
-import com.linheimx.app.library.adapter.IValueAdapter;
-import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Utils;
 
 import java.util.ArrayList;
@@ -29,6 +25,9 @@ public class Line {
     private int lineWidth = 1;
     private int circleColor = Color.RED;
     private int circleR = 4;
+
+    private boolean isFilled = false;
+    private int lineAlpha = 50;
 
     private boolean isEnable = true;
     private boolean isDrawCircle = true;
@@ -358,6 +357,22 @@ public class Line {
 
     public void setOnEntryClick(CallBack_OnEntryClick onEntryClick) {
         this.onEntryClick = onEntryClick;
+    }
+
+    public boolean isFilled() {
+        return isFilled;
+    }
+
+    public void setFilled(boolean filled) {
+        isFilled = filled;
+    }
+
+    public int getLineAlpha() {
+        return lineAlpha;
+    }
+
+    public void setLineAlpha(int lineAlpha) {
+        this.lineAlpha = lineAlpha;
     }
 
     public enum Rounding {

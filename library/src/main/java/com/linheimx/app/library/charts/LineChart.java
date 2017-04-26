@@ -1,7 +1,5 @@
 package com.linheimx.app.library.charts;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -16,10 +14,10 @@ import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.animate.LAnimator;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
-import com.linheimx.app.library.listener.IDragListener;
-import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.data.Lines;
+import com.linheimx.app.library.listener.IDragListener;
 import com.linheimx.app.library.manager.MappingManager;
+import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.model.XAxis;
 import com.linheimx.app.library.model.YAxis;
 import com.linheimx.app.library.render.GodRender;
@@ -223,6 +221,7 @@ public class LineChart extends Chart {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
+        _LineRender.onChartSizeChanged(w, h);
         notifyDataChanged();
     }
 

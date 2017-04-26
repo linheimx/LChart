@@ -1,8 +1,14 @@
 package com.linheimx.app.library.render;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
 import android.graphics.RectF;
+import android.graphics.Shader;
 
 import com.linheimx.app.library.animate.LAnimator;
 import com.linheimx.app.library.charts.LineChart;
@@ -10,7 +16,6 @@ import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
-import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -29,7 +34,12 @@ public class LineRender extends BaseRender {
     Paint _PaintCircle;
     Paint _PaintLegend;
 
+    Path _PathLine;
+
     LAnimator _LAnimator;
+
+    Bitmap _drawBitmap;
+    Canvas softwareCanvas = new Canvas();
 
     public LineRender(RectF rectMain, MappingManager _MappingManager, Lines _lines, LineChart lineChart) {
         super(rectMain, _MappingManager);
@@ -40,13 +50,33 @@ public class LineRender extends BaseRender {
         _PaintLine = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintCircle = new Paint(Paint.ANTI_ALIAS_FLAG);
         _PaintLegend = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        _PathLine = new Path();
     }
 
-    public void render(Canvas canvas) {
+
+    public void onChartSizeChanged(int w, int h) {
+        _drawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        softwareCanvas.setBitmap(_drawBitmap);
+    }
+
+
+    public void render(Canvas canvasSrc) {
 
         if (_lines == null) {
             return;
         }
+
+        Canvas canvas = null;
+
+        // layout editor 状态下 _drawBitmap 是没有的
+        if (null != _drawBitmap) {
+            canvas = softwareCanvas;
+            canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        } else {
+            canvas = canvasSrc;
+        }
+
 
         canvas.save();
         canvas.clipRect(_rectMain); // 限制绘制区域
@@ -69,14 +99,17 @@ public class LineRender extends BaseRender {
             }
             drawLegend(canvas, line, i);
         }
-    }
 
-    private float[] _LineBuffer = new float[4];
+        if (_drawBitmap != null) {
+            canvasSrc.drawBitmap(_drawBitmap, 0, 0, null);
+        }
+    }
 
     private void drawLine_Circle(Canvas canvas, Line line) {
 
         _PaintLine.setStrokeWidth(line.getLineWidth());
         _PaintLine.setColor(line.getLineColor());
+        _PaintLine.setStyle(Paint.Style.STROKE);
 
         _PaintCircle.setStrokeWidth(line.getLineWidth());
         _PaintCircle.setColor(line.getLineColor());
@@ -97,8 +130,7 @@ public class LineRender extends BaseRender {
         }
 
         double xMin_Visiable = lineChart.getVisiableMinX();
-//        double xMax_Visiable = lineChart.getVisiableMaxX();
-        double xMax_Visiable = (lineChart.getVisiableMaxX() - xMin_Visiable) * _LAnimator.get_hitValueX();// 考虑动画
+        double xMax_Visiable = xMin_Visiable + (lineChart.getVisiableMaxX() - xMin_Visiable) * _LAnimator.get_hitValueX();// 考虑动画
 
         int minIndex = Line.getEntryIndex(list, xMin_Visiable, Line.Rounding.DOWN);
         int maxIndex = Line.getEntryIndex(list, xMax_Visiable, Line.Rounding.UP);
@@ -107,45 +139,68 @@ public class LineRender extends BaseRender {
             return;
         }
 
-        int lineCount = maxIndex - minIndex;
-
-        if (_LineBuffer.length < lineCount * 4) {
-            _LineBuffer = new float[lineCount * 4];
+        if ((maxIndex - minIndex) > 1500) {
+            _PaintLine.setAntiAlias(false);// 考虑性能
+        } else {
+            _PaintLine.setAntiAlias(true);
         }
 
-        int count = 0;
-        for (int i = minIndex; i < maxIndex; i++) {
-            Entry start = list.get(i);
-            Entry end = list.get(i + 1);
+        _PathLine.reset();
 
-//            _LineBuffer[count++] = _MappingManager.v2p_x(start.getX());
-//            _LineBuffer[count++] = _MappingManager.v2p_y(start.getY());
-//            _LineBuffer[count++] = _MappingManager.v2p_x(end.getX());
-//            _LineBuffer[count++] = _MappingManager.v2p_y(end.getY());
+        for (int i = minIndex; i <= maxIndex; i++) {
+            Entry entry = list.get(i);
 
-            /////////////////////////////////////////////  考虑动画效果  //////////////////////////////////////////
-            _LineBuffer[count++] = _MappingManager.v2p_x(start.getX());
-            _LineBuffer[count++] = getAnimateY(_MappingManager.v2p_y(start.getY()));
-            _LineBuffer[count++] = _MappingManager.v2p_x(end.getX());
-            _LineBuffer[count++] = getAnimateY(_MappingManager.v2p_y(end.getY()));
+            float sx = _MappingManager.v2p_x(entry.getX());
+            float sy = getAnimateY(_MappingManager.v2p_y(entry.getY()));
+
+            if (i == minIndex) {
+                _PathLine.moveTo(sx, sy);
+            } else {
+                _PathLine.lineTo(sx, sy);
+            }
 
             if (line.isDrawCircle()) {
-                SingleF_XY xy = _MappingManager.getPxByEntry(start);
+                SingleF_XY xy = _MappingManager.getPxByEntry(entry);
                 canvas.drawCircle(xy.getX(), getAnimateY(xy.getY()), line.getCircleR(), _PaintCircle);
 
                 // 把最后点一个绘制出来
                 if (i == maxIndex - 1) {
                     Entry last = list.get(maxIndex);
                     xy = _MappingManager.getPxByEntry(last);
-//                    canvas.drawCircle(xy.getX(), xy.getY(), line.getCircleR(), _PaintCircle);
-
                     /////////////////////////////////////////////  考虑动画效果  //////////////////////////////////////////
                     canvas.drawCircle(xy.getX(), getAnimateY(xy.getY()), line.getCircleR(), _PaintCircle);
                 }
             }
         }
 
-        canvas.drawLines(_LineBuffer, 0, count, _PaintLine);
+        canvas.drawPath(_PathLine, _PaintLine);
+
+        // 考虑填充
+        if (line.isFilled()) {
+            Entry start = list.get(minIndex);
+            Entry end = list.get(maxIndex);
+            float sx = _MappingManager.v2p_x(start.getX());
+            float sy = getAnimateY(_MappingManager.v2p_y(start.getY()));
+            float ex = _MappingManager.v2p_x(end.getX());
+            float ey = getAnimateY(_MappingManager.v2p_y(end.getY()));
+
+            float maxY = Math.max(sy, ey);
+
+            _PathLine.lineTo(ex, lineChart.get_MainPlotRect().bottom);
+            _PathLine.lineTo(sx, lineChart.get_MainPlotRect().bottom);
+
+            _PathLine.close();
+
+            _PaintLine.setStyle(Paint.Style.FILL);
+            _PaintLine.setAlpha(50);
+
+            Shader shader = new LinearGradient(0, maxY, 0, 0, line.getLineColor(), line.getLineColor() / 50, Shader.TileMode.CLAMP);
+            _PaintLine.setShader(shader);
+
+            canvas.drawPath(_PathLine, _PaintLine);
+            _PaintLine.setStyle(Paint.Style.STROKE);
+            _PaintLine.setShader(null);
+        }
     }
 
 
