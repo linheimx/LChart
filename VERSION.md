@@ -31,3 +31,5 @@ can set legend's height
 auto cal unit and label in axis
 ## 1.2.0
 add animator
+## 1.2.1
+add fill for line
