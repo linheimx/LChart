@@ -161,10 +161,10 @@ public class MappingManager {
         constrainViewPort(_currentViewPort);
     }
 
-    public void zoom(float level, double startW, double startH, float cx, float cy) {
+    public void zoom(float level, double oldStartW, double oldStartH, float cx, float cy, boolean canX, boolean canY) {
 
-        double newWidth = startW * level;
-        double newHeight = startH * level;
+        double newWidth = canX ? oldStartW * level : oldStartW;
+        double newHeight = canY ? oldStartH * level : oldStartH;
 
         double hitValueX = p2v_x(cx);
         double left = hitValueX - newWidth * (cx - _contentRect.left) / _contentRect.width();

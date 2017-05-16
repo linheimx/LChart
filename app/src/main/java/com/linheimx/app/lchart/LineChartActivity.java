@@ -38,6 +38,13 @@ public class LineChartActivity extends AppCompatActivity {
         CheckBox cb = (CheckBox) findViewById(R.id.cb_high);
         CheckBox cb_fill = (CheckBox) findViewById(R.id.cb_fill);
 
+//        _lineChart.setCanX_drag(true);// x 方向可以拖拽
+//        _lineChart.setCanY_drag(false);// y 方向不可拖拽
+//        _lineChart.setCanX_zoom(true);// x 方向可以缩放
+//        _lineChart.setCanY_zoom(false);// y 方向不可用缩放
+//        _lineChart.setZoom_alone(true);// 设置在 x，y方向上是否要独立缩放
+
+
         setChartData(_lineChart);
 
         sb1.setProgress(5);

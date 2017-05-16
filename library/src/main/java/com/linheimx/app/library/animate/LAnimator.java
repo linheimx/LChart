@@ -2,10 +2,8 @@ package com.linheimx.app.library.animate;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.support.annotation.UiThread;
 
 import com.linheimx.app.library.charts.LineChart;
-import com.linheimx.app.library.utils.LogUtil;
 
 /**
  * Created by LJIAN on 2017/4/21.
@@ -23,7 +21,7 @@ public class LAnimator {
     }
 
 
-    public void animateX() {
+    public void animateX(long duration) {
         ValueAnimator animator = ObjectAnimator.ofFloat(0f, 1f);
         animator.setDuration(1000);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -37,7 +35,7 @@ public class LAnimator {
         animator.start();
     }
 
-    public void animateY() {
+    public void animateY(long duration) {
         ValueAnimator animator = ObjectAnimator.ofFloat(0f, 1f);
         animator.setDuration(1000);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -51,7 +49,7 @@ public class LAnimator {
         animator.start();
     }
 
-    public void animateXY() {
+    public void animateXY(long duration) {
         ValueAnimator animator = ObjectAnimator.ofFloat(0f, 1f);
         animator.setDuration(1000);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

@@ -1,6 +1,5 @@
 package com.linheimx.app.library.touch;
 
-import android.support.annotation.Nullable;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -11,7 +10,6 @@ import android.widget.Scroller;
 import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.listener.IDragListener;
 import com.linheimx.app.library.manager.MappingManager;
-import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.RectD;
 
 /**
@@ -79,6 +77,7 @@ public class TouchListener implements View.OnTouchListener {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 stopAll();
+                iNeedTouch(true);
                 _lastX = x;
                 _lastY = y;
                 break;
@@ -98,13 +97,11 @@ public class TouchListener implements View.OnTouchListener {
             case MotionEvent.ACTION_MOVE:
                 float dx = x - _lastX;
                 float dy = y - _lastY;
-
                 if (_TouchMode == TouchMode.DRAG) {
                     _VelocityTracker.computeCurrentVelocity(1000);
                     float vx = _VelocityTracker.getXVelocity();// 得到当前手指在这一点移动的速度
                     float vy = _VelocityTracker.getYVelocity();// 速度分为了x和y轴两个方向的速度
                     int direction = judgeDir(vx, vy);
-
                     doDrag(dx, dy, direction);
                 } else if (_TouchMode == TouchMode.PINCH_ZOOM) {
                     doPinch(event);
@@ -238,11 +235,25 @@ public class TouchListener implements View.OnTouchListener {
         float absDist = getABSDist(event);
         float scale = _disXY / absDist;
 
-        zoom(scale, scale, _cX, _cY);
+        if (zoom_alone) {
+            // 考虑独立缩放
+            float xDis = getXDist(event);
+            float yDis = getYDist(event);
+
+            if (xDis > yDis) {
+                zoom(scale, 1, _cX, _cY);
+            } else {
+                zoom(1, scale, _cX, _cY);
+            }
+        } else {
+            zoom(scale, scale, _cX, _cY);
+        }
 
         _disXY = absDist;
     }
 
+    boolean canX_drag = true;
+    boolean canY_drag = true;
 
     /**
      * 拖拽
@@ -277,6 +288,13 @@ public class TouchListener implements View.OnTouchListener {
             iNeedTouch(need);
         }
 
+        if (!canX_drag) {
+            dx = 0;
+        }
+        if (!canY_drag) {
+            dy = 0;
+        }
+
         _MappingManager.translate(dx, dy);
         _LineChart.postInvalidate();
     }
@@ -308,6 +326,7 @@ public class TouchListener implements View.OnTouchListener {
 
     boolean canX_zoom = true;
     boolean canY_zoom = true;
+    boolean zoom_alone = false;
 
     /**
      * 应用于指定的缩放
@@ -350,14 +369,7 @@ public class TouchListener implements View.OnTouchListener {
             return;
         }
 
-        if (!canX_zoom) {
-            startW = _MappingManager.get_currentViewPort().width();
-        }
-        if (!canY_zoom) {
-            startH = _MappingManager.get_currentViewPort().height();
-        }
-
-        _MappingManager.zoom(level, startW, startH, cx, cy);
+        _MappingManager.zoom(level, startW, startH, cx, cy, canX_zoom, canY_zoom);
         _LineChart.postInvalidate();
     }
 
@@ -377,12 +389,37 @@ public class TouchListener implements View.OnTouchListener {
         return y;
     }
 
+
+    public boolean isCanX_drag() {
+        return canX_drag;
+    }
+
+    public void setCanX_drag(boolean canX_drag) {
+        this.canX_drag = canX_drag;
+    }
+
+    public boolean isCanY_drag() {
+        return canY_drag;
+    }
+
+    public void setCanY_drag(boolean canY_drag) {
+        this.canY_drag = canY_drag;
+    }
+
     public boolean isCanX_zoom() {
         return canX_zoom;
     }
 
     public void setCanX_zoom(boolean canX_zoom) {
         this.canX_zoom = canX_zoom;
+    }
+
+    public boolean isZoom_alone() {
+        return zoom_alone;
+    }
+
+    public void setZoom_alone(boolean zoom_alone) {
+        this.zoom_alone = zoom_alone;
     }
 
     public boolean isCanY_zoom() {
@@ -406,7 +443,7 @@ public class TouchListener implements View.OnTouchListener {
             _zoom_cx = e.getX();
             _zoom_cy = e.getY();
 
-            _Zoomer.startZoom(0.5f);
+            _Zoomer.startZoom(0.6f);
 
             return true;
         }

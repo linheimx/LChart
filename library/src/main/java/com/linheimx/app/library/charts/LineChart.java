@@ -389,7 +389,15 @@ public class LineChart extends Chart {
      */
     @UiThread
     public void animateY() {
-        _LAnimator.animateY();
+        _LAnimator.animateY(1000);
+    }
+
+    /**
+     * Y方向进行动画
+     */
+    @UiThread
+    public void animateY(long duration) {
+        _LAnimator.animateY(duration);
     }
 
     /**
@@ -397,7 +405,15 @@ public class LineChart extends Chart {
      */
     @UiThread
     public void animateX() {
-        _LAnimator.animateX();
+        _LAnimator.animateX(1000);
+    }
+
+    /**
+     * X方向进行动画
+     */
+    @UiThread
+    public void animateX(long duration) {
+        _LAnimator.animateX(duration);
     }
 
     /**
@@ -405,7 +421,15 @@ public class LineChart extends Chart {
      */
     @UiThread
     public void animateXY() {
-        _LAnimator.animateXY();
+        _LAnimator.animateXY(1000);
+    }
+
+    /**
+     * X,Y方向进行动画
+     */
+    @UiThread
+    public void animateXY(long duration) {
+        _LAnimator.animateXY(duration);
     }
 
     public LAnimator get_LAnimator() {
@@ -425,10 +449,54 @@ public class LineChart extends Chart {
 
     }
 
+    public boolean isCanX_drag() {
+        return _TouchListener.isCanX_drag();
+    }
+
+    /**
+     * 设置x方向是否可拖动
+     *
+     * @param canX_drag
+     */
+    public void setCanX_drag(boolean canX_drag) {
+        _TouchListener.setCanX_drag(canX_drag);
+    }
+
+    public boolean isCanY_drag() {
+        return _TouchListener.isCanY_drag();
+    }
+
+    /**
+     * 设置y方向是否可拖动
+     *
+     * @param canY_drag
+     */
+    public void setCanY_drag(boolean canY_drag) {
+        _TouchListener.setCanY_drag(canY_drag);
+    }
+
+    public boolean isZoom_alone() {
+        return _TouchListener.isZoom_alone();
+    }
+
+    /**
+     * 设置x,y方向是否可以独立缩放
+     *
+     * @param zoom_independent
+     */
+    public void setZoom_alone(boolean zoom_independent) {
+        _TouchListener.setZoom_alone(zoom_independent);
+    }
+
     public boolean isCanX_zoom() {
         return _TouchListener.isCanX_zoom();
     }
 
+    /**
+     * 设置x方向是否可以缩放
+     *
+     * @param canX_zoom
+     */
     public void setCanX_zoom(boolean canX_zoom) {
         _TouchListener.setCanX_zoom(canX_zoom);
     }
@@ -437,6 +505,11 @@ public class LineChart extends Chart {
         return _TouchListener.isCanY_zoom();
     }
 
+    /**
+     * 设置y方向是否可以缩放
+     *
+     * @param canY_zoom
+     */
     public void setCanY_zoom(boolean canY_zoom) {
         _TouchListener.setCanY_zoom(canY_zoom);
     }

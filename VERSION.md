@@ -33,3 +33,8 @@ auto cal unit and label in axis
 add animator
 ## 1.2.1
 add fill for line
+## 1.2.2
+add x,y can drag
+add x,y drag alone 
+fix drag conflict in vp
+add animate time
