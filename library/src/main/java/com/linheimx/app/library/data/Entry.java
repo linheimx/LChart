@@ -1,16 +1,15 @@
 package com.linheimx.app.library.data;
 
-import com.linheimx.app.library.adapter.DefaultHighLightValueAdapter;
-import com.linheimx.app.library.adapter.IValueAdapter;
-
 /**
  * Created by lijian on 2016/11/13.
  */
 
 public class Entry {
 
-    protected double x;
-    protected double y;
+    double x;
+    double y;
+
+    boolean isNull_Y = false;
 
     public Entry(double x, double y) {
         this.x = x;
@@ -22,18 +21,28 @@ public class Entry {
         return x;
     }
 
-    public void setX(double x) {
+    public Entry setX(double x) {
         this.x = x;
+        return this;
     }
 
     public double getY() {
         return y;
     }
 
-    public void setY(double y) {
+    public Entry setY(double y) {
         this.y = y;
+        return this;
     }
 
+    public boolean isNull_Y() {
+        return isNull_Y;
+    }
+
+    public Entry setNull_Y() {
+        isNull_Y = true;
+        return this;
+    }
 
     @Override
     public String toString() {

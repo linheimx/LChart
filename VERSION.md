@@ -38,3 +38,5 @@ add x,y can drag
 add x,y drag alone 
 fix drag conflict in vp
 add animate time
+## 1.2.3
+add break entry in line

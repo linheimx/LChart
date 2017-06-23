@@ -140,6 +140,11 @@ public class HighLightRender extends BaseRender {
             return;
         }
 
+        // 考虑断掉的点
+        if (hitEntry.isNull_Y()) {
+            return;
+        }
+
         highValueX = hitEntry.getX();// real indexX
 
         SingleF_XY xy = _MappingManager.getPxByEntry(hitEntry);

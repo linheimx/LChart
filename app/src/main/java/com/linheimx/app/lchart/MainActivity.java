@@ -48,4 +48,8 @@ public class MainActivity extends AppCompatActivity {
     public void btn9(View v) {
         startActivity(new Intent(MainActivity.this, AnimateActivity.class));
     }
+
+    public void btn10(View v) {
+        startActivity(new Intent(MainActivity.this, NullEntityActivity.class));
+    }
 }

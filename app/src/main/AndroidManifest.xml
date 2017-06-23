@@ -24,7 +24,8 @@
         <activity android:name=".TimeActivity" />
         <activity android:name=".TouchProcessActivity" />
         <activity android:name=".ScrollLoadActivity" />
-        <activity android:name=".AnimateActivity"></activity>
+        <activity android:name=".AnimateActivity" />
+        <activity android:name=".NullEntityActivity"></activity>
     </application>
 
 </manifest>

@@ -73,6 +73,12 @@
                 android:onClick="btn9"
                 android:text="动画效果" />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="btn10"
+                android:text="不连续的折线" />
+
         </LinearLayout>
     </ScrollView>
 

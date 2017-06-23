@@ -147,13 +147,21 @@ public class LineRender extends BaseRender {
 
         _PathLine.reset();
 
+        int breakI = -1;
+
         for (int i = minIndex; i <= maxIndex; i++) {
             Entry entry = list.get(i);
+
+            // 考虑这个点是否断掉
+            if (entry.isNull_Y()) {
+                breakI = i;
+                continue;
+            }
 
             float sx = _MappingManager.v2p_x(entry.getX());
             float sy = getAnimateY(_MappingManager.v2p_y(entry.getY()));
 
-            if (i == minIndex) {
+            if (i == minIndex || i == breakI + 1) {
                 _PathLine.moveTo(sx, sy);
             } else {
                 _PathLine.lineTo(sx, sy);
@@ -174,6 +182,11 @@ public class LineRender extends BaseRender {
         }
 
         canvas.drawPath(_PathLine, _PaintLine);
+
+        // 有断掉的点，就不考虑填充了
+        if (breakI != -1) {
+            return;
+        }
 
         // 考虑填充
         if (line.isFilled()) {
