@@ -56,8 +56,10 @@ public class LineRender extends BaseRender {
 
 
     public void onChartSizeChanged(int w, int h) {
-        _drawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        softwareCanvas.setBitmap(_drawBitmap);
+        if (w > 0 && h > 0) {
+            _drawBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            softwareCanvas.setBitmap(_drawBitmap);
+        }
     }
 
 

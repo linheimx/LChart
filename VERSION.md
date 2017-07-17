@@ -40,3 +40,4 @@ fix drag conflict in vp
 add animate time
 ## 1.2.3
 add break entry in line
+## 1.2.4
