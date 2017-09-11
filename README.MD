@@ -1,7 +1,5 @@
-![l_logo](https://github.com/linheimx/LChart/blob/master/art/l_logo.png)
-
 # LChart
-这是一个折线图，它提供了几个非常实用的功能，并且非常简单，易于使用。
+这是一个折线图框架，它提供了几个非常实用的功能，简单易用。
 
 ## 功能特色
 1. 支持缩放，拖拽
