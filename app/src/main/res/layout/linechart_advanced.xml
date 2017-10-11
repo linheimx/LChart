@@ -17,6 +17,11 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
+        <Spinner
+            android:id="@+id/sp_cursor"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"></Spinner>
+
         <ImageButton
             android:id="@+id/btnLeft"
             android:layout_width="wrap_content"
@@ -30,8 +35,8 @@
             android:id="@+id/btnRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="centerInside"
             android:layout_weight="1"
+            android:scaleType="centerInside"
             android:src="@drawable/arrow_r"
             android:text="右移" />
 

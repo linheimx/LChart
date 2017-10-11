@@ -21,10 +21,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, MultiLineActivity.class));
     }
 
-    public void btn3(View v) {
-        startActivity(new Intent(MainActivity.this, LineChartPlusActivity.class));
-    }
-
     public void btn4(View v) {
         startActivity(new Intent(MainActivity.this, PreviewActivity.class));
     }
@@ -51,5 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void btn10(View v) {
         startActivity(new Intent(MainActivity.this, NullEntityActivity.class));
+    }
+
+    public void btn11(View v) {
+        startActivity(new Intent(MainActivity.this, AdvancedActivity.class));
     }
 }

@@ -66,8 +66,8 @@ public class GodTouchListener implements View.OnTouchListener {
             RectF godRect = _LineChart.get_GodRect();
             RectF mainRect = _LineChart.get_MainPlotRect();
 
-            godRect.right = godRect.left + godRect.width() * kx;
-            godRect.bottom = godRect.top + godRect.height() * ky;
+            godRect.right = godRect.left + godRect.width() * kx;// 调整左右（宽，胖）
+//            godRect.bottom = godRect.top + godRect.height() * ky;
 
             constrainRect(godRect, mainRect);
 
@@ -121,21 +121,7 @@ public class GodTouchListener implements View.OnTouchListener {
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            RectF godRect = _LineChart.get_GodRect();
-            RectF mainRect = _LineChart.get_MainPlotRect();
-
-
-            float w = godRect.width();
-            float h = godRect.height();
-            godRect.left += -distanceX;
-            godRect.right = godRect.left + w;
-            godRect.top += -distanceY;
-            godRect.bottom = godRect.top + h;
-
-            constrainRect(godRect, mainRect);
-
-            nofityViewPortChanged(godRect);
-
+            changeViewPort(distanceX, distanceY);
             return true;
         }
 
@@ -145,6 +131,28 @@ public class GodTouchListener implements View.OnTouchListener {
         }
     }
 
+
+    /**
+     * 改变可视的数据范围
+     *
+     * @param distanceX
+     * @param distanceY
+     */
+    public void changeViewPort(float distanceX, float distanceY) {
+        RectF godRect = _LineChart.get_GodRect();
+        RectF mainRect = _LineChart.get_MainPlotRect();
+
+        float w = godRect.width();
+        float h = godRect.height();
+        godRect.left += -distanceX;
+        godRect.right = godRect.left + w;
+        godRect.top += -distanceY;
+        godRect.bottom = godRect.top + h;
+
+        constrainRect(godRect, mainRect);
+
+        nofityViewPortChanged(godRect);
+    }
 
     private void nofityViewPortChanged(RectF godRect) {
 

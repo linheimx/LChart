@@ -1,8 +1,8 @@
 package com.linheimx.app.lchart;
 
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 
 import com.linheimx.app.chart_dialog.ChartPreviewDialog;
@@ -27,22 +27,22 @@ public class PreviewActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("折线图：预览模式");
 
-        LineChart lineChart1 = (LineChart) findViewById(R.id.chart1);
-        LineChart godLineChart = (LineChart) findViewById(R.id.chart2);
+        final LineChart lineChart = (LineChart) findViewById(R.id.chart1);
+        final LineChart godLineChart = (LineChart) findViewById(R.id.chart2);
 
 //        lineChart2.set_ChartMode(LineChart.ChartMode.God);//切换成上帝视角  xml已经写了
-        godLineChart.registObserver(lineChart1);
+        godLineChart.registObserver(lineChart);
 
-        setChartData(lineChart1);
+        setChartData(lineChart);
 
         // 通知 lineChart2 数据改变了（因为lineChart1改变了）
-        godLineChart.notifyDataChanged_FromOb(lineChart1);
+        godLineChart.notifyDataChanged_FromOb(lineChart);
     }
 
     private void setChartData(LineChart lineChart) {
 
         // 高亮
-        HighLight highLight = lineChart.get_HighLight();
+        HighLight highLight = lineChart.get_HighLight1();
         highLight.setEnable(true);// 启用高亮显示  默认为启用状态
         highLight.setxValueAdapter(new IValueAdapter() {
             @Override

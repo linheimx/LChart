@@ -16,7 +16,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".LineChartActivity" />
-        <activity android:name=".LineChartPlusActivity" />
         <activity android:name=".PreviewActivity" />
         <activity android:name=".MultiLineActivity" />
         <activity android:name=".WarnLinesActivity" />
@@ -25,7 +24,8 @@
         <activity android:name=".TouchProcessActivity" />
         <activity android:name=".ScrollLoadActivity" />
         <activity android:name=".AnimateActivity" />
-        <activity android:name=".NullEntityActivity"></activity>
+        <activity android:name=".NullEntityActivity" />
+        <activity android:name=".AdvancedActivity"></activity>
     </application>
 
 </manifest>

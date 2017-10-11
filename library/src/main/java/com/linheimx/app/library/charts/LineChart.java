@@ -54,18 +54,21 @@ public class LineChart extends Chart {
     boolean isDragable = true;
     boolean isScaleable = true;
     ChartMode _ChartMode;
+    CursorMode _CursorMode = CursorMode.cursor1;// 默认使用光标1
 
     ///////////////////////////////// parts ////////////////////////////////
     XAxis _XAxis;
     YAxis _YAxis;
-    HighLight _HighLight;
+    HighLight _HighLight1;// 光标1
+    HighLight _HighLight2;// 光标2
 
     //////////////////////////////////  render  /////////////////////////////
     NoDataRender _NoDataRender;
     XAxisRender _XAxisRender;
     YAxisRender _YAxisRender;
     LineRender _LineRender;
-    HighLightRender _HighLightRender;
+    HighLightRender _HighLightRender1;// 光标1
+    HighLightRender _HighLightRender2;// 光标2
     GodRender _GodRender;
 
 
@@ -119,14 +122,17 @@ public class LineChart extends Chart {
         // models
         _XAxis = new XAxis();
         _YAxis = new YAxis();
-        _HighLight = new HighLight();
+        _HighLight1 = new HighLight();
+        _HighLight2 = new HighLight();
 
         // render
         _NoDataRender = new NoDataRender(_MainPlotRect, _MappingManager);
         _XAxisRender = new XAxisRender(_MainPlotRect, _MappingManager, _XAxis);
         _YAxisRender = new YAxisRender(_MainPlotRect, _MappingManager, _YAxis);
         _LineRender = new LineRender(_MainPlotRect, _MappingManager, _lines, this);
-        _HighLightRender = new HighLightRender(_MainPlotRect, _MappingManager, _lines, _HighLight);
+        _HighLightRender1 = new HighLightRender(this, HighLightRender.H1, _MainPlotRect, _MappingManager, _HighLight1);
+        _HighLightRender2 = new HighLightRender(this, HighLightRender.H2, _MainPlotRect, _MappingManager, _HighLight2);
+
         _GodRender = new GodRender(_MainPlotRect, _MappingManager, _GodRect);
 
         // touch listener
@@ -192,8 +198,8 @@ public class LineChart extends Chart {
         // render line
         _LineRender.render(canvas);
         // render high light
-        _HighLightRender.render(canvas);
-
+        _HighLightRender1.render(canvas);// 光标1
+        _HighLightRender2.render(canvas);// 光标2
 
         // render god
         if (_ChartMode == ChartMode.God) {
@@ -248,7 +254,6 @@ public class LineChart extends Chart {
 
         // 2. onDataChanged
         _LineRender.onDataChanged(_lines);
-        _HighLightRender.onDataChanged(_lines);
     }
 
     /**
@@ -268,6 +273,9 @@ public class LineChart extends Chart {
         if (_ChartMode == ChartMode.God) {
             _GodRect.set(_MainPlotRect);
             _GodRect.right = _GodRect.right / 3;
+
+            // 设置预览窗口
+            _GodTouchListener.changeViewPort(0, 0);
         }
     }
 
@@ -660,32 +668,75 @@ public class LineChart extends Chart {
 
     ////////////////////////////////  便捷的方法  //////////////////////////////////
 
+
+    public CursorMode get_CursorMode() {
+        return _CursorMode;
+    }
+
+    /**
+     * 设置使用哪一个光标
+     * ---------------------
+     * 第一个？
+     * 第二个？
+     *
+     * @param _CursorMode
+     */
+    public void set_CursorMode(CursorMode _CursorMode) {
+        this._CursorMode = _CursorMode;
+    }
+
     public void highLight_PixXY(float px, float py) {
         SingleD_XY xy = _MappingManager.getValueByPx(px, py);
         highLight_ValueXY(xy.getX(), xy.getY());
     }
 
     public void highLight_ValueXY(double x, double y) {
-        _HighLightRender.highLight_ValueXY(x, y);
+
+        if (_CursorMode == CursorMode.cursor1) {
+            _HighLightRender1.highLight_ValueXY(x, y);
+        } else if (_CursorMode == CursorMode.cursor2) {
+            _HighLightRender2.highLight_ValueXY(x, y);
+        }
+
         invalidate();
     }
 
     public void highLightLeft() {
-        _HighLightRender.highLightLeft();
+
+        if (_CursorMode == CursorMode.cursor1) {
+            _HighLightRender1.highLightLeft();
+        } else if (_CursorMode == CursorMode.cursor2) {
+            _HighLightRender2.highLightLeft();
+        }
+
         invalidate();
     }
 
     public void highLightRight() {
-        _HighLightRender.highLightRight();
+
+        if (_CursorMode == CursorMode.cursor1) {
+            _HighLightRender1.highLightRight();
+        } else if (_CursorMode == CursorMode.cursor2) {
+            _HighLightRender2.highLightRight();
+        }
+
         invalidate();
     }
 
-    public HighLight get_HighLight() {
-        return _HighLight;
+    public HighLight get_HighLight1() {
+        return _HighLight1;
     }
 
-    public void set_HighLight(HighLight _HighLight) {
-        this._HighLight = _HighLight;
+    public HighLight get_HighLight2() {
+        return _HighLight2;
+    }
+
+    public HighLightRender get_HighLightRender1() {
+        return _HighLightRender1;
+    }
+
+    public HighLightRender get_HighLightRender2() {
+        return _HighLightRender2;
     }
 
     public XAxis get_XAxis() {
@@ -754,6 +805,10 @@ public class LineChart extends Chart {
 
     public enum ChartMode {
         Normal, God
+    }
+
+    public enum CursorMode {
+        cursor1, cursor2
     }
 
 

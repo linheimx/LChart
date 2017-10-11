@@ -34,12 +34,6 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="btn3"
-                android:text="功能按钮" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:onClick="btn4"
                 android:text="预览模式" />
 
@@ -78,6 +72,12 @@
                 android:layout_height="wrap_content"
                 android:onClick="btn10"
                 android:text="不连续的折线" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="btn11"
+                android:text="高级功能" />
 
         </LinearLayout>
     </ScrollView>

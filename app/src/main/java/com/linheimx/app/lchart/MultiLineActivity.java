@@ -95,7 +95,7 @@ public class MultiLineActivity extends AppCompatActivity {
     private void setChartData(LineChart lineChart, int lineCount) {
 
         // 高亮
-        HighLight highLight = lineChart.get_HighLight();
+        HighLight highLight = lineChart.get_HighLight1();
         highLight.setEnable(true);// 启用高亮显示  默认为启用状态，每条折线图想要获取点击回调，highlight需要启用
         highLight.setxValueAdapter(new IValueAdapter() {
             @Override

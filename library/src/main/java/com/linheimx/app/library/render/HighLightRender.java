@@ -4,11 +4,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.linheimx.app.library.model.HighLight;
+import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
 import com.linheimx.app.library.manager.MappingManager;
+import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.utils.SingleF_XY;
 import com.linheimx.app.library.utils.Utils;
 
@@ -19,6 +20,10 @@ import com.linheimx.app.library.utils.Utils;
 public class HighLightRender extends BaseRender {
 
     private final static double UN_CHOOSE = Double.MIN_VALUE;
+    public static final int H1 = 1;// 光标1
+    public static final int H2 = 2;// 光标2
+
+    int which = H1;
 
     Lines _lines;
     HighLight _highLight;
@@ -26,10 +31,13 @@ public class HighLightRender extends BaseRender {
     Paint paintHighLight;
     Paint paintHint;
 
-    public HighLightRender(RectF rectMain, MappingManager _MappingManager, Lines lines, HighLight highLight) {
+    LineChart lineChart;
+
+    public HighLightRender(LineChart lineChart, int which, RectF rectMain, MappingManager _MappingManager, HighLight highLight) {
         super(rectMain, _MappingManager);
 
-        this._lines = lines;
+        this.lineChart = lineChart;
+        this.which = which;
         this._highLight = highLight;
 
         paintHighLight = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -64,6 +72,8 @@ public class HighLightRender extends BaseRender {
         if (!_highLight.isEnable()) {
             return;
         }
+
+        _lines = lineChart.getlines();
 
         if (_lines == null) {
             return;
@@ -169,8 +179,24 @@ public class HighLightRender extends BaseRender {
             float txtHeight = Utils.textHeight(paintHint);
             float txtWidth = Math.max(Utils.textWidth(paintHint, xStr), Utils.textWidth(paintHint, yStr));
 
-            float x = _rectMain.right - txtWidth - 10;
-            float y = _rectMain.top + Utils.dp2px(20);
+            float x = 0, y = 0;
+
+            if (which == H1) {
+                x = _rectMain.right - txtWidth - 10;
+                y = _rectMain.top + Utils.dp2px(20);
+            } else if (which == H2) {
+                x = _rectMain.right - txtWidth - 10;
+                y = _rectMain.top + Utils.dp2px(20) + txtHeight * 2 + Utils.dp2px(5);
+
+                // delta x
+                double x1 = lineChart.get_HighLightRender1().highValueX;
+                double x2 = highValueX;
+
+                float y_delta = y + txtHeight * 2 + Utils.dp2px(5);
+                String delta = "ΔX: " + Math.abs(x2 - x1);
+                canvas.drawText(delta, x, y_delta, paintHint);
+            }
+
 
             canvas.drawText(xStr, x, y, paintHint);
             canvas.drawText(yStr, x, y + txtHeight, paintHint);
@@ -191,7 +217,4 @@ public class HighLightRender extends BaseRender {
 
     }
 
-    public void onDataChanged(Lines lines) {
-        _lines = lines;
-    }
 }

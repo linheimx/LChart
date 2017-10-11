@@ -35,9 +35,9 @@
             app:god_mode="true"></com.linheimx.app.library.charts.LineChart>
 
         <Button
-            android:onClick="btnShowChart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="btnShowChart"
             android:text="对话框的方式展现" />
     </LinearLayout>
 

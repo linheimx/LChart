@@ -38,7 +38,7 @@ public class NullEntityActivity extends AppCompatActivity {
 //        lineChart.setCanY_zoom(false);//设置只能y方向是否能缩放！
 
         // 高亮
-        HighLight highLight = lineChart.get_HighLight();
+        HighLight highLight = lineChart.get_HighLight1();
         highLight.setEnable(true);// 启用高亮显示  默认为启用状态
         highLight.setxValueAdapter(new IValueAdapter() {
             @Override
