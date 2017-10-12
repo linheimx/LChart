@@ -7,7 +7,7 @@ tasks.withType(JavaCompile) {
 ext {
     PUBLISH_GROUP_ID = 'com.linheimx.library'
     PUBLISH_ARTIFACT_ID = 'lchart'
-    PUBLISH_VERSION = '1.2.4'
+    PUBLISH_VERSION = '1.2.5'
 }
 
 android {
@@ -18,7 +18,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 24
         versionCode 1
-        versionName "1.2.4"
+        versionName "1.2.5"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

@@ -41,3 +41,6 @@ add animate time
 ## 1.2.3
 add break entry in line
 ## 1.2.4
+fix bug
+## 1.2.5
+add two cursor's support

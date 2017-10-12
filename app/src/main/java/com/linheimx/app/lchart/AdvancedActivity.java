@@ -24,7 +24,7 @@ public class AdvancedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advanced);
 
-        getSupportActionBar().setTitle("折线图：高级");
+        getSupportActionBar().setTitle("折线图：双光标");
 
         LineChartAdvanced lineChartAdvanced = (LineChartAdvanced) findViewById(R.id.linechart);
 

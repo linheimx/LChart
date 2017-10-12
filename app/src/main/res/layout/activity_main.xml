@@ -77,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="btn11"
-                android:text="高级功能" />
+                android:text="双光标" />
 
         </LinearLayout>
     </ScrollView>
