@@ -188,8 +188,12 @@ public class LineChart extends Chart {
 
         // 计算轴线上的数值
         Line line = _lines.getLines().get(0);
-        _XAxis.calValues(getVisiableMinX(), getVisiableMaxX(), line);
-        _YAxis.calValues(getVisiableMinY(), getVisiableMaxY(), line);
+        double xmin = getVisiableMinX();
+        double xmax = getVisiableMaxX();
+        double ymin = getVisiableMinY();
+        double ymax = getVisiableMaxY();
+        _XAxis.calValues(xmin, xmax, line, xmin, xmax);
+        _YAxis.calValues(ymin, ymax, line, xmin, xmax);
 
         // render grid line
         _XAxisRender.renderGridline(canvas);

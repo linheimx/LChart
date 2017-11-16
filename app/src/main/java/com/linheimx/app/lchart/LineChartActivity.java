@@ -14,6 +14,7 @@ import com.linheimx.app.library.charts.LineChart;
 import com.linheimx.app.library.data.Entry;
 import com.linheimx.app.library.data.Line;
 import com.linheimx.app.library.data.Lines;
+import com.linheimx.app.library.model.Axis;
 import com.linheimx.app.library.model.HighLight;
 import com.linheimx.app.library.model.XAxis;
 import com.linheimx.app.library.model.YAxis;
@@ -95,7 +96,8 @@ public class LineChartActivity extends AppCompatActivity {
 
     private void setChartData(LineChart lineChart) {
 
-//        lineChart.get_MappingManager().setFatFactor(1f);//设置 可见视图与原始数据视图的比例
+        lineChart.get_MappingManager().setCurrent2Fat(true);
+        lineChart.get_MappingManager().setFatFactor(1.1f);//设置 可见视图与原始数据视图的比例
 //        lineChart.setCanY_zoom(false);//设置只能y方向是否能缩放！
 
         // 高亮
@@ -116,12 +118,13 @@ public class LineChartActivity extends AppCompatActivity {
 
         // x,y轴上的单位
         XAxis xAxis = lineChart.get_XAxis();
-//        xAxis.setCalWay(Axis.CalWay.every); // 轴线上label的计算方式
+        xAxis.setCalWay(Axis.CalWay.every); // 轴线上label的计算方式
         xAxis.set_unit("单位：s");
         xAxis.set_ValueAdapter(new DefaultValueAdapter(1));
 
         YAxis yAxis = lineChart.get_YAxis();
         yAxis.set_unit("单位：m");
+        yAxis.setCalWay(Axis.CalWay.every);
 //        yAxis.set_enableUnit(false);
         yAxis.set_ValueAdapter(new DefaultValueAdapter(2));// 默认精度到小数点后2位,现在修改为3位精度
 
@@ -129,18 +132,33 @@ public class LineChartActivity extends AppCompatActivity {
         Line line = new Line();
         line.setLineColor(Color.RED);
         List<Entry> list = new ArrayList<>();
-        list.add(new Entry(1, 5));
-        list.add(new Entry(2, 4));
-        list.add(new Entry(3, 2));
-        list.add(new Entry(4, 3));
-        list.add(new Entry(10, 8));
+//        list.add(new Entry(1, 5));
+//        list.add(new Entry(2, 4));
+//        list.add(new Entry(3, 2));
+//        list.add(new Entry(4, 3));
+//        list.add(new Entry(10, 8));
+
+        list.add(new Entry(0, 0));
+        list.add(new Entry(4, 0));
+        list.add(new Entry(4, 1));
+        list.add(new Entry(8, 1));
+        list.add(new Entry(8, 2));
+        list.add(new Entry(12, 2));
+        list.add(new Entry(12, 3));
+        list.add(new Entry(16, 3));
+        list.add(new Entry(16, 2));
+        list.add(new Entry(20, 2));
+        list.add(new Entry(20, 1));
+        list.add(new Entry(24, 1));
+
         line.setEntries(list);
 
         Lines lines = new Lines();
         lines.addLine(line);
 
         lineChart.setLines(lines);
-//        lineChart.setMaxMin(2,20,1,10);//手动设置，x和y方向上的数据范围
+
+        //        lineChart.setMaxMin(2,20,1,10);//手动设置，x和y方向上的数据范围
     }
 
 

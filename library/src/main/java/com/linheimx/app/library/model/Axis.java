@@ -5,7 +5,6 @@ import android.graphics.Color;
 import com.linheimx.app.library.adapter.DefaultValueAdapter;
 import com.linheimx.app.library.adapter.IValueAdapter;
 import com.linheimx.app.library.data.Line;
-import com.linheimx.app.library.utils.LogUtil;
 import com.linheimx.app.library.utils.Utils;
 
 import java.util.List;
@@ -72,7 +71,7 @@ public abstract class Axis {
      * -----------------------------
      * 注意：可见区域！
      */
-    public void calValues(double min, double max, Line line) {
+    public void calValues(double min, double max, Line line, double x_min, double x_max) {
 
         double range;
         range = max - min;
@@ -149,25 +148,48 @@ public abstract class Axis {
         } else if (calWay == CalWay.every) {
             // 每个：将可视范围内，这条线上的每个数据在x轴上的label都绘制出来
 
-            if (line != null && line.getEntries().size() != 0) {
-                int minIndex = Line.getEntryIndex(line.getEntries(), min, Line.Rounding.DOWN);
-                int maxIndex = Line.getEntryIndex(line.getEntries(), max, Line.Rounding.UP);
+            if (this instanceof XAxis) {
+                if (line != null && line.getEntries().size() != 0) {
+                    int minIndex = Line.getEntryIndex(line.getEntries(), min, Line.Rounding.DOWN);
+                    int maxIndex = Line.getEntryIndex(line.getEntries(), max, Line.Rounding.UP);
 
-                labelCount = (maxIndex - minIndex) + 1;
-                if (labelValues.length < labelCount) {
-                    labelValues = new double[labelCount];
-                }
+                    labelCount = (maxIndex - minIndex) + 1;
+                    if (labelValues.length < labelCount) {
+                        labelValues = new double[labelCount];
+                    }
 
-                int count = 0;
-                for (int i = minIndex; i <= maxIndex; i++) {
-                    if (this instanceof XAxis) {
+                    int count = 0;
+                    for (int i = minIndex; i <= maxIndex; i++) {
                         labelValues[count++] = line.getEntries().get(i).getX();
-                    } else {
-                        labelValues[count++] = line.getEntries().get(i).getY();
+                    }
+                }
+            } else {
+                if (line != null && line.getEntries().size() != 0) {
+                    int minIndex = Line.getEntryIndex(line.getEntries(), x_min, Line.Rounding.DOWN);
+                    int maxIndex = Line.getEntryIndex(line.getEntries(), x_max, Line.Rounding.UP);
+
+                    labelCount = (maxIndex - minIndex) + 1;
+                    if (labelValues.length < labelCount) {
+                        labelValues = new double[labelCount];
+                    }
+
+                    int count = 0;
+                    for (int i = minIndex; i <= maxIndex; i++) {
+                        double y = line.getEntries().get(i).getY();
+
+                        boolean exist = false;
+                        for (int j = 0; j < labelValues.length; j++) {
+                            if (labelValues[j] == y) {
+                                exist = true;
+                                break;
+                            }
+                        }
+
+                        if (!exist)
+                            labelValues[count++] = y;
                     }
                 }
             }
-
         }
     }
 

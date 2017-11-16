@@ -35,6 +35,9 @@ public class MappingManager {
     float fatFactor = 1.3f;//肥胖因子
     RectD _constrainViewPort;
 
+    boolean current2Fat; // 当前视图是否跟约束视图一样大
+
+
     public MappingManager(RectF rectMain) {
         _contentRect = rectMain;
         _maxViewPort = new RectD();
@@ -259,6 +262,21 @@ public class MappingManager {
         return fatFactor;
     }
 
+
+    public boolean isCurrent2Fat() {
+        return current2Fat;
+    }
+
+    /**
+     * 当前视图是否跟约束视图一样大
+     *
+     * @param current2Fat
+     */
+    public void setCurrent2Fat(boolean current2Fat) {
+        this.current2Fat = current2Fat;
+    }
+
+
     /**
      * 设置约束视图的肥胖因子
      * -------------------
@@ -284,6 +302,11 @@ public class MappingManager {
         _constrainViewPort.right = _maxViewPort.right + w * fatFactor;
         _constrainViewPort.top = _maxViewPort.top + h * fatFactor;
         _constrainViewPort.bottom = _maxViewPort.bottom - h * fatFactor;
+
+        if (current2Fat)
+            _currentViewPort.setRectD(_constrainViewPort);
+        else
+            _currentViewPort.setRectD(_maxViewPort);
     }
 
 }
