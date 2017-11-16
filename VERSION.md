@@ -44,3 +44,5 @@ add break entry in line
 fix bug
 ## 1.2.5
 add two cursor's support
+## 1.2.6
+fix y axis's every cal
